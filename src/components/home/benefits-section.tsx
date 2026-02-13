@@ -31,8 +31,8 @@ export default function BenefitsSection() {
           <div key={b.title} className="flex items-start gap-3">
             <b.icon size={28} className="text-primary shrink-0 mt-0.5" strokeWidth={1.5} />
             <div>
-              <h3 className="text-xs font-semibold tracking-widest mb-1">{b.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{b.desc}</p>
+              <h3 className="text-sm font-semibold tracking-widest mb-1">{b.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{b.desc}</p>
             </div>
           </div>
         ))}

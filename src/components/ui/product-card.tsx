@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCart, Check } from "lucide-react";
+import { ShoppingCart, Check, Phone } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { useToastStore } from "@/store/toast-store";
 import { formatPrice } from "@/data/products";
@@ -27,9 +27,11 @@ export function ProductCard({ product }: { product: Product }) {
   const addItem = useCartStore((s) => s.addItem);
   const addToast = useToastStore((s) => s.addToast);
 
+  const isFree = product.price === 0;
+
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (added) return;
+    if (isFree || added) return;
     addItem(product);
     addToast(`Đã thêm "${product.name}" vào giỏ hàng`);
     setAdded(true);
@@ -53,16 +55,22 @@ export function ProductCard({ product }: { product: Product }) {
           />
           <div
             className={`absolute bottom-0 left-0 right-0 transition-all duration-300 ${hovered ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"}`}
-            onClick={handleAdd}
+            onClick={isFree ? undefined : handleAdd}
           >
             <button
               className={`w-full text-white text-xs tracking-widest py-3 flex items-center justify-center gap-2 transition-all duration-300 ${
-                added
-                  ? "bg-green-600 scale-[1.02]"
-                  : "bg-foreground hover:bg-foreground/90 cursor-pointer"
+                isFree
+                  ? "bg-primary cursor-pointer"
+                  : added
+                    ? "bg-green-600 scale-[1.02]"
+                    : "bg-foreground hover:bg-foreground/90 cursor-pointer"
               }`}
             >
-              {added ? (
+              {isFree ? (
+                <>
+                  LIÊN HỆ <Phone size={14} />
+                </>
+              ) : added ? (
                 <>
                   ADDED <Check size={14} className="animate-bounce-in" />
                 </>
@@ -76,11 +84,11 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </Link>
       <div className="flex items-center justify-between">
-        <h4 className="text-xs font-semibold tracking-widest">
+        <h4 className="text-sm font-semibold tracking-widest uppercase">
           {product.name}
         </h4>
         <span className="text-sm text-primary font-medium">
-          {formatPrice(product.price)}
+          {isFree ? "Liên hệ" : formatPrice(product.price)}
         </span>
       </div>
     </div>

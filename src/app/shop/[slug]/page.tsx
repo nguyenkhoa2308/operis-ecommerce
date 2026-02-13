@@ -235,7 +235,7 @@ export default function ProductDetailPage() {
 
           {/* Thông tin */}
           <div className="flex-1">
-            <h1 className="text-2xl font-semibold tracking-tight mb-2">
+            <h1 className="text-2xl font-semibold tracking-tight mb-2 uppercase">
               {product.name}
             </h1>
             <div className="flex items-center gap-2 mb-3">
@@ -244,12 +244,24 @@ export default function ProductDetailPage() {
                 {product.rating}
               </span>
             </div>
-            <p className="text-3xl text-primary font-medium mb-4">
-              {formatPrice(product.price)}
+            <p className="text-2xl text-primary font-bold mb-4">
+              {product.price === 0 ? "Liên hệ" : formatPrice(product.price)}
             </p>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+            <p className="text-md text-muted-foreground leading-relaxed line-clamp-3">
               {product.description}
             </p>
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab("description");
+                setTimeout(() => {
+                  document.getElementById("product-tabs")?.scrollIntoView({ behavior: "smooth" });
+                }, 50);
+              }}
+              className="text-sm text-primary hover:underline underline-offset-2 mt-1 mb-6"
+            >
+              Xem thêm
+            </button>
 
             {/* Thông số nổi bật */}
             <div className="mb-6">
@@ -264,10 +276,10 @@ export default function ProductDetailPage() {
                       <div className="text-primary mb-1.5 flex justify-center">
                         {icon}
                       </div>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">
                         {label}
                       </p>
-                      <p className="text-xs font-semibold">{spec.value}</p>
+                      <p className="text-[13px] font-semibold">{spec.value}</p>
                     </div>
                   );
                 })}
@@ -280,46 +292,57 @@ export default function ProductDetailPage() {
             </p>
 
             {/* Số lượng + Nút */}
-            <div className="flex items-center gap-4 mb-6">
-              <div className="flex items-center border border-border">
-                <button
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+            {product.price === 0 ? (
+              <div className="mb-6">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 bg-primary text-white text-sm tracking-widest px-8 py-3 hover:bg-primary/90 transition-colors"
                 >
-                  {""}
-                  <Minus size={14} />
+                  LIÊN HỆ TƯ VẤN
+                </Link>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center border border-border">
+                  <button
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {""}
+                    <Minus size={14} />
+                  </button>
+                  <span className="px-4 py-2 text-sm min-w-[40px] text-center">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity((q) => q + 1)}
+                    className="px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {""}
+                    <Plus size={14} />
+                  </button>
+                </div>
+                <button
+                  onClick={handleBuyNow}
+                  className="bg-primary text-white text-sm tracking-widest px-8 py-3 hover:bg-primary-dark transition-colors"
+                >
+                  MUA NGAY
                 </button>
-                <span className="px-4 py-2 text-sm min-w-[40px] text-center">
-                  {quantity}
-                </span>
                 <button
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={handleAddToCart}
+                  className="bg-foreground text-white text-sm tracking-widest px-8 py-3 hover:bg-foreground/90 transition-colors"
                 >
-                  {""}
-                  <Plus size={14} />
+                  THÊM GIỎ HÀNG
                 </button>
               </div>
-              <button
-                onClick={handleBuyNow}
-                className="bg-primary text-white text-xs tracking-widest px-8 py-3 hover:bg-primary-dark transition-colors"
-              >
-                MUA NGAY
-              </button>
-              <button
-                onClick={handleAddToCart}
-                className="bg-foreground text-white text-xs tracking-widest px-8 py-3 hover:bg-foreground/90 transition-colors"
-              >
-                THÊM GIỎ HÀNG
-              </button>
-            </div>
+            )}
 
             <div className="border-t border-border pt-4 text-sm text-muted-foreground space-y-2">
               <div className="flex items-center gap-2">
                 <Box size={14} className="shrink-0" />
                 <span>
                   SKU:{" "}
-                  <span className="text-foreground font-medium">
+                  <span className="text-sm text-foreground font-medium">
                     {product.sku}
                   </span>
                 </span>
@@ -339,7 +362,7 @@ export default function ProductDetailPage() {
                   {product.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="bg-primary/10 text-primary text-[11px] font-medium px-2 py-0.5 rounded-full"
+                      className="bg-primary/10 text-primary text-xs font-medium px-2 py-0.5 rounded-full"
                     >
                       {tag}
                     </span>
@@ -351,7 +374,7 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Tabs */}
-        <div className="mt-16">
+        <div id="product-tabs" className="mt-16 scroll-mt-20">
           <div className="flex gap-8 border-b border-border mb-8">
             {tabs.map((tab) => (
               <button
@@ -385,7 +408,7 @@ export default function ProductDetailPage() {
                     >
                       <div className="text-primary shrink-0">{icon}</div>
                       <div>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider">
                           {label}
                         </p>
                         <p className="text-sm font-medium">{spec.value}</p>
@@ -416,7 +439,7 @@ export default function ProductDetailPage() {
                         {/* Section header */}
                         <div className="flex items-center gap-2.5 px-5 py-3 bg-foreground">
                           <Icon size={16} className="text-white/70" />
-                          <span className="text-xs font-semibold tracking-widest text-white uppercase">
+                          <span className="text-sm font-semibold tracking-widest text-white uppercase">
                             {group.title}
                           </span>
                         </div>
@@ -428,10 +451,10 @@ export default function ProductDetailPage() {
                                 key={spec.id}
                                 className={`${i % 2 === 0 ? "bg-white" : "bg-muted/30"} hover:bg-primary/5 transition-colors`}
                               >
-                                <td className="text-[13px] font-medium text-muted-foreground px-5 py-3 w-[200px] md:w-[240px] align-top whitespace-nowrap">
+                                <td className="text-sm font-medium text-muted-foreground px-5 py-3 w-[200px] md:w-[240px] align-top whitespace-nowrap">
                                   {spec.label}
                                 </td>
-                                <td className="text-[13px] text-foreground px-5 py-3">
+                                <td className="text-sm text-foreground px-5 py-3">
                                   {spec.value}
                                 </td>
                               </tr>

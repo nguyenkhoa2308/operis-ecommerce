@@ -38,15 +38,19 @@ export default function FeaturedProducts() {
           </h2>
         </div>
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-8">
             {Array.from({ length: 4 }).map((_, i) => (
-              <ProductCardSkeleton key={i} />
+              <div key={i} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]">
+                <ProductCardSkeleton />
+              </div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto animate-fade-in">
-            {products.map((p) => (
-              <ProductCard key={p.slug} product={p} />
+          <div className="flex flex-wrap justify-center gap-8 animate-fade-in">
+            {products.slice(0, 4).map((p) => (
+              <div key={p.slug} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]">
+                <ProductCard product={p} />
+              </div>
             ))}
           </div>
         )}

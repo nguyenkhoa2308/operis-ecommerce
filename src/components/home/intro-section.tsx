@@ -66,8 +66,8 @@ export function IntroSection() {
                 <uc.icon size={20} className="text-primary" strokeWidth={1.5} />
               </div>
               <div>
-                <h4 className="text-sm font-semibold mb-1">{uc.title}</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <h4 className="text-base font-semibold mb-1">{uc.title}</h4>
+                <p className="text-base text-muted-foreground leading-relaxed">
                   {uc.desc}
                 </p>
               </div>

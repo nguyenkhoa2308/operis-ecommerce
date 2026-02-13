@@ -27,22 +27,22 @@ import { usePathname, useRouter } from "next/navigation";
 
 const categories = [
   {
-    label: "Operisbot Cá Nhân 1",
-    href: "/shop/operisbot-ca-nhan-1",
+    label: "Cá Nhân",
+    href: "/shop",
     icon: Monitor,
-    desc: "Dành cho người mới — Tặng sẵn 2.000.000 Token",
+    desc: "Operisbot dành cho cá nhân — Cắm điện là chạy, tặng sẵn Token.",
     image:
       "https://images.unsplash.com/photo-1624823183493-ed5832f48f18?w=400&h=260&fit=crop",
-    tags: ["Người mới", "3.000.000₫"],
+    tags: ["Từ 3.000.000₫", "2 gói"],
   },
   {
-    label: "Operisbot Cá Nhân 2",
-    href: "/shop/operisbot-ca-nhan-2",
+    label: "Doanh Nghiệp",
+    href: "/shop/doanh-nghiep-tuy-bien",
     icon: Zap,
-    desc: "Dành cho cường độ cao — Tặng sẵn 5.000.000 Token",
+    desc: "Tùy biến cấu hình, Token, Workflow theo nhu cầu doanh nghiệp.",
     image:
       "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=400&h=260&fit=crop",
-    tags: ["Cường độ cao", "5.500.000₫"],
+    tags: ["Tùy biến", "Liên hệ"],
   },
 ];
 
@@ -88,7 +88,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white border-b border-border">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         {/* Logo */}
-        <Link href="/" className="text-2xl font-semibold tracking-tight">
+        <Link href="/" className="text-2xl font-[900] tracking-tight">
           Operis<span className="text-primary">bot.</span>
         </Link>
 

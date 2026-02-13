@@ -74,8 +74,8 @@ const audiences = [
 
 const timeline = [
   { year: "01/2026", title: "Khởi đầu", desc: "Operis ra đời từ ý tưởng của Lê Tiến Hùng: giúp mọi người tiếp cận tự động hóa AI dễ dàng hơn thông qua thiết bị chuyên dụng." },
-  { year: "02/2026", title: "Ra mắt sản phẩm", desc: "Hoàn thiện 2 gói Operisbot Cá nhân, ra mắt website và hệ thống Workflow đầu tiên." },
-  { year: "Q2/2026", title: "Mở rộng", desc: "Phát triển kho Mini-tools ngành (BĐS, E-commerce, Tuyển dụng). Ra mắt gói Doanh nghiệp." },
+  { year: "02/2026", title: "Ra mắt sản phẩm", desc: "Hoàn thiện 2 gói Operisbot Cá nhân, ra mắt gói Doanh nghiệp (Tùy biến), website và hệ thống Workflow đầu tiên." },
+  { year: "Q2/2026", title: "Mở rộng", desc: "Phát triển kho Mini-tools ngành (BĐS, E-commerce, Tuyển dụng). Mở rộng hệ sinh thái đối tác." },
 ];
 
 const team = [
@@ -199,29 +199,33 @@ export default function AboutPage() {
           <p className="text-sm tracking-widest text-primary font-medium mb-3">SO SÁNH</p>
           <h2 className="text-3xl font-semibold tracking-tight">AI TRUYỀN THỐNG vs OPERISBOT</h2>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-sm">
+        <div className="max-w-4xl mx-auto rounded-2xl border border-border overflow-hidden">
+          <table className="w-full">
             <thead>
               <tr>
-                <th className="text-left py-4 px-5 bg-muted font-semibold tracking-wider text-xs uppercase">Tiêu chí</th>
-                <th className="text-left py-4 px-5 bg-muted font-semibold tracking-wider text-xs uppercase">AI truyền thống</th>
-                <th className="text-left py-4 px-5 bg-primary/5 font-semibold tracking-wider text-xs uppercase text-primary">Operisbot</th>
+                <th className="w-1/4 text-left text-xs tracking-widest uppercase py-5 px-6 bg-muted text-muted-foreground border-b border-border">Tiêu chí</th>
+                <th className="w-[37.5%] text-left text-xs tracking-widest uppercase py-5 px-6 bg-muted text-muted-foreground border-b border-border">AI truyền thống</th>
+                <th className="w-[37.5%] text-left text-xs tracking-widest uppercase py-5 px-6 bg-primary text-white border-b border-primary">Operisbot</th>
               </tr>
             </thead>
             <tbody>
-              {comparisonRows.map((row) => (
-                <tr key={row.label} className="border-b border-border">
-                  <td className="py-4 px-5 font-medium">{row.label}</td>
-                  <td className="py-4 px-5 text-muted-foreground">
-                    <span className="inline-flex items-center gap-2">
-                      <X size={14} className="text-red-400 shrink-0" />
+              {comparisonRows.map((row, i) => (
+                <tr key={row.label} className={i < comparisonRows.length - 1 ? "border-b border-border" : ""}>
+                  <td className="py-5 px-6 font-semibold text-sm">{row.label}</td>
+                  <td className="py-5 px-6">
+                    <span className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                      <span className="w-5 h-5 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+                        <X size={12} className="text-red-400" />
+                      </span>
                       {row.traditional}
                     </span>
                   </td>
-                  <td className="py-4 px-5 bg-primary/5">
-                    <span className="inline-flex items-center gap-2">
-                      <Check size={14} className="text-green-600 shrink-0" />
-                      <span className="font-medium">{row.operis}</span>
+                  <td className="py-5 px-6 bg-primary/[0.03]">
+                    <span className="flex items-center gap-2.5 text-sm font-semibold">
+                      <span className="w-5 h-5 rounded-full bg-green-50 flex items-center justify-center shrink-0">
+                        <Check size={12} className="text-green-600" />
+                      </span>
+                      {row.operis}
                     </span>
                   </td>
                 </tr>

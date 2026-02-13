@@ -6,11 +6,7 @@ import { Search, Loader2 } from "lucide-react";
 import { PageBanner } from "@/components/ui/page-banner";
 import { ProductCard, ProductCardSkeleton } from "@/components/ui/product-card";
 import { SubscribeSection } from "@/components/home/subscribe-section";
-import {
-  categories as fallbackCategories,
-  tags,
-  brands,
-} from "@/data/products";
+import { categories as fallbackCategories } from "@/data/products";
 import { productsApi } from "@/lib/api";
 import type { Product } from "@/data/products";
 
@@ -23,6 +19,12 @@ function ShopContent() {
 
   const [activeCategory, setActiveCategory] = useState(initialCat);
   const [search, setSearch] = useState(initialQuery);
+  const [sort, setSort] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(initialQuery);
+  const [debouncedMinPrice, setDebouncedMinPrice] = useState("");
+  const [debouncedMaxPrice, setDebouncedMaxPrice] = useState("");
   const [page, setPage] = useState(1);
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -30,6 +32,17 @@ function ShopContent() {
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+
+  /* Debounce search & price inputs 500ms */
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDebouncedSearch(search);
+      setDebouncedMinPrice(minPrice);
+      setDebouncedMaxPrice(maxPrice);
+      setPage(1);
+    }, 500);
+    return () => clearTimeout(t);
+  }, [search, minPrice, maxPrice]);
 
   /* Sync state when URL searchParams change */
   useEffect(() => {
@@ -61,7 +74,10 @@ function ShopContent() {
         offset: (page - 1) * ITEMS_PER_PAGE,
       };
       if (activeCategory !== "Tất cả") filters.category = activeCategory;
-      if (search) filters.search = search;
+      if (debouncedSearch) filters.search = debouncedSearch;
+      if (sort) filters.sort = sort;
+      if (debouncedMinPrice) filters.minPrice = Number(debouncedMinPrice);
+      if (debouncedMaxPrice) filters.maxPrice = Number(debouncedMaxPrice);
 
       const [res] = await Promise.all([
         productsApi.getProducts(
@@ -90,7 +106,7 @@ function ShopContent() {
     } finally {
       setLoading(false);
     }
-  }, [activeCategory, search, page]);
+  }, [activeCategory, debouncedSearch, sort, debouncedMinPrice, debouncedMaxPrice, page]);
 
   useEffect(() => {
     fetchProducts();
@@ -109,11 +125,16 @@ function ShopContent() {
             </p>
             <select
               aria-label="Sắp xếp"
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                setPage(1);
+              }}
               className="text-sm text-muted-foreground border border-border px-3 py-1.5 bg-white"
             >
-              <option>Mặc định</option>
-              <option>Giá: Thấp đến Cao</option>
-              <option>Giá: Cao đến Thấp</option>
+              <option value="">Mặc định</option>
+              <option value="price_asc">Giá: Thấp đến Cao</option>
+              <option value="price_desc">Giá: Cao đến Thấp</option>
             </select>
           </div>
 
@@ -171,10 +192,7 @@ function ShopContent() {
               type="text"
               placeholder="Tìm kiếm"
               value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(1);
-              }}
+              onChange={(e) => setSearch(e.target.value)}
               className="flex-1 border border-border px-3 py-2 text-sm outline-none"
             />
             <button
@@ -212,34 +230,31 @@ function ShopContent() {
 
           <div>
             <h4 className="text-sm font-semibold tracking-widest mb-3 underline underline-offset-4">
-              NHÃN
+              GIÁ
             </h4>
-            <ul className="space-y-1.5">
-              {tags.map((tag) => (
-                <li
-                  key={tag}
-                  className="text-sm text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold tracking-widest mb-3 underline underline-offset-4">
-              THƯƠNG HIỆU
-            </h4>
-            <ul className="space-y-1.5">
-              {brands.map((brand) => (
-                <li
-                  key={brand}
-                  className="text-sm text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
-                >
-                  {brand}
-                </li>
-              ))}
-            </ul>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                inputMode="numeric"
+                placeholder="Từ"
+                value={minPrice ? Number(minPrice).toLocaleString("vi-VN") : ""}
+                onChange={(e) => {
+                  setMinPrice(e.target.value.replace(/\D/g, ""));
+                }}
+                className="w-full border border-border px-3 py-2 text-sm outline-none"
+              />
+              <span className="text-muted-foreground text-sm">—</span>
+              <input
+                type="text"
+                inputMode="numeric"
+                placeholder="Đến"
+                value={maxPrice ? Number(maxPrice).toLocaleString("vi-VN") : ""}
+                onChange={(e) => {
+                  setMaxPrice(e.target.value.replace(/\D/g, ""));
+                }}
+                className="w-full border border-border px-3 py-2 text-sm outline-none"
+              />
+            </div>
           </div>
         </aside>
       </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Jost } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -9,10 +9,10 @@ import { ScrollToTopButton } from "@/components/ui/scroll-to-top";
 import { Chatbot } from "@/components/ui/chatbot";
 import StoreHydrationGuard from "@/components/store-hydration-guard";
 
-const jost = Jost({
-  variable: "--font-jost",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin", "vietnamese"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body className={`${jost.variable} font-sans antialiased`}>
+      <body className={`${nunito.variable} font-sans antialiased`}>
         <StoreHydrationGuard>
           <ScrollToTop />
           <Header />
