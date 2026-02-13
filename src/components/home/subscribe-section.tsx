@@ -8,7 +8,7 @@ export function SubscribeSection() {
   const addToast = useToastStore((s) => s.addToast);
 
   return (
-    <section className="bg-dark text-white">
+    <section className="bg-gradient-subscribe text-white">
       <div className="max-w-7xl mx-auto px-4 py-14 flex flex-col md:flex-row items-center justify-between gap-8">
         <div>
           <h2 className="text-lg font-semibold tracking-widest mb-1">ĐĂNG KÝ NHẬN TIN</h2>
@@ -23,7 +23,7 @@ export function SubscribeSection() {
             className="flex-1 md:w-80 px-4 py-3 text-sm bg-white text-foreground placeholder:text-muted-foreground outline-none"
             required
           />
-          <button type="submit" className="bg-primary text-white text-xs tracking-widest px-8 py-3 hover:bg-primary-dark transition-colors shrink-0">
+          <button type="submit" className="bg-accent text-white text-xs tracking-widest px-8 py-3 hover:bg-accent/90 transition-colors shrink-0">
             ĐĂNG KÝ
           </button>
         </form>

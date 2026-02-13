@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ProductCard, ProductCardSkeleton } from "@/components/ui/product-card";
 import { productsApi } from "@/lib/api";
 import type { Product } from "@/data/products";
+import { ConcentricCircles } from "@/components/ui/decorative-pattern";
 
 export default function FeaturedProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -27,8 +28,9 @@ export default function FeaturedProducts() {
   }, []);
 
   return (
-    <section className="py-16">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-16 relative overflow-hidden">
+      <ConcentricCircles className="left-[-200px] top-[-100px]" size={500} color="#8b5cf6" opacity={0.04} />
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center mb-10">
           <p className="text-sm tracking-widest text-primary font-medium mb-3">
             CHỌN GÓI PHÙ HỢP

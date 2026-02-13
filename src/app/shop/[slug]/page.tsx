@@ -20,9 +20,9 @@ import {
 } from "lucide-react";
 import {
   type Product,
-  type ProductSpec,
   type ProductFullSpec,
   formatPrice,
+  viCategory,
 } from "@/data/products";
 import { productsApi } from "@/lib/api";
 import { useCartStore } from "@/store/cart-store";
@@ -33,30 +33,22 @@ import { SubscribeSection } from "@/components/home/subscribe-section";
 
 type Tab = "description" | "specs" | "reviews";
 
-/** Detect spec type from value string and return matching icon + label */
-function getSpecMeta(spec: ProductSpec): {
-  icon: React.ReactNode;
-  label: string;
-} {
-  const s = spec.value.toLowerCase();
-  if (
-    s.includes("intel") ||
-    s.includes("amd") ||
-    s.includes("apple") ||
-    s.includes("ryzen") ||
-    s.includes("celeron")
-  )
-    return { icon: <Cpu size={18} />, label: "Bộ xử lý" };
-  if (s.includes("ram"))
-    return { icon: <MemoryStick size={18} />, label: "Bộ nhớ" };
-  if (
-    s.includes("ssd") ||
-    s.includes("hdd") ||
-    s.includes("tb") ||
-    s.includes("gb storage")
-  )
-    return { icon: <HardDrive size={18} />, label: "Lưu trữ" };
-  return { icon: <Box size={18} />, label: "Thông số" };
+/** Icon mapping for fullSpec labels */
+const labelIcons: Record<string, React.ReactNode> = {
+  CPU: <Cpu size={18} />,
+  RAM: <MemoryStick size={18} />,
+  "Lưu trữ": <HardDrive size={18} />,
+};
+
+/** Get highlight specs from fullSpecs — only "Hiệu năng" or "Phần cứng" groups */
+function getHighlightSpecs(fullSpecs: ProductFullSpec[]) {
+  return fullSpecs
+    .filter(
+      (s) =>
+        s.group_name.toLowerCase() === "Hiệu năng".toLowerCase() ||
+        s.group_name.toLowerCase() === "Phần cứng".toLowerCase(),
+    )
+    .sort((a, b) => a.sort_order - b.sort_order);
 }
 
 /** Icon mapping for spec group names */
@@ -255,7 +247,9 @@ export default function ProductDetailPage() {
               onClick={() => {
                 setActiveTab("description");
                 setTimeout(() => {
-                  document.getElementById("product-tabs")?.scrollIntoView({ behavior: "smooth" });
+                  document
+                    .getElementById("product-tabs")
+                    ?.scrollIntoView({ behavior: "smooth" });
                 }, 50);
               }}
               className="text-sm text-primary hover:underline underline-offset-2 mt-1 mb-6"
@@ -266,23 +260,20 @@ export default function ProductDetailPage() {
             {/* Thông số nổi bật */}
             <div className="mb-6">
               <div className="grid grid-cols-3 gap-3">
-                {product.specs.map((spec) => {
-                  const { icon, label } = getSpecMeta(spec);
-                  return (
-                    <div
-                      key={spec.id}
-                      className="bg-muted/60 border border-border/50 rounded-lg px-3 py-3 text-center"
-                    >
-                      <div className="text-primary mb-1.5 flex justify-center">
-                        {icon}
-                      </div>
-                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">
-                        {label}
-                      </p>
-                      <p className="text-[13px] font-semibold">{spec.value}</p>
+                {getHighlightSpecs(product.fullSpecs).map((spec) => (
+                  <div
+                    key={spec.id}
+                    className="bg-muted/60 border border-border/50 rounded-lg px-3 py-3 text-center"
+                  >
+                    <div className="text-primary mb-1.5 flex justify-center">
+                      {labelIcons[spec.label] ?? <Box size={18} />}
                     </div>
-                  );
-                })}
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">
+                      {spec.label}
+                    </p>
+                    <p className="text-[13px] font-semibold">{spec.value}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -352,7 +343,7 @@ export default function ProductDetailPage() {
                 <span>
                   Danh mục:{" "}
                   <span className="text-foreground font-medium">
-                    {product.category}
+                    {viCategory(product.category)}
                   </span>
                 </span>
               </div>
@@ -399,23 +390,22 @@ export default function ProductDetailPage() {
 
               {/* Điểm nổi bật */}
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {product.specs.map((spec) => {
-                  const { icon, label } = getSpecMeta(spec);
-                  return (
-                    <div
-                      key={spec.id}
-                      className="flex items-center gap-3 bg-muted/50 rounded-lg px-4 py-3"
-                    >
-                      <div className="text-primary shrink-0">{icon}</div>
-                      <div>
-                        <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                          {label}
-                        </p>
-                        <p className="text-sm font-medium">{spec.value}</p>
-                      </div>
+                {getHighlightSpecs(product.fullSpecs).map((spec) => (
+                  <div
+                    key={spec.id}
+                    className="flex items-center gap-3 bg-muted/50 rounded-lg px-4 py-3"
+                  >
+                    <div className="text-primary shrink-0">
+                      {labelIcons[spec.label] ?? <Box size={18} />}
                     </div>
-                  );
-                })}
+                    <div>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                        {spec.label}
+                      </p>
+                      <p className="text-sm font-medium">{spec.value}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -425,7 +415,7 @@ export default function ProductDetailPage() {
               const groups = groupFullSpecs(
                 product.fullSpecs,
                 product.brand,
-                product.category,
+                viCategory(product.category),
               );
               return (
                 <div className="max-w-3xl mx-auto space-y-6">

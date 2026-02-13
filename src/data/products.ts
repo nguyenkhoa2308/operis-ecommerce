@@ -87,6 +87,17 @@ export const categories = ["Tất cả", "Mini PC Windows"];
 export const tags = ["Người mới", "Cường độ cao", "Cá nhân"];
 export const brands = ["Operis"];
 
+/** Map English category names to Vietnamese */
+const categoryMap: Record<string, string> = {
+  Personal: "Cá nhân",
+  personal: "Cá nhân",
+  Enterprise: "Doanh nghiệp",
+  enterprise: "Doanh nghiệp",
+};
+export function viCategory(name: string): string {
+  return categoryMap[name] ?? name;
+}
+
 /** Format VND price */
 export function formatPrice(price: number): string {
   return new Intl.NumberFormat("vi-VN").format(price) + "₫";

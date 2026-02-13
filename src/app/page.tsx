@@ -5,6 +5,7 @@ import { HowItWorksSection } from "@/components/home/how-it-works-section";
 import FeaturedProducts from "@/components/home/featured-products";
 import { CtaSection } from "@/components/home/cta-section";
 import { TestimonialSection } from "@/components/home/testimonial-section";
+import { EcosystemSection } from "@/components/home/ecosystem-section";
 import { SubscribeSection } from "@/components/home/subscribe-section";
 import { BlogSection } from "@/components/home/blog-section";
 
@@ -15,6 +16,7 @@ export default function Home() {
       <BenefitsSection />
       <IntroSection />
       <FeaturedProducts />
+      <EcosystemSection />
       <HowItWorksSection />
       <CtaSection />
       <TestimonialSection />

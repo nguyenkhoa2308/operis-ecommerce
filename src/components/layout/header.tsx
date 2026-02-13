@@ -28,7 +28,7 @@ import { usePathname, useRouter } from "next/navigation";
 const categories = [
   {
     label: "Cá Nhân",
-    href: "/shop",
+    href: "/shop?cat=personal",
     icon: Monitor,
     desc: "Operisbot dành cho cá nhân — Cắm điện là chạy, tặng sẵn Token.",
     image:
@@ -37,7 +37,7 @@ const categories = [
   },
   {
     label: "Doanh Nghiệp",
-    href: "/shop/doanh-nghiep-tuy-bien",
+    href: "/shop?cat=enterprise",
     icon: Zap,
     desc: "Tùy biến cấu hình, Token, Workflow theo nhu cầu doanh nghiệp.",
     image:

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ConcentricCircles } from "@/components/ui/decorative-pattern";
 
 const testimonials = [
   {
@@ -25,9 +26,10 @@ export function TestimonialSection() {
   const t = testimonials[current];
 
   return (
-    <section className="py-16">
-      <div className="max-w-3xl mx-auto px-4 text-center relative">
-        <div className="text-6xl text-muted-foreground/30 font-serif leading-none mb-4">&ldquo;&rdquo;</div>
+    <section className="py-16 bg-gradient-testimonial relative overflow-hidden">
+      <ConcentricCircles className="right-[-180px] top-[-180px]" size={450} color="#8b5cf6" opacity={0.04} />
+      <div className="max-w-3xl mx-auto px-4 text-center relative z-10">
+        <div className="text-6xl text-violet/20 font-serif leading-none mb-4">&ldquo;&rdquo;</div>
         <p className="text-lg md:text-xl text-foreground/80 leading-relaxed italic mb-6">&ldquo;{t.quote}&rdquo;</p>
         <div className="flex justify-center gap-1 mb-2">
           {Array.from({ length: t.rating }).map((_, i) => (

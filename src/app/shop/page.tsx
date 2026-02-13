@@ -6,7 +6,7 @@ import { Search, Loader2 } from "lucide-react";
 import { PageBanner } from "@/components/ui/page-banner";
 import { ProductCard, ProductCardSkeleton } from "@/components/ui/product-card";
 import { SubscribeSection } from "@/components/home/subscribe-section";
-import { categories as fallbackCategories } from "@/data/products";
+import { categories as fallbackCategories, viCategory } from "@/data/products";
 import { productsApi } from "@/lib/api";
 import type { Product } from "@/data/products";
 
@@ -221,7 +221,7 @@ function ShopContent() {
                         : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    {cat}
+                    {viCategory(cat)}
                   </button>
                 </li>
               ))}
