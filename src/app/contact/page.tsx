@@ -9,10 +9,18 @@ import { useToastStore } from "@/store/toast-store";
 import { ConcentricCircles, DotGrid } from "@/components/ui/decorative-pattern";
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
   const addToast = useToastStore((s) => s.addToast);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -25,13 +33,24 @@ export default function ContactPage() {
 
       {/* Contact Info + Form Section */}
       <section className="bg-gradient-testimonial relative overflow-hidden">
-        <DotGrid className="right-0 top-0" color="#8b5cf6" opacity={0.05} cols={10} rows={8} gap={28} />
+        <DotGrid
+          className="right-0 top-0"
+          color="#8b5cf6"
+          opacity={0.05}
+          cols={10}
+          rows={8}
+          gap={28}
+        />
         <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             {/* Thông tin liên hệ */}
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight mb-2">THÔNG TIN LIÊN HỆ</h2>
-              <p className="text-sm text-muted-foreground mb-8">Liên hệ với chúng tôi để được tư vấn và hỗ trợ.</p>
+              <h2 className="text-2xl font-semibold tracking-tight mb-2">
+                THÔNG TIN LIÊN HỆ
+              </h2>
+              <p className="text-sm text-muted-foreground mb-8">
+                Liên hệ với chúng tôi để được tư vấn và hỗ trợ.
+              </p>
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
                   <div className="w-11 h-11 rounded-full bg-sky/10 flex items-center justify-center shrink-0">
@@ -39,17 +58,27 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold mb-1">Văn phòng</h4>
-                    <p className="text-sm text-muted-foreground">CT1A, Chung cư VOV Mễ Trì</p>
-                    <p className="text-sm text-muted-foreground">Nam Từ Liêm, Hà Nội</p>
+                    <p className="text-sm text-muted-foreground">
+                      CT1A, Chung cư VOV Mễ Trì
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Nam Từ Liêm, Hà Nội
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <div className="w-11 h-11 rounded-full bg-emerald/10 flex items-center justify-center shrink-0">
-                    <Phone size={20} className="text-emerald" strokeWidth={1.5} />
+                    <Phone
+                      size={20}
+                      className="text-emerald"
+                      strokeWidth={1.5}
+                    />
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold mb-1">Hotline</h4>
-                    <p className="text-sm text-muted-foreground">+84 779 886 666</p>
+                    <p className="text-sm text-muted-foreground">
+                      +84 779 886 666
+                    </p>
                     <p className="text-sm text-muted-foreground">Hỗ trợ 24/7</p>
                   </div>
                 </div>
@@ -59,7 +88,9 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold mb-1">Email</h4>
-                    <p className="text-sm text-muted-foreground">hungle@hagency.vn</p>
+                    <p className="text-sm text-muted-foreground">
+                      hungle@hagency.vn
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -68,8 +99,12 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold mb-1">Giờ làm việc</h4>
-                    <p className="text-sm text-muted-foreground">Thứ 2 — Thứ 6: 8:00 — 18:00</p>
-                    <p className="text-sm text-muted-foreground">Hỗ trợ kỹ thuật: 24/7</p>
+                    <p className="text-sm text-muted-foreground">
+                      Thứ 2 — Thứ 6: 8:00 — 18:00
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Hỗ trợ kỹ thuật: 24/7
+                    </p>
                   </div>
                 </div>
               </div>
@@ -77,24 +112,79 @@ export default function ContactPage() {
 
             {/* Form liên hệ */}
             <div className="bg-white rounded-lg p-8 shadow-sm">
-              <h2 className="text-2xl font-semibold tracking-tight mb-2">BẠN CÓ CÂU HỎI?</h2>
-              <p className="text-sm text-muted-foreground mb-8">Điền form bên dưới, chúng tôi sẽ phản hồi sớm nhất.</p>
+              <h2 className="text-2xl font-semibold tracking-tight mb-2">
+                BẠN CÓ CÂU HỎI?
+              </h2>
+              <p className="text-sm text-muted-foreground mb-8">
+                Điền form bên dưới, chúng tôi sẽ phản hồi sớm nhất.
+              </p>
               <form
                 className="space-y-4"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  addToast("Gửi câu hỏi thành công! Chúng tôi sẽ phản hồi sớm nhất.");
-                  setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+                  addToast(
+                    "Gửi câu hỏi thành công! Chúng tôi sẽ phản hồi sớm nhất.",
+                  );
+                  setForm({
+                    name: "",
+                    email: "",
+                    phone: "",
+                    subject: "",
+                    message: "",
+                  });
                 }}
               >
                 <div className="grid grid-cols-2 gap-4">
-                  <input type="text" name="name" placeholder="Họ và tên *" value={form.name} onChange={handleChange} className="border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded-lg" required />
-                  <input type="email" name="email" placeholder="Email *" value={form.email} onChange={handleChange} className="border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded-lg" required />
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Họ và tên *"
+                    value={form.name}
+                    onChange={handleChange}
+                    className="border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded-lg"
+                    required
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email *"
+                    value={form.email}
+                    onChange={handleChange}
+                    className="border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded-lg"
+                    required
+                  />
                 </div>
-                <input type="tel" name="phone" placeholder="Số điện thoại" value={form.phone} onChange={handleChange} className="w-full border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded-lg" />
-                <input type="text" name="subject" placeholder="Tiêu đề" value={form.subject} onChange={handleChange} className="w-full border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded-lg" />
-                <textarea name="message" placeholder="Nội dung tin nhắn *" value={form.message} onChange={handleChange} rows={4} className="w-full border border-border px-4 py-3 text-sm outline-none resize-none focus:border-primary transition-colors rounded-lg" required />
-                <button type="submit" className="bg-primary text-white text-xs tracking-widest px-8 py-3 hover:bg-primary-dark transition-colors rounded-full">GỬI</button>
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Số điện thoại"
+                  value={form.phone}
+                  onChange={handleChange}
+                  className="w-full border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded-lg"
+                />
+                <input
+                  type="text"
+                  name="subject"
+                  placeholder="Tiêu đề"
+                  value={form.subject}
+                  onChange={handleChange}
+                  className="w-full border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded-lg"
+                />
+                <textarea
+                  name="message"
+                  placeholder="Nội dung tin nhắn *"
+                  value={form.message}
+                  onChange={handleChange}
+                  rows={4}
+                  className="w-full border border-border px-4 py-3 text-sm outline-none resize-none focus:border-primary transition-colors rounded-lg"
+                  required
+                />
+                <button
+                  type="submit"
+                  className="bg-primary text-white text-xs tracking-widest px-8 py-3 hover:bg-primary-dark transition-colors rounded-full"
+                >
+                  GỬI
+                </button>
               </form>
             </div>
           </div>
@@ -103,14 +193,19 @@ export default function ContactPage() {
 
       {/* Store + Map Section */}
       <section className="relative overflow-hidden">
-        <ConcentricCircles className="left-[-200px] bottom-[-100px]" size={400} color="#10b981" opacity={0.04} />
+        <ConcentricCircles
+          className="left-[-200px] bottom-[-100px]"
+          size={400}
+          color="#10b981"
+          opacity={0.04}
+        />
         <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
           {/* Cửa hàng */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             {/* Store image */}
             <div className="relative w-full h-[350px] rounded-lg overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&h=500&fit=crop"
+                src="/images/contact.png"
                 alt="Operis Office"
                 fill
                 className="object-cover"
@@ -119,10 +214,16 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <h2 className="text-2xl font-semibold tracking-tight mb-2">CỬA HÀNG CỦA CHÚNG TÔI</h2>
-              <p className="text-sm text-muted-foreground mb-6">Bạn có thể đến trực tiếp tại văn phòng.</p>
+              <h2 className="text-2xl font-semibold tracking-tight mb-2">
+                CỬA HÀNG CỦA CHÚNG TÔI
+              </h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                Bạn có thể đến trực tiếp tại văn phòng.
+              </p>
               <div>
-                <h4 className="text-sm font-semibold underline underline-offset-4 mb-3">HÀ NỘI</h4>
+                <h4 className="text-sm font-semibold underline underline-offset-4 mb-3">
+                  HÀ NỘI
+                </h4>
                 <div className="text-sm text-muted-foreground space-y-1">
                   <p>CT1A, Chung cư VOV Mễ Trì</p>
                   <p>Quận Nam Từ Liêm, Hà Nội</p>

@@ -233,7 +233,7 @@ export default function AboutPage() {
         <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
           <div className="flex-1 relative aspect-[4/3] w-full rounded-lg overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&h=500&fit=crop"
+              src="/images/about.png"
               alt="Về Operis"
               fill
               sizes="50vw"
@@ -450,7 +450,10 @@ export default function AboutPage() {
         {/* Mobile cards */}
         <div className="md:hidden space-y-4">
           {comparisonRows.map((row) => (
-            <div key={row.label} className="rounded-xl border border-border overflow-hidden">
+            <div
+              key={row.label}
+              className="rounded-xl border border-border overflow-hidden"
+            >
               <div className="bg-muted px-4 py-3">
                 <h4 className="text-sm font-semibold">{row.label}</h4>
               </div>
@@ -460,8 +463,12 @@ export default function AboutPage() {
                     <X size={12} className="text-red-400" />
                   </span>
                   <div>
-                    <p className="text-[10px] tracking-wider text-muted-foreground mb-0.5">AI TRUYỀN THỐNG</p>
-                    <p className="text-sm text-muted-foreground">{row.traditional}</p>
+                    <p className="text-[10px] tracking-wider text-muted-foreground mb-0.5">
+                      AI TRUYỀN THỐNG
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {row.traditional}
+                    </p>
                   </div>
                 </div>
                 <div className="px-4 py-3 bg-primary/[0.03] flex items-start gap-2.5">
@@ -469,7 +476,9 @@ export default function AboutPage() {
                     <Check size={12} className="text-green-600" />
                   </span>
                   <div>
-                    <p className="text-[10px] tracking-wider text-primary font-medium mb-0.5">OPERISBOT</p>
+                    <p className="text-[10px] tracking-wider text-primary font-medium mb-0.5">
+                      OPERISBOT
+                    </p>
                     <p className="text-sm font-semibold">{row.operis}</p>
                   </div>
                 </div>
@@ -507,12 +516,10 @@ export default function AboutPage() {
                 className="bg-white p-6 rounded-lg flex flex-col hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-full ${a.bg} flex items-center justify-center shrink-0`}>
-                    <a.icon
-                      size={20}
-                      className={a.color}
-                      strokeWidth={1.5}
-                    />
+                  <div
+                    className={`w-10 h-10 rounded-full ${a.bg} flex items-center justify-center shrink-0`}
+                  >
+                    <a.icon size={20} className={a.color} strokeWidth={1.5} />
                   </div>
                   <h4 className="text-base font-semibold">{a.title}</h4>
                 </div>
@@ -604,7 +611,9 @@ export default function AboutPage() {
                 key={tool.name}
                 className="bg-white p-6 rounded-lg text-center hover:shadow-md transition-shadow"
               >
-                <div className={`w-12 h-12 rounded-full ${tool.bg} flex items-center justify-center mx-auto mb-4`}>
+                <div
+                  className={`w-12 h-12 rounded-full ${tool.bg} flex items-center justify-center mx-auto mb-4`}
+                >
                   <tool.icon
                     size={24}
                     className={tool.color}
@@ -649,7 +658,9 @@ export default function AboutPage() {
               key={t.year}
               className="relative pl-6 border-l-2 border-border md:border-l-0 md:pl-0 md:border-t-2 md:pt-6"
             >
-              <span className={`absolute left-[-9px] top-0 w-4 h-4 ${t.color} rounded-full md:left-0 md:top-[-9px]`} />
+              <span
+                className={`absolute left-[-9px] top-0 w-4 h-4 ${t.color} rounded-full md:left-0 md:top-[-9px]`}
+              />
               <p className="text-2xl font-semibold text-primary mb-1">
                 {t.year}
               </p>

@@ -1,11 +1,13 @@
 "use client";
 
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ConcentricCircles } from "@/components/ui/decorative-pattern";
 import { TypeWriter } from "@/components/ui/motion";
 import { Bot, Cpu, Zap } from "lucide-react";
+
+const HeroProduct3D = dynamic(() => import("./hero-product-3d"), { ssr: false });
 
 const stats = [
   { value: "24/7", label: "Hoạt động liên tục" },
@@ -105,25 +107,21 @@ export default function HeroSection() {
         </motion.div>
 
         <motion.div
-          className="flex-1 relative mt-10 md:mt-0 flex justify-center"
+          className="flex-1 relative mt-6 md:mt-0 flex justify-center"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
         >
-          {/* Glowing ring behind image */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] md:w-[380px] md:h-[380px] rounded-full border border-primary/10 bg-primary/[0.03]" />
+          {/* Glowing ring behind 3D */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] md:w-[460px] md:h-[460px] rounded-full border border-primary/10 bg-primary/[0.03]" />
           </div>
-          <div className="relative w-[220px] h-[260px] sm:w-[300px] sm:h-[350px] md:w-[400px] md:h-[480px] z-10">
-            <Image
-              src="https://images.unsplash.com/photo-1624823183493-ed5832f48f18?w=600&h=700&fit=crop"
-              alt="Mini PC Operis"
-              fill
-              sizes="50vw"
-              className="object-contain drop-shadow-2xl"
-              priority
-            />
+          {/* Three.js 3D Mini PC */}
+          <div className="relative z-10 w-full">
+            <HeroProduct3D />
           </div>
+          {/* Reflection glow */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-8 md:h-12 bg-primary/10 rounded-full blur-2xl" />
         </motion.div>
       </div>
     </section>

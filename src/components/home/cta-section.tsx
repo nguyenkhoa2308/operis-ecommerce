@@ -33,7 +33,7 @@ export function CtaSection() {
         <div className="flex-1 relative mt-10 md:mt-0 flex justify-center">
           <div className="relative w-[300px] h-[300px] md:w-[450px] md:h-[400px]">
             <Image
-              src="https://images.unsplash.com/photo-1624823183493-ed5832f48f18?w=600&h=500&fit=crop"
+              src="/images/cta.png"
               alt="Operisbot thiết bị AI"
               fill
               sizes="50vw"

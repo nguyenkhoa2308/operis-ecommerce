@@ -32,7 +32,7 @@ const categories = [
     icon: Monitor,
     desc: "Operisbot dành cho cá nhân — Cắm điện là chạy, tặng sẵn Token.",
     image:
-      "https://images.unsplash.com/photo-1624823183493-ed5832f48f18?w=400&h=260&fit=crop",
+      "/images/hero.png",
     tags: ["Từ 3.000.000₫", "2 gói"],
   },
   {
@@ -41,7 +41,7 @@ const categories = [
     icon: Zap,
     desc: "Tùy biến cấu hình, Token, Workflow theo nhu cầu doanh nghiệp.",
     image:
-      "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=400&h=260&fit=crop",
+      "/images/cta.png",
     tags: ["Tùy biến", "Liên hệ"],
   },
 ];
