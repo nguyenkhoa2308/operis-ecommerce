@@ -370,13 +370,21 @@ export default function Header() {
               )}
             </div>
           ) : (
-            <Link
-              href="/login"
-              className="flex items-center justify-center w-6 h-6 text-foreground hover:text-primary transition-colors"
-              aria-label="Đăng nhập"
-            >
-              <UserIcon size={20} color="currentColor" />
-            </Link>
+            <>
+              <Link
+                href="/login"
+                className="hidden md:inline-flex text-xs tracking-widest bg-foreground text-white px-5 py-2 rounded-full hover:bg-primary transition-colors"
+              >
+                ĐĂNG NHẬP
+              </Link>
+              <Link
+                href="/login"
+                className="md:hidden flex items-center justify-center w-6 h-6 text-foreground hover:text-primary transition-colors"
+                aria-label="Đăng nhập"
+              >
+                <UserIcon size={20} color="currentColor" />
+              </Link>
+            </>
           )}
           <button
             className="md:hidden text-foreground"

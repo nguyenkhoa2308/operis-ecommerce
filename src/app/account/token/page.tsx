@@ -23,9 +23,7 @@ export default function TokenPage() {
   const [loadingTiers, setLoadingTiers] = useState(true);
 
   /* Deposit form state */
-  const [mode, setMode] = useState<"tier" | "custom">("tier");
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
-  const [customAmount, setCustomAmount] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   /* QR modal */
@@ -84,15 +82,8 @@ export default function TokenPage() {
   /* ---------------------------------------------------------------- */
 
   const handleDeposit = async () => {
-    const body =
-      mode === "tier" && selectedTier
-        ? { tierId: selectedTier }
-        : { amount: Number(customAmount) };
-
-    if (mode === "custom" && (!customAmount || Number(customAmount) <= 0)) {
-      addToast("Vui lòng nhập số tiền hợp lệ", "error");
-      return;
-    }
+    if (!selectedTier) return;
+    const body = { tierId: selectedTier };
 
     setSubmitting(true);
     try {
@@ -261,31 +252,8 @@ export default function TokenPage() {
       ) : (
         /* Deposit section — only shown when no pending deposit */
         <div className="space-y-6 animate-fade-in">
-          {/* Mode toggle */}
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => setMode("tier")}
-              className={`text-xs tracking-widest px-5 py-2.5 rounded transition-colors ${
-                mode === "tier" ? "bg-foreground text-white" : "bg-muted text-foreground hover:bg-border"
-              }`}
-            >
-              CHỌN GÓI
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("custom")}
-              className={`text-xs tracking-widest px-5 py-2.5 rounded transition-colors ${
-                mode === "custom" ? "bg-foreground text-white" : "bg-muted text-foreground hover:bg-border"
-              }`}
-            >
-              NHẬP SỐ TIỀN
-            </button>
-          </div>
-
-          {/* Mode: Tier selection */}
-          {mode === "tier" && (
-            loadingTiers ? (
+          {/* Tier selection */}
+          {loadingTiers ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="bg-white border-2 border-border rounded-xl p-5 space-y-3">
@@ -344,35 +312,13 @@ export default function TokenPage() {
                   );
                 })}
               </div>
-            )
-          )}
-
-          {/* Mode: Custom amount */}
-          {mode === "custom" && (
-            <div className="max-w-sm">
-              <label className="text-xs font-semibold tracking-widest block mb-2">SỐ TIỀN NẠP (VNĐ)</label>
-              <input
-                type="number"
-                min="1000"
-                step="1000"
-                value={customAmount}
-                onChange={(e) => setCustomAmount(e.target.value)}
-                placeholder="Ví dụ: 150000"
-                className="w-full border border-border px-4 py-3 text-sm outline-none focus:border-primary transition-colors rounded"
-              />
-              {customAmount && Number(customAmount) > 0 && (
-                <p className="text-xs text-muted-foreground mt-2">
-                  Số tiền: <span className="font-semibold text-foreground">{formatPrice(Number(customAmount))}</span>
-                </p>
-              )}
-            </div>
           )}
 
           {/* Submit button */}
           <button
             type="button"
             onClick={handleDeposit}
-            disabled={submitting || (mode === "tier" && !selectedTier) || (mode === "custom" && !customAmount)}
+            disabled={submitting || !selectedTier}
             className="bg-primary text-white text-xs tracking-widest px-8 py-3.5 hover:bg-primary/90 transition-colors rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {submitting && <Loader2 size={14} className="animate-spin" />}
