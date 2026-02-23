@@ -48,8 +48,8 @@ export default function AllProductsSection() {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 animate-fade-in">
-            {products.map((p) => (
-              <ProductCard key={p.slug} product={p} />
+            {products.map((p, i) => (
+              <ProductCard key={p.slug} product={p} index={i} />
             ))}
           </div>
         )}

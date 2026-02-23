@@ -2,7 +2,14 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { X, Send, Loader2 } from "lucide-react";
+import {
+  X,
+  Send,
+  Loader2,
+  ArrowUp,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 interface Message {
   id: string;
@@ -17,8 +24,12 @@ const quickReplies = [
   "Liên hệ hỗ trợ kỹ thuật",
 ];
 
-export function Chatbot() {
-  const [open, setOpen] = useState(false);
+export function FloatingActions() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  /* Chat state */
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
@@ -32,14 +43,22 @@ export function Chatbot() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const msgIdRef = useRef(0);
 
-  /* Lock body scroll when sidebar is open */
+  /* Scroll-to-top visibility */
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    const onScroll = () => setShowScrollTop(window.scrollY > 400);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  /* Lock body scroll when chat sidebar is open */
+  useEffect(() => {
+    document.body.style.overflow = chatOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [chatOpen]);
 
+  /* Auto-scroll chat */
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -48,63 +67,95 @@ export function Chatbot() {
     const msg = (text ?? input).trim();
     if (!msg || sending) return;
 
-    const userId = `user-${++msgIdRef.current}`;
-    const userMsg: Message = {
-      id: userId,
-      role: "user",
-      content: msg,
-    };
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages((prev) => [
+      ...prev,
+      { id: `user-${++msgIdRef.current}`, role: "user", content: msg },
+    ]);
     setInput("");
     setSending(true);
 
-    /* Simulate bot response — replace with real API later */
     setTimeout(() => {
-      const botMsg: Message = {
-        id: `bot-${++msgIdRef.current}`,
-        role: "bot",
-        content:
-          "Cảm ơn bạn đã liên hệ! Hiện tại tính năng chatbot đang được phát triển. Vui lòng liên hệ hotline +84 779 886 666 hoặc gửi email đến hungle@hagency.vn để được hỗ trợ nhanh nhất.",
-      };
-      setMessages((prev) => [...prev, botMsg]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${++msgIdRef.current}`,
+          role: "bot",
+          content:
+            "Cảm ơn bạn đã liên hệ! Hiện tại tính năng chatbot đang được phát triển. Vui lòng liên hệ hotline +84 779 886 666 hoặc gửi email đến hungle@hagency.vn để được hỗ trợ nhanh nhất.",
+        },
+      ]);
       setSending(false);
     }, 1000);
   };
 
   return (
     <>
-      {/* Floating button */}
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Mở trợ lý chat"
-        className={`fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40 w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:scale-105 transition-all duration-300 ${
-          open
-            ? "opacity-0 scale-75 pointer-events-none"
-            : "opacity-100 scale-100"
-        }`}
+      {/* === Edge tab + action buttons === */}
+      <div
+        className={`fixed bottom-18 md:bottom-8 right-0 z-40 flex flex-col items-end transition-all duration-300 ${chatOpen ? "opacity-0 pointer-events-none" : ""}`}
       >
-        <Image
-          src="/images/assistance.png"
-          alt="Trợ lý"
-          width={36}
-          height={36}
-          className="w-8 h-8 md:w-9 md:h-9"
-        />
-      </button>
+        {/* Action buttons — stacked above toggle tab */}
+        <div
+          className={`flex flex-col items-center gap-3 mr-2 mb-3 transition-all duration-300 ${drawerOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+        >
+          {/* Scroll to top */}
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label="Lên đầu trang"
+            className={`w-11 h-11 rounded-full bg-foreground text-white shadow-lg flex items-center justify-center hover:bg-primary transition-all duration-200 ${
+              showScrollTop
+                ? "opacity-100 scale-100"
+                : "opacity-0 scale-75 pointer-events-none"
+            }`}
+          >
+            <ArrowUp size={18} />
+          </button>
 
+          {/* Chat trigger */}
+          <button
+            type="button"
+            onClick={() => {
+              setChatOpen(true);
+              setDrawerOpen(false);
+            }}
+            aria-label="Mở trợ lý chat"
+            className="w-11 h-11 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:scale-105 transition-all duration-200"
+          >
+            <Image
+              src="/images/assistance.png"
+              alt="Trợ lý"
+              width={28}
+              height={28}
+              className="w-7 h-7"
+            />
+          </button>
+        </div>
+
+        {/* Edge toggle tab */}
+        <button
+          type="button"
+          onClick={() => setDrawerOpen((v) => !v)}
+          aria-label={drawerOpen ? "Ẩn menu" : "Hiện menu"}
+          className="w-6 h-11 bg-foreground/80 hover:bg-foreground text-white flex items-center justify-center rounded-l-lg shadow-lg transition-colors"
+        >
+          {drawerOpen ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        </button>
+      </div>
+
+      {/* === Chat sidebar === */}
       {/* Backdrop */}
       <div
         className={`fixed inset-0 z-[80] bg-black/20 transition-opacity duration-300 ${
-          open ? "opacity-100" : "opacity-0 pointer-events-none"
+          chatOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
-        onClick={() => setOpen(false)}
+        onClick={() => setChatOpen(false)}
       />
 
-      {/* Sidebar panel */}
+      {/* Panel */}
       <div
         className={`fixed top-0 right-0 z-[90] h-full w-full max-w-sm bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out ${
-          open ? "translate-x-0" : "translate-x-full"
+          chatOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Header */}
@@ -122,7 +173,7 @@ export function Chatbot() {
           </div>
           <button
             type="button"
-            onClick={() => setOpen(false)}
+            onClick={() => setChatOpen(false)}
             aria-label="Đóng"
             className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
           >
@@ -161,7 +212,7 @@ export function Chatbot() {
           <div ref={bottomRef} />
         </div>
 
-        {/* Quick replies — only show when few messages */}
+        {/* Quick replies */}
         {messages.length <= 2 && (
           <div className="px-4 pb-3 flex flex-wrap gap-2">
             {quickReplies.map((q) => (

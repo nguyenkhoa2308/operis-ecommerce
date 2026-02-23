@@ -186,15 +186,15 @@ export default function TransactionsPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="space-y-2 md:space-y-0 md:flex md:items-center md:gap-3">
         {/* Type filter */}
-        <div className="flex gap-1 bg-muted rounded-lg p-1">
+        <div className="flex flex-wrap gap-1 bg-muted rounded-lg p-1">
           {typeFilters.map((f) => (
             <button
               key={f.value}
               type="button"
               onClick={() => handleTypeFilter(f.value)}
-              className={`text-xs px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
+              className={`text-xs px-3 py-1.5 rounded-md transition-colors ${
                 typeFilter === f.value
                   ? "bg-white text-foreground shadow-sm font-medium"
                   : "text-muted-foreground hover:text-foreground"
@@ -206,15 +206,15 @@ export default function TransactionsPage() {
         </div>
 
         {/* Status filter */}
-        <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-muted-foreground" />
-          <div className="flex gap-1 bg-muted rounded-lg p-1">
+        <div className="flex items-start gap-2">
+          <Filter className="w-4 h-4 text-muted-foreground shrink-0 mt-2.5 hidden md:block" />
+          <div className="flex flex-wrap gap-1 bg-muted rounded-lg p-1">
             {statusFilters.map((f) => (
               <button
                 key={f.value}
                 type="button"
                 onClick={() => handleStatusFilter(f.value)}
-                className={`text-xs px-3 py-1.5 rounded-md transition-colors whitespace-nowrap ${
+                className={`text-xs px-3 py-1.5 rounded-md transition-colors ${
                   statusFilter === f.value
                     ? "bg-white text-foreground shadow-sm font-medium"
                     : "text-muted-foreground hover:text-foreground"
@@ -230,19 +230,19 @@ export default function TransactionsPage() {
       {loading ? (
         <div className="border border-border rounded-lg overflow-hidden divide-y divide-border">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex items-center gap-4 px-5 py-4">
-              <div className="w-9 h-9 rounded-full skeleton-shimmer shrink-0" />
+            <div key={i} className="flex items-center gap-3 md:gap-4 px-3 md:px-5 py-3 md:py-4">
+              <div className="w-8 h-8 md:w-9 md:h-9 rounded-full skeleton-shimmer shrink-0" />
               <div className="flex-1 space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="h-4 w-28 skeleton-shimmer rounded" />
-                  <div className="h-4 w-16 skeleton-shimmer rounded-full" />
-                  <div className="h-4 w-20 skeleton-shimmer rounded-full" />
+                <div className="flex flex-wrap items-center gap-1.5 md:gap-2">
+                  <div className="h-3.5 md:h-4 w-24 md:w-28 skeleton-shimmer rounded" />
+                  <div className="h-3.5 md:h-4 w-14 md:w-16 skeleton-shimmer rounded-full" />
+                  <div className="h-3.5 md:h-4 w-16 md:w-20 skeleton-shimmer rounded-full" />
                 </div>
-                <div className="h-3 w-36 skeleton-shimmer rounded" />
+                <div className="h-3 w-28 md:w-36 skeleton-shimmer rounded" />
               </div>
               <div className="text-right space-y-2 shrink-0">
-                <div className="h-4 w-20 skeleton-shimmer rounded ml-auto" />
-                <div className="h-3 w-16 skeleton-shimmer rounded ml-auto" />
+                <div className="h-3.5 md:h-4 w-16 md:w-20 skeleton-shimmer rounded ml-auto" />
+                <div className="h-3 w-14 md:w-16 skeleton-shimmer rounded ml-auto" />
               </div>
             </div>
           ))}
@@ -260,35 +260,35 @@ export default function TransactionsPage() {
               tabIndex={0}
               onClick={() => openDetail(tx)}
               onKeyDown={(e) => { if (e.key === "Enter") openDetail(tx); }}
-              className="flex items-center gap-4 px-5 py-4 hover:bg-muted/30 transition-colors cursor-pointer"
+              className="flex items-start md:items-center gap-3 md:gap-4 px-3 md:px-5 py-3 md:py-4 hover:bg-muted/30 transition-colors cursor-pointer"
             >
               {/* Icon — different per type */}
               <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 ${iconBg[tx.status] ?? "bg-gray-100"}`}
+                className={`w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 md:mt-0 ${iconBg[tx.status] ?? "bg-gray-100"}`}
               >
                 {tx.type === "order" ? (
-                  <ShoppingBag className={`w-4 h-4 ${iconColor[tx.status] ?? "text-gray-400"}`} />
+                  <ShoppingBag className={`w-3.5 h-3.5 md:w-4 md:h-4 ${iconColor[tx.status] ?? "text-gray-400"}`} />
                 ) : tx.status === "completed" ? (
-                  <ArrowDownRight className={`w-4 h-4 ${iconColor[tx.status]}`} />
+                  <ArrowDownRight className={`w-3.5 h-3.5 md:w-4 md:h-4 ${iconColor[tx.status]}`} />
                 ) : (
-                  <Coins className={`w-4 h-4 ${iconColor[tx.status] ?? "text-gray-400"}`} />
+                  <Coins className={`w-3.5 h-3.5 md:w-4 md:h-4 ${iconColor[tx.status] ?? "text-gray-400"}`} />
                 )}
               </div>
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <p className="text-sm font-medium truncate">{tx.orderCode}</p>
+                <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-0.5">
+                  <p className="text-xs md:text-sm font-medium truncate">{tx.orderCode}</p>
                   {/* Type badge */}
-                  <span className={`text-[10px] font-semibold tracking-wider px-2 py-0.5 rounded-full flex-shrink-0 ${typeBadgeStyles[tx.type]}`}>
+                  <span className={`text-[9px] md:text-[10px] font-semibold tracking-wider px-1.5 md:px-2 py-0.5 rounded-full flex-shrink-0 ${typeBadgeStyles[tx.type]}`}>
                     {typeLabels[tx.type]}
                   </span>
                   {/* Status badge */}
-                  <span className={`text-[10px] font-semibold tracking-wider px-2 py-0.5 rounded-full flex-shrink-0 ${badgeStyles[tx.status] ?? "bg-gray-100 text-gray-600"}`}>
+                  <span className={`text-[9px] md:text-[10px] font-semibold tracking-wider px-1.5 md:px-2 py-0.5 rounded-full flex-shrink-0 ${badgeStyles[tx.status] ?? "bg-gray-100 text-gray-600"}`}>
                     {badgeLabels[tx.status] ?? tx.status}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-[11px] md:text-xs text-muted-foreground">
                   {tx.type === "order"
                     ? formatPrice(tx.amountVnd)
                     : `${formatTokenCount(tx.tokenAmount)} token · ${formatPrice(tx.amountVnd)}`
@@ -298,7 +298,7 @@ export default function TransactionsPage() {
 
               {/* Amount + Date */}
               <div className="text-right flex-shrink-0">
-                <p className={`text-sm font-semibold ${
+                <p className={`text-xs md:text-sm font-semibold ${
                   tx.status === "completed" ? "text-green-600" :
                   tx.status === "cancelled" ? "text-red-500 line-through" :
                   tx.status === "expired" ? "text-gray-400" : "text-yellow-700"
@@ -308,7 +308,7 @@ export default function TransactionsPage() {
                     : `${tx.status === "completed" ? "+" : ""}${formatTokenCount(tx.tokenAmount)} token`
                   }
                 </p>
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[10px] md:text-[11px] text-muted-foreground">
                   {new Date(tx.createdAt).toLocaleDateString("vi-VN", {
                     day: "2-digit",
                     month: "2-digit",
@@ -323,8 +323,8 @@ export default function TransactionsPage() {
 
       {/* Pagination */}
       {!loading && totalPages > 1 && (
-        <div className="flex items-center justify-between pt-2">
-          <p className="text-xs text-muted-foreground">
+        <div className="flex flex-col-reverse gap-2 md:flex-row items-center justify-between pt-2">
+          <p className="text-[11px] md:text-xs text-muted-foreground">
             {filtered.length} giao dịch · Trang {page}/{totalPages}
           </p>
           <div className="flex items-center gap-1">
@@ -333,30 +333,48 @@ export default function TransactionsPage() {
               aria-label="Trang trước"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="w-8 h-8 flex items-center justify-center rounded-md border border-border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
+              className="w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-md border border-border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
             >
               <ChevronLeft size={14} />
             </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => setPage(p)}
-                className={`w-8 h-8 flex items-center justify-center rounded-md text-xs transition-colors ${
-                  p === page
-                    ? "bg-foreground text-white"
-                    : "border border-border hover:bg-muted"
-                }`}
-              >
-                {p}
-              </button>
-            ))}
+            {(() => {
+              const pages: (number | "ellipsis")[] = [];
+              if (totalPages <= 5) {
+                for (let i = 1; i <= totalPages; i++) pages.push(i);
+              } else {
+                pages.push(1);
+                if (page > 3) pages.push("ellipsis");
+                const start = Math.max(2, page - 1);
+                const end = Math.min(totalPages - 1, page + 1);
+                for (let i = start; i <= end; i++) pages.push(i);
+                if (page < totalPages - 2) pages.push("ellipsis");
+                pages.push(totalPages);
+              }
+              return pages.map((p, idx) =>
+                p === "ellipsis" ? (
+                  <span key={`e${idx}`} className="w-7 h-7 md:w-8 md:h-8 flex items-center justify-center text-xs text-muted-foreground">…</span>
+                ) : (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setPage(p)}
+                    className={`w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-md text-xs transition-colors ${
+                      p === page
+                        ? "bg-foreground text-white"
+                        : "border border-border hover:bg-muted"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ),
+              );
+            })()}
             <button
               type="button"
               aria-label="Trang sau"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="w-8 h-8 flex items-center justify-center rounded-md border border-border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
+              className="w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-md border border-border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
             >
               <ChevronRight size={14} />
             </button>

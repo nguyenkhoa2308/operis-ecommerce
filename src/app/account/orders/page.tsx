@@ -148,13 +148,13 @@ export default function OrdersPage() {
       <h2 className="text-sm font-semibold tracking-widest uppercase mb-6">Đơn hàng</h2>
 
       {/* Status tabs */}
-      <div className="flex gap-1 overflow-x-auto pb-1 mb-4 -mx-1 px-1">
+      <div className="flex flex-wrap gap-1.5 mb-4">
         {statusTabs.map((tab) => (
           <button
             key={tab.key}
             type="button"
             onClick={() => handleTabChange(tab.key)}
-            className={`text-xs whitespace-nowrap px-4 py-2 rounded-full transition-colors ${
+            className={`text-xs px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-colors ${
               activeTab === tab.key
                 ? "bg-primary text-white"
                 : "bg-muted text-muted-foreground hover:text-foreground"
@@ -182,23 +182,23 @@ export default function OrdersPage() {
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="bg-white border border-border rounded-lg overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-3 border-b border-border">
-                <div className="h-4 w-32 skeleton-shimmer rounded" />
-                <div className="h-4 w-24 skeleton-shimmer rounded" />
+              <div className="flex items-center justify-between px-3 md:px-5 py-3 border-b border-border">
+                <div className="h-4 w-28 md:w-32 skeleton-shimmer rounded" />
+                <div className="h-4 w-20 md:w-24 skeleton-shimmer rounded" />
               </div>
-              <div className="p-5 space-y-3">
+              <div className="p-3 md:p-5 space-y-3">
                 <div className="flex gap-3">
-                  <div className="w-16 h-16 skeleton-shimmer rounded shrink-0" />
+                  <div className="w-12 h-12 md:w-16 md:h-16 skeleton-shimmer rounded shrink-0" />
                   <div className="flex-1 space-y-2">
-                    <div className="h-4 w-3/4 skeleton-shimmer rounded" />
+                    <div className="h-3.5 md:h-4 w-3/4 skeleton-shimmer rounded" />
                     <div className="h-3 w-1/4 skeleton-shimmer rounded" />
                   </div>
-                  <div className="h-4 w-20 skeleton-shimmer rounded shrink-0" />
+                  <div className="h-3.5 md:h-4 w-16 md:w-20 skeleton-shimmer rounded shrink-0" />
                 </div>
               </div>
-              <div className="flex items-center justify-between px-5 py-3 border-t border-border">
-                <div className="h-3 w-20 skeleton-shimmer rounded" />
-                <div className="h-5 w-28 skeleton-shimmer rounded" />
+              <div className="flex items-center justify-between px-3 md:px-5 py-3 border-t border-border">
+                <div className="h-3 w-16 md:w-20 skeleton-shimmer rounded" />
+                <div className="h-5 w-24 md:w-28 skeleton-shimmer rounded" />
               </div>
             </div>
           ))}
@@ -226,12 +226,12 @@ export default function OrdersPage() {
               className="bg-white border border-border rounded-lg overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
             >
               {/* Card header */}
-              <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-muted/30">
-                <div>
-                  <p className="text-sm font-medium">
+              <div className="flex items-center justify-between px-3 md:px-5 py-3 border-b border-border bg-muted/30">
+                <div className="min-w-0">
+                  <p className="text-xs md:text-sm font-medium truncate">
                     Đơn hàng #{order.orderCode || order.id.slice(0, 8)}
                   </p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                  <p className="text-[10px] md:text-[11px] text-muted-foreground mt-0.5">
                     {order.createdAt
                       ? new Date(order.createdAt).toLocaleDateString("vi-VN", {
                           year: "numeric",
@@ -242,7 +242,7 @@ export default function OrdersPage() {
                   </p>
                 </div>
                 <span
-                  className={`text-xs font-semibold tracking-wider uppercase ${statusColors[order.status] ?? "text-gray-500"}`}
+                  className={`text-[10px] md:text-xs font-semibold tracking-wider uppercase shrink-0 ml-2 ${statusColors[order.status] ?? "text-gray-500"}`}
                 >
                   {statusLabels[order.status] ?? order.status}
                 </span>
@@ -251,36 +251,36 @@ export default function OrdersPage() {
               {/* Items */}
               <div className="divide-y divide-border">
                 {order.items.map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4 px-5 py-3">
+                  <div key={idx} className="flex items-center gap-3 md:gap-4 px-3 md:px-5 py-3">
                     {item.image ? (
-                      <div className="w-16 h-16 relative bg-muted rounded shrink-0 overflow-hidden">
+                      <div className="w-12 h-12 md:w-16 md:h-16 relative bg-muted rounded shrink-0 overflow-hidden">
                         <Image
                           src={item.image}
                           alt={item.name}
                           fill
-                          sizes="64px"
+                          sizes="(max-width: 768px) 48px, 64px"
                           className="object-cover"
                         />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 bg-muted rounded shrink-0" />
+                      <div className="w-12 h-12 md:w-16 md:h-16 bg-muted rounded shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{item.name}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">x{item.quantity}</p>
+                      <p className="text-xs md:text-sm font-medium truncate">{item.name}</p>
+                      <p className="text-[11px] md:text-xs text-muted-foreground mt-0.5">x{item.quantity}</p>
                     </div>
-                    <p className="text-sm font-semibold shrink-0">{formatPrice(item.price)}</p>
+                    <p className="text-xs md:text-sm font-semibold shrink-0">{formatPrice(item.price)}</p>
                   </div>
                 ))}
               </div>
 
               {/* Footer */}
-              <div className="border-t border-border px-5 py-3">
+              <div className="border-t border-border px-3 md:px-5 py-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs text-muted-foreground">{order.items.length} sản phẩm</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Thành tiền:</span>
-                    <span className="text-lg font-bold text-primary">
+                  <p className="text-[11px] md:text-xs text-muted-foreground">{order.items.length} sản phẩm</p>
+                  <div className="flex items-center gap-1.5 md:gap-2">
+                    <span className="text-[11px] md:text-xs text-muted-foreground">Thành tiền:</span>
+                    <span className="text-base md:text-lg font-bold text-primary">
                       {formatPrice(order.totalAmount)}
                     </span>
                   </div>

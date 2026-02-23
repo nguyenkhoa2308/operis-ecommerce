@@ -34,8 +34,8 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
         title="TÀI KHOẢN"
         breadcrumb={[{ label: "Trang chủ", href: "/" }, { label: "Tài khoản" }]}
       />
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex gap-8">
+      <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 pb-20 md:pb-8">
+        <div className="md:flex md:gap-8">
           <AccountSidebar />
           <main className="flex-1 min-w-0">{children}</main>
         </div>

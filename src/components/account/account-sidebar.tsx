@@ -6,11 +6,11 @@ import { User, Coins, BarChart3, Package, History } from "lucide-react";
 import { useAuthStore } from "@/store/auth-store";
 
 const navItems = [
-  { label: "Hồ sơ", href: "/account", icon: User },
-  { label: "Token & Gói dịch vụ", href: "/account/token", icon: Coins },
-  { label: "API Usage", href: "/account/api-usage", icon: BarChart3 },
-  { label: "Đơn hàng", href: "/account/orders", icon: Package },
-  { label: "Lịch sử giao dịch", href: "/account/transactions", icon: History },
+  { label: "Hồ sơ", shortLabel: "Hồ sơ", href: "/account", icon: User },
+  { label: "Token & Gói dịch vụ", shortLabel: "Token", href: "/account/token", icon: Coins },
+  { label: "API Usage", shortLabel: "API", href: "/account/api-usage", icon: BarChart3 },
+  { label: "Đơn hàng", shortLabel: "Đơn hàng", href: "/account/orders", icon: Package },
+  { label: "Lịch sử giao dịch", shortLabel: "Lịch sử", href: "/account/transactions", icon: History },
 ];
 
 export function AccountSidebar() {
@@ -57,29 +57,36 @@ export function AccountSidebar() {
         )}
       </aside>
 
-      {/* Mobile tab bar */}
-      <div className="md:hidden overflow-x-auto border-b border-border mb-6">
-        <nav className="flex items-center gap-2 pb-2" style={{ minWidth: "max-content" }}>
+      {/* Mobile bottom tab bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-border shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+        <div className="flex items-center justify-around h-14 pb-[env(safe-area-inset-bottom)]">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href;
+            const isActive =
+              item.href === "/account"
+                ? pathname === "/account"
+                : pathname.startsWith(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-2 px-4 py-2 text-sm whitespace-nowrap transition-colors ${
-                  isActive
-                    ? "text-primary font-medium bg-primary/10 rounded-full"
-                    : "text-foreground hover:bg-muted rounded-full"
+                className={`flex flex-col items-center justify-center gap-0.5 flex-1 h-full transition-colors ${
+                  isActive ? "text-primary" : "text-muted-foreground"
                 }`}
               >
-                <Icon className="w-4 h-4" />
-                {item.label}
+                <Icon className="w-5 h-5" strokeWidth={isActive ? 2 : 1.5} />
+                <span
+                  className={`text-[10px] leading-none ${
+                    isActive ? "font-semibold" : ""
+                  }`}
+                >
+                  {item.shortLabel}
+                </span>
               </Link>
             );
           })}
-        </nav>
-      </div>
+        </div>
+      </nav>
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { Search, Loader2 } from "lucide-react";
+import { Search } from "lucide-react";
 import { PageBanner } from "@/components/ui/page-banner";
 import { ProductCard, ProductCardSkeleton } from "@/components/ui/product-card";
 import { SubscribeSection } from "@/components/home/subscribe-section";
@@ -146,8 +146,8 @@ function ShopContent() {
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 animate-fade-in">
-              {products.map((p) => (
-                <ProductCard key={p.slug} product={p} />
+              {products.map((p, i) => (
+                <ProductCard key={p.slug} product={p} index={i} />
               ))}
             </div>
           )}

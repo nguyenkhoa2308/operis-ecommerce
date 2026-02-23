@@ -181,3 +181,36 @@ a:focus-visible {
 .bg-gradient-testimonial {
   background: linear-gradient(135deg, #f8fafc 0%, #f0f4ff 50%, #fdf2f8 100%);
 }
+
+/* Swiper testimonial */
+.swiper-testimonial .swiper-wrapper {
+  align-items: stretch;
+}
+
+.swiper-testimonial .swiper-slide {
+  height: auto;
+}
+
+/* Custom pagination dots (rendered outside Swiper) */
+.testimonial-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--primary);
+  opacity: 0.2;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.testimonial-dot-active {
+  width: 24px;
+  opacity: 1;
+}
+
+/* Ant Design DatePicker — mobile responsive */
+@media (max-width: 767px) {
+  .api-usage-picker {
+    max-width: calc(100vw - 32px);
+  }
+}

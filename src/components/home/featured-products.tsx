@@ -29,30 +29,31 @@ export default function FeaturedProducts() {
 
   return (
     <section className="py-16 relative overflow-hidden">
-      <ConcentricCircles className="left-[-200px] top-[-100px]" size={500} color="#8b5cf6" opacity={0.04} />
+      <ConcentricCircles
+        className="left-[-200px] top-[-100px]"
+        size={500}
+        color="#8b5cf6"
+        opacity={0.04}
+      />
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center mb-10">
           <p className="text-sm tracking-widest text-primary font-medium mb-3">
             CHỌN GÓI PHÙ HỢP
           </p>
           <h2 className="text-3xl font-semibold tracking-tight">
-            THIẾT BỊ OPERISBOT
+            GÓI THIẾT BỊ OPERISBOT
           </h2>
         </div>
         {loading ? (
-          <div className="flex flex-wrap justify-center gap-8">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]">
-                <ProductCardSkeleton />
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
             ))}
           </div>
         ) : (
-          <div className="flex flex-wrap justify-center gap-8 animate-fade-in">
-            {products.slice(0, 4).map((p) => (
-              <div key={p.slug} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]">
-                <ProductCard product={p} />
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+            {products.slice(0, 4).map((p, i) => (
+              <ProductCard key={p.slug} product={p} highlight={i === 1} index={i} />
             ))}
           </div>
         )}

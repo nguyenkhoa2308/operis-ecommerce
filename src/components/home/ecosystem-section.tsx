@@ -1,3 +1,4 @@
+"use client";
 import {
   MessageSquare,
   Palette,
@@ -9,6 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { ConcentricCircles, DotGrid } from "@/components/ui/decorative-pattern";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 const tools = [
   {
@@ -70,10 +72,22 @@ const tools = [
 export function EcosystemSection() {
   return (
     <section className="bg-muted relative overflow-hidden">
-      <DotGrid className="right-0 top-0" color="#8b5cf6" opacity={0.05} cols={12} rows={8} gap={28} />
-      <ConcentricCircles className="left-[-180px] bottom-[-120px]" size={400} color="#10b981" opacity={0.04} />
+      <DotGrid
+        className="right-0 top-0"
+        color="#8b5cf6"
+        opacity={0.05}
+        cols={12}
+        rows={8}
+        gap={28}
+      />
+      <ConcentricCircles
+        className="left-[-180px] bottom-[-120px]"
+        size={400}
+        color="#10b981"
+        opacity={0.04}
+      />
       <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
-        <div className="text-center mb-12">
+        <FadeIn className="text-center mb-12">
           <p className="text-sm tracking-widest text-primary font-medium mb-3">
             HỆ SINH THÁI ĐANG MỞ RỘNG
           </p>
@@ -81,24 +95,33 @@ export function EcosystemSection() {
             MINI-TOOLS CHUYÊN BIỆT TỪNG NGÀNH
           </h2>
           <p className="text-base text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
-            Không chỉ dừng lại ở Workflow tổng quát — Operisbot đang phát triển kho công cụ chuyên sâu
-            cho từng lĩnh vực, giúp bạn tự động hóa chính xác hơn, tiết kiệm hơn.
+            Không chỉ dừng lại ở Workflow tổng quát — Operisbot đang phát triển
+            kho công cụ chuyên sâu cho từng lĩnh vực, giúp bạn tự động hóa chính
+            xác hơn, tiết kiệm hơn.
           </p>
-        </div>
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {tools.map((tool) => (
-            <div
+            <StaggerItem
               key={tool.name}
               className="bg-white rounded-lg p-6 hover:shadow-md transition-shadow flex flex-col"
             >
               <div className="flex items-center gap-3 mb-3">
-                <div className={`w-10 h-10 rounded-full ${tool.bg} flex items-center justify-center shrink-0`}>
-                  <tool.icon size={20} className={tool.color} strokeWidth={1.5} />
+                <div
+                  className={`w-10 h-10 rounded-full ${tool.bg} flex items-center justify-center shrink-0`}
+                >
+                  <tool.icon
+                    size={20}
+                    className={tool.color}
+                    strokeWidth={1.5}
+                  />
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold">{tool.name}</h4>
-                  <p className={`text-xs ${tool.color} font-medium`}>{tool.tagline}</p>
+                  <p className={`text-xs ${tool.color} font-medium`}>
+                    {tool.tagline}
+                  </p>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed flex-1">
@@ -109,13 +132,14 @@ export function EcosystemSection() {
                   {tool.status}
                 </span>
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
         <div className="text-center mt-10">
           <p className="text-sm text-muted-foreground italic mb-4">
-            Mua thiết bị hôm nay — tất cả Mini-tools sẽ được cập nhật miễn phí khi ra mắt.
+            Mua thiết bị hôm nay — tất cả Mini-tools sẽ được cập nhật miễn phí
+            khi ra mắt.
           </p>
           <Link
             href="/shop"

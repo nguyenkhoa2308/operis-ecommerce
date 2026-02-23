@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Loader2, ChevronLeft, ChevronRight, TrendingUp, TrendingDown, Calendar, X } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, TrendingUp, TrendingDown, Calendar } from "lucide-react";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
@@ -13,7 +13,6 @@ import { analyticsApi } from "@/lib/api";
 import type { UsageStats, DailyData, HistoryItem } from "@/lib/api/analytics";
 
 dayjs.locale("vi");
-const { RangePicker } = DatePicker;
 
 const AreaChart = dynamic(() => import("recharts").then((m) => m.AreaChart), { ssr: false });
 const Area = dynamic(() => import("recharts").then((m) => m.Area), { ssr: false });
@@ -77,8 +76,8 @@ export default function ApiUsagePage() {
   const [period, setPeriod] = useState<PeriodType>("today");
 
   /* Custom date range */
-  const [customRange, setCustomRange] = useState<[Dayjs, Dayjs] | null>(null);
-  const [pickerOpen, setPickerOpen] = useState(false);
+  const [customFrom, setCustomFrom] = useState<Dayjs | null>(null);
+  const [customTo, setCustomTo] = useState<Dayjs | null>(null);
 
   /* Stats (current + previous for comparison) */
   const [stats, setStats] = useState<UsageStats | null>(null);
@@ -137,15 +136,18 @@ export default function ApiUsagePage() {
     }
   };
 
-  /* When both dates are selected → fetch */
-  const handleRangeChange = (dates: [Dayjs | null, Dayjs | null] | null) => {
-    if (dates && dates[0] && dates[1]) {
-      setCustomRange([dates[0], dates[1]]);
-      fetchCustomRange(dates[0], dates[1]);
-      setPickerOpen(false);
-    } else {
-      setCustomRange(null);
-      setPeriod("today");
+  /* When a date is picked — auto-fetch with smart defaults */
+  const handleFromChange = (date: Dayjs | null) => {
+    setCustomFrom(date);
+    if (date) {
+      fetchCustomRange(date, customTo ?? dayjs());
+    }
+  };
+
+  const handleToChange = (date: Dayjs | null) => {
+    setCustomTo(date);
+    if (date) {
+      fetchCustomRange(customFrom ?? dayjs("2020-01-01"), date);
     }
   };
 
@@ -200,67 +202,86 @@ export default function ApiUsagePage() {
       <h2 className="text-sm font-semibold tracking-widest uppercase mb-6">API Usage</h2>
 
       {/* Period selector */}
-      <div className="flex flex-wrap items-center gap-2 mb-6">
-        {presetPeriods.map((p) => (
+      <div className="space-y-2 mb-6">
+        <div className="flex flex-wrap gap-1.5 md:gap-2">
+          {presetPeriods.map((p) => (
+            <button
+              key={p}
+              type="button"
+              onClick={() => {
+                setPeriod(p);
+                setCustomFrom(null);
+                setCustomTo(null);
+              }}
+              className={`px-3 md:px-4 py-1.5 md:py-2 text-xs tracking-widest rounded transition-colors ${
+                period === p ? "bg-foreground text-white" : "bg-muted text-foreground hover:bg-border"
+              }`}
+            >
+              {periodLabels[p]}
+            </button>
+          ))}
+
+          {/* Custom button */}
           <button
-            key={p}
             type="button"
             onClick={() => {
-              setPeriod(p);
-              setCustomRange(null);
-              setPickerOpen(false);
+              if (period === "custom") {
+                setPeriod("today");
+                setCustomFrom(null);
+                setCustomTo(null);
+              } else {
+                setPeriod("custom");
+              }
             }}
-            className={`px-4 py-2 text-xs tracking-widest rounded transition-colors ${
-              period === p ? "bg-foreground text-white" : "bg-muted text-foreground hover:bg-border"
+            className={`px-3 md:px-4 py-1.5 md:py-2 text-xs tracking-widest rounded transition-colors flex items-center gap-1.5 ${
+              period === "custom" ? "bg-foreground text-white" : "bg-muted text-foreground hover:bg-border"
             }`}
           >
-            {periodLabels[p]}
+            <Calendar size={13} />
+            {periodLabels.custom}
           </button>
-        ))}
-
-        {/* Custom button + inline range picker */}
-        <button
-          type="button"
-          onClick={() => {
-            if (period === "custom") {
-              setPeriod("today");
-              setCustomRange(null);
-              setPickerOpen(false);
-            } else {
-              setPeriod("custom");
-              setPickerOpen(true);
-            }
-          }}
-          className={`px-4 py-2 text-xs tracking-widest rounded transition-colors flex items-center gap-1.5 ${
-            period === "custom" ? "bg-foreground text-white" : "bg-muted text-foreground hover:bg-border"
-          }`}
-        >
-          <Calendar size={13} />
-          {periodLabels.custom}
-        </button>
-
-        {/* Animated inline range picker */}
-        <div
-          className={`transition-all duration-300 ease-out ${
-            period === "custom"
-              ? "w-64 opacity-100"
-              : "w-0 opacity-0 pointer-events-none"
-          } overflow-hidden`}
-        >
-          <ConfigProvider locale={viVN}>
-            <RangePicker
-              open={pickerOpen}
-              onOpenChange={setPickerOpen}
-              value={customRange}
-              onChange={handleRangeChange}
-              disabledDate={(current) => current && current > dayjs().endOf("day")}
-              format="DD/MM/YYYY"
-              placeholder={["Từ ngày", "Đến ngày"]}
-              allowClear
-              size="middle"
-            />
-          </ConfigProvider>
         </div>
+
+        {/* Two separate date pickers — one calendar at a time */}
+        {period === "custom" && (
+          <ConfigProvider locale={viVN}>
+            <div className="flex items-center gap-2">
+              <DatePicker
+                value={customFrom}
+                onChange={handleFromChange}
+                disabledDate={(current: Dayjs) => {
+                  if (current > dayjs().endOf("day")) return true;
+                  if (customTo && current > customTo) return true;
+                  return false;
+                }}
+                format="DD/MM/YYYY"
+                placeholder="Từ ngày"
+                allowClear
+                size="middle"
+                className="w-32"
+                getPopupContainer={() => document.body}
+                classNames={{ popup: { root: "api-usage-picker" } }}
+              />
+              <span className="text-xs text-muted-foreground">→</span>
+              <DatePicker
+                value={customTo}
+                onChange={handleToChange}
+                disabledDate={(current: Dayjs) => {
+                  if (current > dayjs().endOf("day")) return true;
+                  if (customFrom && current < customFrom) return true;
+                  return false;
+                }}
+                format="DD/MM/YYYY"
+                placeholder="Đến ngày"
+                allowClear
+                size="middle"
+                className="w-32"
+                getPopupContainer={() => document.body}
+                classNames={{ popup: { root: "api-usage-picker" } }}
+              />
+            </div>
+          </ConfigProvider>
+        )}
       </div>
 
       {/* Stats Cards */}
@@ -298,13 +319,13 @@ export default function ApiUsagePage() {
           </>
         ) : (
           <p className="col-span-full text-sm text-muted-foreground text-center py-4">
-            {period === "custom" && !customRange ? "Chọn khoảng thời gian để xem thống kê" : "Không thể tải thống kê"}
+            {period === "custom" && (!customFrom || !customTo) ? "Chọn khoảng thời gian để xem thống kê" : "Không thể tải thống kê"}
           </p>
         )}
       </div>
 
       {/* Chart */}
-      <div className="bg-white border border-border rounded-lg p-5 mb-8">
+      <div className="bg-white border border-border rounded-lg p-3 md:p-5 mb-8">
         <h3 className="text-sm font-semibold tracking-widest uppercase mb-4">
           {chartTitleByPeriod[period]}
         </h3>
@@ -371,7 +392,7 @@ export default function ApiUsagePage() {
 
       {/* History table */}
       <div className="bg-white border border-border rounded-lg overflow-hidden">
-        <div className="px-5 py-4 border-b border-border flex items-center justify-between">
+        <div className="px-3 md:px-5 py-4 border-b border-border flex items-center justify-between">
           <h3 className="text-sm font-semibold tracking-widest uppercase">Lịch sử chi tiết</h3>
           {historyTotal > 0 && (
             <span className="text-xs text-muted-foreground">{historyTotal} bản ghi</span>
@@ -381,10 +402,10 @@ export default function ApiUsagePage() {
         {loadingHistory ? (
           <div className="divide-y divide-border">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="px-5 py-3.5 flex items-center gap-4">
+              <div key={i} className="px-3 md:px-5 py-3.5 space-y-2 md:space-y-0 md:flex md:items-center md:gap-4">
                 <div className="h-5 w-14 bg-muted rounded animate-pulse" />
                 <div className="h-4 w-20 bg-muted rounded animate-pulse" />
-                <div className="h-4 w-36 bg-muted rounded animate-pulse flex-1" />
+                <div className="h-4 w-36 bg-muted rounded animate-pulse md:flex-1" />
                 <div className="h-4 w-16 bg-muted rounded animate-pulse" />
                 <div className="h-4 w-20 bg-muted rounded animate-pulse" />
               </div>
@@ -396,7 +417,7 @@ export default function ApiUsagePage() {
           </div>
         ) : (
           <>
-            {/* Header */}
+            {/* Header — desktop only */}
             <div className="hidden md:grid grid-cols-[70px_90px_1fr_70px_80px_70px_140px] gap-2 px-5 py-2.5 bg-muted/50 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
               <span>Loại</span>
               <span>Model</span>
@@ -410,33 +431,58 @@ export default function ApiUsagePage() {
             {/* Rows */}
             <div className="divide-y divide-border">
               {paginatedHistory.map((h) => (
-                <div
-                  key={h.id}
-                  className="px-5 py-3 md:grid md:grid-cols-[70px_90px_1fr_70px_80px_70px_140px] md:gap-2 md:items-center flex flex-col gap-1.5 text-sm"
-                >
-                  <span className="text-[11px] font-bold tracking-wider w-fit px-2 py-0.5 rounded bg-blue-100 text-blue-700 uppercase">
-                    {h.requestType}
-                  </span>
-                  <span className="text-xs text-muted-foreground font-medium">
-                    {shortModel(h.model)}
-                  </span>
-                  <span className="text-xs text-foreground/80 truncate" title={h.messagePreview}>
-                    {h.messagePreview || "—"}
-                  </span>
-                  <span className="text-xs tabular-nums">{h.inputTokens.toLocaleString("vi-VN")}</span>
-                  <span className="text-xs tabular-nums">{h.outputTokens.toLocaleString("vi-VN")}</span>
-                  <span className="text-xs font-medium tabular-nums">{h.totalTokens.toLocaleString("vi-VN")}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {h.createdAt ? new Date(h.createdAt).toLocaleString("vi-VN") : "—"}
-                  </span>
+                <div key={h.id}>
+                  {/* Desktop row */}
+                  <div className="hidden md:grid grid-cols-[70px_90px_1fr_70px_80px_70px_140px] gap-2 px-5 py-3 items-center text-sm">
+                    <span className="text-[11px] font-bold tracking-wider w-fit px-2 py-0.5 rounded bg-blue-100 text-blue-700 uppercase">
+                      {h.requestType}
+                    </span>
+                    <span className="text-xs text-muted-foreground font-medium">
+                      {shortModel(h.model)}
+                    </span>
+                    <span className="text-xs text-foreground/80 truncate" title={h.messagePreview}>
+                      {h.messagePreview || "—"}
+                    </span>
+                    <span className="text-xs tabular-nums">{h.inputTokens.toLocaleString("vi-VN")}</span>
+                    <span className="text-xs tabular-nums">{h.outputTokens.toLocaleString("vi-VN")}</span>
+                    <span className="text-xs font-medium tabular-nums">{h.totalTokens.toLocaleString("vi-VN")}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {h.createdAt ? new Date(h.createdAt).toLocaleString("vi-VN") : "—"}
+                    </span>
+                  </div>
+
+                  {/* Mobile card row */}
+                  <div className="md:hidden px-3 py-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold tracking-wider px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 uppercase">
+                          {h.requestType}
+                        </span>
+                        <span className="text-[11px] text-muted-foreground font-medium">
+                          {shortModel(h.model)}
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-muted-foreground">
+                        {h.createdAt ? new Date(h.createdAt).toLocaleString("vi-VN") : "—"}
+                      </span>
+                    </div>
+                    {h.messagePreview && (
+                      <p className="text-xs text-foreground/80 line-clamp-2">{h.messagePreview}</p>
+                    )}
+                    <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                      <span>In: <strong className="text-foreground">{h.inputTokens.toLocaleString("vi-VN")}</strong></span>
+                      <span>Out: <strong className="text-foreground">{h.outputTokens.toLocaleString("vi-VN")}</strong></span>
+                      <span>Tổng: <strong className="text-foreground">{h.totalTokens.toLocaleString("vi-VN")}</strong></span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
 
             {/* Pagination */}
             {totalHistoryPages > 1 && (
-              <div className="flex items-center justify-between px-5 py-3 border-t border-border">
-                <p className="text-xs text-muted-foreground">
+              <div className="flex flex-col-reverse gap-2 md:flex-row items-center justify-between px-3 md:px-5 py-3 border-t border-border">
+                <p className="text-[11px] md:text-xs text-muted-foreground">
                   Trang {historyPage}/{totalHistoryPages}
                 </p>
                 <div className="flex items-center gap-1">
@@ -445,30 +491,48 @@ export default function ApiUsagePage() {
                     aria-label="Trang trước"
                     onClick={() => setHistoryPage((p) => Math.max(1, p - 1))}
                     disabled={historyPage === 1}
-                    className="w-8 h-8 flex items-center justify-center rounded-md border border-border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
+                    className="w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-md border border-border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
                   >
                     <ChevronLeft size={14} />
                   </button>
-                  {Array.from({ length: totalHistoryPages }, (_, i) => i + 1).map((p) => (
-                    <button
-                      key={p}
-                      type="button"
-                      onClick={() => setHistoryPage(p)}
-                      className={`w-8 h-8 flex items-center justify-center rounded-md text-xs transition-colors ${
-                        p === historyPage
-                          ? "bg-foreground text-white"
-                          : "border border-border hover:bg-muted"
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  ))}
+                  {(() => {
+                    const pages: (number | "ellipsis")[] = [];
+                    if (totalHistoryPages <= 5) {
+                      for (let i = 1; i <= totalHistoryPages; i++) pages.push(i);
+                    } else {
+                      pages.push(1);
+                      if (historyPage > 3) pages.push("ellipsis");
+                      const start = Math.max(2, historyPage - 1);
+                      const end = Math.min(totalHistoryPages - 1, historyPage + 1);
+                      for (let i = start; i <= end; i++) pages.push(i);
+                      if (historyPage < totalHistoryPages - 2) pages.push("ellipsis");
+                      pages.push(totalHistoryPages);
+                    }
+                    return pages.map((p, idx) =>
+                      p === "ellipsis" ? (
+                        <span key={`e${idx}`} className="w-7 h-7 md:w-8 md:h-8 flex items-center justify-center text-xs text-muted-foreground">…</span>
+                      ) : (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => setHistoryPage(p)}
+                          className={`w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-md text-xs transition-colors ${
+                            p === historyPage
+                              ? "bg-foreground text-white"
+                              : "border border-border hover:bg-muted"
+                          }`}
+                        >
+                          {p}
+                        </button>
+                      ),
+                    );
+                  })()}
                   <button
                     type="button"
                     aria-label="Trang sau"
                     onClick={() => setHistoryPage((p) => Math.min(totalHistoryPages, p + 1))}
                     disabled={historyPage === totalHistoryPages}
-                    className="w-8 h-8 flex items-center justify-center rounded-md border border-border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
+                    className="w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-md border border-border text-sm disabled:opacity-30 hover:bg-muted transition-colors"
                   >
                     <ChevronRight size={14} />
                   </button>

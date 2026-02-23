@@ -77,14 +77,21 @@ export const useAuthStore = create<AuthState>()(
 
       fetchMe: async () => {
         const tokens = getTokens();
-        if (!tokens?.token) return;
+        if (!tokens?.token) {
+          // No tokens at all → clear stale auth state
+          if (get().isLoggedIn) set({ user: null, isLoggedIn: false });
+          return;
+        }
         try {
           const current = get().user;
           const user = await authApi.fetchMe(current ?? undefined);
           set({ user, isLoggedIn: true });
         } catch {
-          // 401 → refresh interceptor handles it
-          // For other errors, keep existing cached user data
+          // If interceptor cleared tokens (refresh failed), also clear zustand state
+          const remaining = getTokens();
+          if (!remaining?.token) {
+            set({ user: null, isLoggedIn: false });
+          }
         }
       },
 

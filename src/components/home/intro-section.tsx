@@ -1,3 +1,4 @@
+"use client";
 import {
   ShoppingCart,
   Megaphone,
@@ -6,6 +7,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { DotGrid } from "@/components/ui/decorative-pattern";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 const useCaseGroups = [
   {
@@ -29,8 +31,8 @@ const useCaseGroups = [
     border: "border-l-violet",
     arrow: "text-violet",
     scenarios: [
-      "Bot vào hội nhóm, đọc bài đăng có từ khóa \"Cần tư vấn\", bình luận chia sẻ rồi khéo léo nhắc đến sản phẩm.",
-      "Chạy 50-100 tài khoản Social cùng lúc, mỗi tài khoản một \"vân tay trình duyệt\" riêng, tự Like/Share tạo hiệu ứng đám đông.",
+      'Bot vào hội nhóm, đọc bài đăng có từ khóa "Cần tư vấn", bình luận chia sẻ rồi khéo léo nhắc đến sản phẩm.',
+      'Chạy 50-100 tài khoản Social cùng lúc, mỗi tài khoản một "vân tay trình duyệt" riêng, tự Like/Share tạo hiệu ứng đám đông.',
       "Quét Group đối thủ, lấy thông tin người hay tương tác — lưu danh sách tiềm năng cho Sale chăm sóc.",
     ],
   },
@@ -54,7 +56,7 @@ const useCaseGroups = [
     border: "border-l-amber",
     arrow: "text-amber",
     scenarios: [
-      "Bot tải CV hàng loạt, AI so sánh với JD — xuất \"Ứng viên A - 90% phù hợp\", tự gửi email hẹn phỏng vấn.",
+      'Bot tải CV hàng loạt, AI so sánh với JD — xuất "Ứng viên A - 90% phù hợp", tự gửi email hẹn phỏng vấn.',
       "Mở PDF hóa đơn từ email, tự nhập liệu vào phần mềm kế toán hoặc Google Sheet — không sai sót.",
     ],
   },
@@ -75,9 +77,16 @@ const useCaseGroups = [
 export function IntroSection() {
   return (
     <section className="bg-muted relative overflow-hidden">
-      <DotGrid className="left-0 top-0" color="#6b8fb5" opacity={0.08} cols={14} rows={10} gap={28} />
+      <DotGrid
+        className="left-0 top-0"
+        color="#6b8fb5"
+        opacity={0.08}
+        cols={14}
+        rows={10}
+        gap={28}
+      />
       <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
-        <div className="text-center mb-10">
+        <FadeIn className="text-center mb-10">
           <p className="text-sm tracking-widest text-primary font-medium mb-3">
             KỊCH BẢN THỰC TẾ
           </p>
@@ -88,15 +97,17 @@ export function IntroSection() {
             Không chỉ &quot;tự động hóa&quot; — đây là những hành động cụ thể mà
             Operisbot thực hiện thay bạn, 24/7, trên thiết bị riêng.
           </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        </FadeIn>
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {useCaseGroups.map((group) => (
-            <div
+            <StaggerItem
               key={group.title}
-              className="bg-white p-6 rounded-lg flex flex-col"
+              className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className={`w-10 h-10 rounded-full ${group.bg} flex items-center justify-center shrink-0`}>
+                <div
+                  className={`w-10 h-10 rounded-full ${group.bg} flex items-center justify-center shrink-0`}
+                >
                   <group.icon
                     size={20}
                     className={group.color}
@@ -108,14 +119,16 @@ export function IntroSection() {
               <ul className="space-y-3 flex-1">
                 {group.scenarios.map((s, i) => (
                   <li key={i} className="flex gap-2 text-sm leading-relaxed">
-                    <span className={`${group.arrow} font-bold shrink-0`}>→</span>
+                    <span className={`${group.arrow} font-bold shrink-0`}>
+                      →
+                    </span>
                     <span>{s}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );

@@ -5,8 +5,7 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { ToastContainer } from "@/components/ui/toast";
 import { ScrollToTop } from "@/components/scroll-to-top";
-import { ScrollToTopButton } from "@/components/ui/scroll-to-top";
-import { Chatbot } from "@/components/ui/chatbot";
+import { FloatingActions } from "@/components/ui/floating-actions";
 import StoreHydrationGuard from "@/components/store-hydration-guard";
 
 const nunito = Nunito({
@@ -35,8 +34,7 @@ export default function RootLayout({
           {children}
           <Footer />
           <ToastContainer />
-          <ScrollToTopButton />
-          <Chatbot />
+          <FloatingActions />
         </StoreHydrationGuard>
       </body>
     </html>

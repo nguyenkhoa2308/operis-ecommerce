@@ -17,7 +17,7 @@ export function ScrollToTopButton() {
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Lên đầu trang"
-      className={`fixed bottom-[88px] right-7 z-40 w-12 h-12 rounded-full bg-foreground text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:bg-primary ${
+      className={`fixed bottom-[136px] md:bottom-[88px] right-4 md:right-7 z-40 w-10 h-10 md:w-12 md:h-12 rounded-full bg-foreground text-white flex items-center justify-center shadow-lg transition-all duration-300 hover:bg-primary ${
         visible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-4 pointer-events-none"

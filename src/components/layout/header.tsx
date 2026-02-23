@@ -70,6 +70,7 @@ export default function Header() {
   const router = useRouter();
 
   const searchRef = useRef<HTMLInputElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,6 +84,25 @@ export default function Header() {
   useEffect(() => {
     if (searchOpen) searchRef.current?.focus();
   }, [searchOpen]);
+
+  /* Close user menu on outside click */
+  useEffect(() => {
+    if (!userMenuOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [userMenuOpen]);
+
+  /* Lock body scroll when mobile menu is open */
+  useEffect(() => {
+    if (mobileOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-border">
@@ -216,9 +236,9 @@ export default function Header() {
         </nav>
 
         {/* Icons */}
-        <div className="flex items-center gap-5">
-          {/* Expanding search */}
-          <form onSubmit={handleSearch} className="relative flex items-center">
+        <div className="flex items-center gap-3 md:gap-5">
+          {/* Desktop expanding search */}
+          <form onSubmit={handleSearch} className="relative hidden md:flex items-center">
             <div
               className={`flex items-center overflow-hidden border transition-all duration-300 ease-out ${
                 searchOpen
@@ -265,6 +285,15 @@ export default function Header() {
               </button>
             </div>
           </form>
+          {/* Mobile search icon */}
+          <button
+            type="button"
+            className="md:hidden flex items-center justify-center w-6 h-6 text-foreground hover:text-primary transition-colors"
+            onClick={() => { setSearchOpen(!searchOpen); setMobileOpen(false); }}
+            aria-label="Tìm kiếm"
+          >
+            <MagnifierIcon size={20} color="currentColor" />
+          </button>
           <button
             type="button"
             onClick={() => setCartOpen(true)}
@@ -278,13 +307,12 @@ export default function Header() {
           </button>
           {isLoggedIn ? (
             <div
+              ref={userMenuRef}
               className="relative"
-              onMouseEnter={() => setUserMenuOpen(true)}
-              onMouseLeave={() => setUserMenuOpen(false)}
             >
               <button
                 type="button"
-                onClick={() => router.push("/account")}
+                onClick={() => setUserMenuOpen((v) => !v)}
                 className="relative flex items-center justify-center w-7 h-7 rounded-full bg-foreground text-white text-[11px] font-semibold hover:bg-primary transition-colors"
                 aria-label={`Tài khoản: ${user?.name}`}
               >
@@ -352,7 +380,7 @@ export default function Header() {
           )}
           <button
             className="md:hidden text-foreground"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            onClick={() => { setMobileOpen(!mobileOpen); setSearchOpen(false); setSearchQuery(""); }}
             aria-label="Menu"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -360,48 +388,137 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Nav */}
-      {mobileOpen && (
-        <nav className="md:hidden border-t border-border bg-white animate-slide-in">
-          <div className="flex flex-col py-4 px-4 gap-1">
+      {/* Mobile search bar — slide down */}
+      {searchOpen && (
+        <div className="md:hidden border-t border-border bg-white px-4 py-3 animate-slide-down">
+          <form onSubmit={handleSearch} className="flex items-center gap-2 bg-muted/50 border border-border rounded-full px-3 py-2">
+            <Search size={16} className="text-muted-foreground shrink-0" />
+            <input
+              ref={searchRef}
+              type="text"
+              placeholder="Tìm kiếm sản phẩm..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setSearchOpen(false);
+                  setSearchQuery("");
+                }
+              }}
+              className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            />
+            <button
+              type="button"
+              onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+              className="text-muted-foreground hover:text-foreground shrink-0"
+              aria-label="Đóng tìm kiếm"
+            >
+              <X size={16} />
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Mobile Nav — full-screen slide-in overlay */}
+      <div
+        className={`md:hidden fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 ${
+          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMobileOpen(false)}
+      />
+      <nav
+        className={`md:hidden fixed top-0 left-0 z-[70] h-full w-full max-w-[320px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Menu header */}
+        <div className="flex items-center justify-between px-5 h-16 border-b border-border">
+          <Link href="/" onClick={() => setMobileOpen(false)} className="text-xl font-[900] tracking-tight">
+            Operis<span className="text-primary">bot.</span>
+          </Link>
+          <button onClick={() => setMobileOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Đóng menu">
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Menu links */}
+        <div className="flex-1 overflow-y-auto py-4 px-5">
+          <div className="flex flex-col gap-1">
             {simpleLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className={`text-sm tracking-widest py-2 ${
+                className={`text-sm tracking-widest py-3 border-b border-border/50 ${
                   pathname === link.href
                     ? "text-primary font-medium"
-                    : "text-muted-foreground"
+                    : "text-foreground"
                 }`}
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <p className="text-[10px] tracking-widest text-muted-foreground mt-3 mb-1 font-semibold">
-              SẢN PHẨM
-            </p>
+          </div>
+
+          <p className="text-[10px] tracking-widest text-muted-foreground mt-6 mb-2 font-semibold">
+            SẢN PHẨM
+          </p>
+          <div className="flex flex-col gap-1">
             {categories.map((cat) => (
               <Link
                 key={cat.label}
                 href={cat.href}
-                className="flex items-center gap-3 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-3 py-3 text-sm text-foreground hover:text-primary transition-colors border-b border-border/50"
                 onClick={() => setMobileOpen(false)}
               >
                 <cat.icon size={16} />
                 {cat.label}
               </Link>
             ))}
-            <Link
-              href={isLoggedIn ? "/account" : "/login"}
-              className="text-sm tracking-widest py-2 text-muted-foreground mt-2 border-t border-border pt-3"
-              onClick={() => setMobileOpen(false)}
-            >
-              {isLoggedIn ? "TÀI KHOẢN" : "ĐĂNG NHẬP"}
-            </Link>
           </div>
-        </nav>
-      )}
+        </div>
+
+        {/* Menu footer */}
+        <div className="border-t border-border px-5 py-4">
+          {isLoggedIn && user ? (
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-foreground text-white text-xs font-semibold flex items-center justify-center">
+                  {user.name?.charAt(0).toUpperCase() ?? "U"}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{user.name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Link
+                  href="/account"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex-1 text-center text-xs tracking-wider border border-border py-2.5 rounded hover:bg-muted transition-colors"
+                >
+                  TÀI KHOẢN
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => { logout(); setMobileOpen(false); }}
+                  className="text-xs tracking-wider text-red-500 border border-red-200 px-4 py-2.5 rounded hover:bg-red-50 transition-colors"
+                >
+                  ĐĂNG XUẤT
+                </button>
+              </div>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              onClick={() => setMobileOpen(false)}
+              className="block w-full text-center text-xs tracking-widest bg-primary text-white py-3 rounded hover:bg-primary/90 transition-colors"
+            >
+              ĐĂNG NHẬP
+            </Link>
+          )}
+        </div>
+      </nav>
       <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
     </header>
   );
