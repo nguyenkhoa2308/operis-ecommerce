@@ -13,12 +13,11 @@ export function ProductCardSkeleton() {
   return (
     <div className="bg-white rounded-2xl border border-border/50 overflow-hidden">
       <div className="aspect-square skeleton-shimmer" />
-      <div className="p-5 space-y-2.5">
-        <div className="h-3 w-20 skeleton-shimmer rounded" />
-        <div className="h-5 w-3/4 skeleton-shimmer rounded" />
-        <div className="h-4 w-full skeleton-shimmer rounded" />
-        <div className="h-4 w-5/6 skeleton-shimmer rounded" />
-        <div className="h-7 w-1/3 skeleton-shimmer rounded mt-2" />
+      <div className="p-3 md:p-5 space-y-2">
+        <div className="h-3 w-16 skeleton-shimmer rounded" />
+        <div className="h-4 md:h-5 w-3/4 skeleton-shimmer rounded" />
+        <div className="h-3 w-full skeleton-shimmer rounded hidden md:block" />
+        <div className="h-5 md:h-7 w-1/3 skeleton-shimmer rounded mt-1" />
       </div>
     </div>
   );
@@ -81,7 +80,7 @@ export function ProductCard({
 
           {/* Highlight badge */}
           {highlight && (
-            <span className="absolute top-3 left-3 bg-primary text-white text-[10px] tracking-widest font-bold px-3 py-1 rounded-full">
+            <span className="absolute top-2 left-2 md:top-3 md:left-3 bg-primary text-white text-[9px] md:text-[10px] tracking-widest font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full">
               PHỔ BIẾN
             </span>
           )}
@@ -111,12 +110,12 @@ export function ProductCard({
         </div>
 
         {/* ── Info ── */}
-        <div className="flex flex-col flex-1 p-5">
+        <div className="flex flex-col flex-1 p-3 md:p-5">
           {/* Tags */}
           {product.tags.length > 0 && (
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-1.5 mb-1 md:mb-2">
               {product.tags.map((tag) => (
-                <span key={tag} className="text-[10px] tracking-wider font-medium text-primary/70">
+                <span key={tag} className="text-[9px] md:text-[10px] tracking-wider font-medium text-primary/70">
                   {tag}
                 </span>
               ))}
@@ -124,26 +123,26 @@ export function ProductCard({
           )}
 
           {/* Name */}
-          <h4 className="text-base font-bold tracking-tight mb-1.5 line-clamp-2 group-hover:text-primary transition-colors">
+          <h4 className="text-sm md:text-base font-bold tracking-tight mb-1 md:mb-1.5 line-clamp-2 group-hover:text-primary transition-colors">
             {product.name}
           </h4>
 
-          {/* Specs inline */}
-          <p className="text-xs text-muted-foreground mb-2 line-clamp-1">{specsText}</p>
+          {/* Specs inline — hidden on mobile */}
+          <p className="hidden md:block text-xs text-muted-foreground mb-2 line-clamp-1">{specsText}</p>
 
           {/* Short description */}
           {product.description && (
-            <p className="text-sm text-muted-foreground/70 mb-3 line-clamp-3 leading-relaxed">
+            <p className="text-xs md:text-sm text-muted-foreground/70 mb-2 md:mb-3 line-clamp-2 md:line-clamp-3 leading-relaxed">
               {product.description}
             </p>
           )}
 
           {/* Price */}
-          <div className="mt-auto pt-2">
+          <div className="mt-auto pt-1 md:pt-2">
             {isFree ? (
-              <span className="text-lg font-bold text-primary">Liên hệ</span>
+              <span className="text-sm md:text-lg font-bold text-primary">Liên hệ</span>
             ) : (
-              <span className="text-xl font-extrabold text-foreground">
+              <span className="text-base md:text-xl font-extrabold text-foreground">
                 {formatPrice(product.price)}
               </span>
             )}
@@ -153,20 +152,20 @@ export function ProductCard({
           <button
             type="button"
             onClick={handleAdd}
-            className={`md:hidden mt-3 w-full py-2.5 rounded-xl text-xs tracking-wider font-semibold flex items-center justify-center gap-2 transition-colors ${
+            className={`md:hidden mt-2 w-full py-2 rounded-lg text-[11px] tracking-wider font-semibold flex items-center justify-center gap-1.5 transition-colors ${
               isFree
                 ? "bg-muted text-foreground"
                 : added
                   ? "bg-emerald text-white"
-                  : "bg-foreground text-white active:bg-primary"
+                  : "border border-foreground text-foreground active:bg-foreground active:text-white"
             }`}
           >
             {isFree ? (
-              <>LIÊN HỆ <Phone size={13} /></>
+              <>LIÊN HỆ <Phone size={12} /></>
             ) : added ? (
-              <>ĐÃ THÊM <Check size={13} className="animate-bounce-in" /></>
+              <>ĐÃ THÊM <Check size={12} className="animate-bounce-in" /></>
             ) : (
-              <>THÊM GIỎ HÀNG <ShoppingCart size={13} /></>
+              <>THÊM GIỎ HÀNG <ShoppingCart size={12} /></>
             )}
           </button>
         </div>

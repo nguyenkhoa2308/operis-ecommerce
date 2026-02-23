@@ -395,7 +395,9 @@ export default function AboutPage() {
             AI TRUYỀN THỐNG vs OPERISBOT
           </h2>
         </div>
-        <div className="max-w-4xl mx-auto rounded-2xl border border-border overflow-hidden">
+
+        {/* Desktop table */}
+        <div className="hidden md:block max-w-4xl mx-auto rounded-2xl border border-border overflow-hidden">
           <table className="w-full">
             <thead>
               <tr>
@@ -443,6 +445,37 @@ export default function AboutPage() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile cards */}
+        <div className="md:hidden space-y-4">
+          {comparisonRows.map((row) => (
+            <div key={row.label} className="rounded-xl border border-border overflow-hidden">
+              <div className="bg-muted px-4 py-3">
+                <h4 className="text-sm font-semibold">{row.label}</h4>
+              </div>
+              <div className="divide-y divide-border">
+                <div className="px-4 py-3 flex items-start gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-red-50 flex items-center justify-center shrink-0 mt-0.5">
+                    <X size={12} className="text-red-400" />
+                  </span>
+                  <div>
+                    <p className="text-[10px] tracking-wider text-muted-foreground mb-0.5">AI TRUYỀN THỐNG</p>
+                    <p className="text-sm text-muted-foreground">{row.traditional}</p>
+                  </div>
+                </div>
+                <div className="px-4 py-3 bg-primary/[0.03] flex items-start gap-2.5">
+                  <span className="w-5 h-5 rounded-full bg-green-50 flex items-center justify-center shrink-0 mt-0.5">
+                    <Check size={12} className="text-green-600" />
+                  </span>
+                  <div>
+                    <p className="text-[10px] tracking-wider text-primary font-medium mb-0.5">OPERISBOT</p>
+                    <p className="text-sm font-semibold">{row.operis}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

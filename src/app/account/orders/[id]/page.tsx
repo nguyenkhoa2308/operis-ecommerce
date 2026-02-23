@@ -153,25 +153,25 @@ export default function OrderDetailPage() {
     return (
       <div>
         <div className="h-4 w-24 skeleton-shimmer rounded mb-6" />
-        <div className="space-y-6">
-          <div className="bg-white border border-border rounded-lg p-6">
-            <div className="h-5 w-48 skeleton-shimmer rounded mb-3" />
-            <div className="h-4 w-32 skeleton-shimmer rounded" />
+        <div className="space-y-4 md:space-y-6">
+          <div className="bg-white border border-border rounded-lg p-4 md:p-6">
+            <div className="h-5 w-40 md:w-48 skeleton-shimmer rounded mb-3" />
+            <div className="h-4 w-28 md:w-32 skeleton-shimmer rounded" />
           </div>
-          <div className="bg-white border border-border rounded-lg p-6 space-y-4">
+          <div className="bg-white border border-border rounded-lg p-3 md:p-6 space-y-3 md:space-y-4">
             {[1, 2].map((i) => (
-              <div key={i} className="flex gap-4">
-                <div className="w-20 h-20 skeleton-shimmer rounded shrink-0" />
+              <div key={i} className="flex gap-3 md:gap-4">
+                <div className="w-14 h-14 md:w-20 md:h-20 skeleton-shimmer rounded shrink-0" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-4 w-3/4 skeleton-shimmer rounded" />
+                  <div className="h-3.5 md:h-4 w-3/4 skeleton-shimmer rounded" />
                   <div className="h-3 w-1/4 skeleton-shimmer rounded" />
                 </div>
               </div>
             ))}
           </div>
-          <div className="bg-white border border-border rounded-lg p-6 space-y-3">
-            <div className="h-4 w-40 skeleton-shimmer rounded" />
-            <div className="h-52 skeleton-shimmer rounded" />
+          <div className="bg-white border border-border rounded-lg p-3 md:p-6 space-y-3">
+            <div className="h-4 w-32 md:w-40 skeleton-shimmer rounded" />
+            <div className="h-44 md:h-52 skeleton-shimmer rounded" />
           </div>
         </div>
       </div>
@@ -208,13 +208,13 @@ export default function OrderDetailPage() {
 
       {/* Status banner */}
       <div
-        className={`border rounded-lg p-5 mb-6 ${badgeBg[order.status] ?? "bg-gray-50 border-gray-200"}`}
+        className={`border rounded-lg p-4 md:p-5 mb-6 ${badgeBg[order.status] ?? "bg-gray-50 border-gray-200"}`}
       >
         <div className="flex items-center gap-3">
           <div className={`${statusColors[order.status] ?? "text-gray-500"}`}>
             {statusIcon[order.status] ?? <Package size={16} />}
           </div>
-          <div>
+          <div className="min-w-0">
             <p
               className={`text-sm font-semibold ${statusColors[order.status] ?? "text-gray-500"}`}
             >
@@ -222,10 +222,10 @@ export default function OrderDetailPage() {
                 ? "Thanh toán thành công"
                 : (statusLabels[order.status] ?? order.status)}
             </p>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-[11px] md:text-xs text-muted-foreground mt-0.5 truncate">
               Đơn hàng #{order.orderCode || order.id.slice(0, 8)}
             </p>
-            <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-xs text-muted-foreground mt-1">
+            <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] md:text-xs text-muted-foreground mt-1">
               {order.createdAt && (
                 <span>
                   Ngày đặt:{" "}
@@ -260,44 +260,44 @@ export default function OrderDetailPage() {
       <div className="grid gap-6">
         {/* Products */}
         <section className="bg-white border border-border rounded-lg overflow-hidden">
-          <div className="px-5 py-3 border-b border-border bg-muted/30">
+          <div className="px-3 md:px-5 py-3 border-b border-border bg-muted/30">
             <p className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
               Sản phẩm ({order.items.length})
             </p>
           </div>
           <div className="divide-y divide-border">
             {order.items.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-4 px-5 py-4">
+              <div key={idx} className="flex items-center gap-3 md:gap-4 px-3 md:px-5 py-3 md:py-4">
                 {item.image ? (
                   <Link href={`/shop/${item.productSlug}`} className="shrink-0">
-                    <div className="w-20 h-20 relative bg-muted rounded overflow-hidden">
+                    <div className="w-14 h-14 md:w-20 md:h-20 relative bg-muted rounded overflow-hidden">
                       <Image
                         src={item.image}
                         alt={item.name}
                         fill
-                        sizes="80px"
+                        sizes="(max-width: 768px) 56px, 80px"
                         className="object-cover"
                       />
                     </div>
                   </Link>
                 ) : (
-                  <div className="w-20 h-20 bg-muted rounded shrink-0" />
+                  <div className="w-14 h-14 md:w-20 md:h-20 bg-muted rounded shrink-0" />
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium">{item.name}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs md:text-sm font-medium line-clamp-2">{item.name}</p>
+                  <p className="text-[11px] md:text-xs text-muted-foreground mt-0.5 md:mt-1">
                     {formatPrice(item.price)} × {item.quantity}
                   </p>
                 </div>
-                <p className="text-sm font-semibold shrink-0">
+                <p className="text-xs md:text-sm font-semibold shrink-0">
                   {formatPrice(item.price * item.quantity)}
                 </p>
               </div>
             ))}
           </div>
-          <div className="border-t border-border px-5 py-4 flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Tổng cộng</span>
-            <span className="text-xl font-bold text-primary">
+          <div className="border-t border-border px-3 md:px-5 py-3 md:py-4 flex items-center justify-between">
+            <span className="text-xs md:text-sm text-muted-foreground">Tổng cộng</span>
+            <span className="text-lg md:text-xl font-bold text-primary">
               {formatPrice(order.totalAmount)}
             </span>
           </div>
@@ -306,7 +306,7 @@ export default function OrderDetailPage() {
         {/* Shipping */}
         {order.shippingAddress && (
           <section className="bg-white border border-border rounded-lg overflow-hidden">
-            <div className="px-5 py-3 border-b border-border bg-muted/30">
+            <div className="px-3 md:px-5 py-3 border-b border-border bg-muted/30">
               <div className="flex items-center gap-2">
                 <MapPin size={13} className="text-muted-foreground" />
                 <p className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
@@ -314,16 +314,16 @@ export default function OrderDetailPage() {
                 </p>
               </div>
             </div>
-            <div className="px-5 py-4 space-y-2">
-              <p className="text-sm font-medium">{order.shippingName}</p>
-              <p className="text-sm text-muted-foreground">
+            <div className="px-3 md:px-5 py-3 md:py-4 space-y-1.5 md:space-y-2">
+              <p className="text-xs md:text-sm font-medium">{order.shippingName}</p>
+              <p className="text-xs md:text-sm text-muted-foreground">
                 {order.shippingPhone}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground">
                 {order.shippingAddress}
               </p>
               {order.shippingNote && (
-                <p className="text-sm text-muted-foreground italic">
+                <p className="text-xs md:text-sm text-muted-foreground italic">
                   &quot;{order.shippingNote}&quot;
                 </p>
               )}
@@ -334,7 +334,7 @@ export default function OrderDetailPage() {
         {/* Payment — pending only */}
         {order.status === "pending" && (
           <section className="bg-white border border-border rounded-lg overflow-hidden">
-            <div className="px-5 py-3 border-b border-border bg-muted/30">
+            <div className="px-3 md:px-5 py-3 border-b border-border bg-muted/30">
               <div className="flex items-center gap-2">
                 <CreditCard size={13} className="text-muted-foreground" />
                 <p className="text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
@@ -342,7 +342,7 @@ export default function OrderDetailPage() {
                 </p>
               </div>
             </div>
-            <div className="px-5 py-5">
+            <div className="px-3 md:px-5 py-4 md:py-5">
               {paySuccess ? (
                 <div className="text-center py-6">
                   <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
@@ -374,21 +374,21 @@ export default function OrderDetailPage() {
         )}
 
         {/* Actions */}
-        <div className="flex gap-3">
+        <div className="flex gap-2 md:gap-3">
           {isPending && (
             <button
               type="button"
               onClick={() => setShowCancel(true)}
-              className="flex items-center justify-center gap-2 border border-red-200 text-red-500 text-xs tracking-widest px-6 py-3 rounded-lg hover:bg-red-50 hover:border-red-300 transition-colors"
+              className="flex items-center justify-center gap-1.5 md:gap-2 border border-red-200 text-red-500 text-[11px] md:text-xs tracking-widest px-4 md:px-6 py-2.5 md:py-3 rounded-lg hover:bg-red-50 hover:border-red-300 transition-colors"
             >
-              <XCircle size={14} />
-              HỦY ĐƠN HÀNG
+              <XCircle size={13} />
+              HỦY ĐƠN
             </button>
           )}
           {order.status === "delivered" && (
             <Link
               href="/shop"
-              className="flex items-center justify-center gap-2 bg-primary text-white text-xs tracking-widest px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
+              className="flex items-center justify-center gap-1.5 md:gap-2 bg-primary text-white text-[11px] md:text-xs tracking-widest px-4 md:px-6 py-2.5 md:py-3 rounded-lg hover:bg-primary/90 transition-colors"
             >
               MUA LẠI
             </Link>
@@ -478,10 +478,10 @@ function PaymentSection({
 
       {/* Amount */}
       <div className="text-center">
-        <p className="text-sm text-muted-foreground mb-1">
+        <p className="text-xs md:text-sm text-muted-foreground mb-1">
           Số tiền cần thanh toán
         </p>
-        <p className="text-3xl font-bold text-primary">
+        <p className="text-2xl md:text-3xl font-bold text-primary">
           {formatPrice(payment.amountVnd)}
         </p>
       </div>
@@ -489,25 +489,25 @@ function PaymentSection({
       {/* QR */}
       {pi.qrCodeUrl && (
         <div className="flex justify-center">
-          <div className="border-2 border-primary/20 rounded-2xl p-3 bg-white shadow-sm">
+          <div className="border-2 border-primary/20 rounded-2xl p-2 md:p-3 bg-white shadow-sm">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={pi.qrCodeUrl}
               alt="QR thanh toán"
               width={220}
               height={220}
-              className="rounded-xl"
+              className="rounded-xl w-[180px] h-[180px] md:w-[220px] md:h-[220px]"
             />
           </div>
         </div>
       )}
 
       {/* Bank info */}
-      <div className="bg-muted/50 rounded-lg p-4 space-y-2.5">
+      <div className="bg-muted/50 rounded-lg p-3 md:p-4 space-y-2 md:space-y-2.5">
         <CopyableRow label="Ngân hàng" value={pi.bankName} />
-        <CopyableRow label="Số tài khoản" value={pi.accountNumber} />
-        <CopyableRow label="Chủ tài khoản" value={pi.accountName} />
-        <div className="border-t border-border pt-2.5">
+        <CopyableRow label="Số TK" value={pi.accountNumber} />
+        <CopyableRow label="Chủ TK" value={pi.accountName} />
+        <div className="border-t border-border pt-2 md:pt-2.5">
           <CopyableRow
             label="Nội dung CK"
             value={pi.transferContent}
@@ -521,7 +521,7 @@ function PaymentSection({
         type="button"
         onClick={onCheck}
         disabled={checking || expired}
-        className="w-full flex items-center justify-center gap-2 bg-primary text-white text-sm font-medium px-4 py-3 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-2 bg-primary text-white text-xs md:text-sm font-medium px-4 py-2.5 md:py-3 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
       >
         <RefreshCw size={14} className={checking ? "animate-spin" : ""} />
         {checking
@@ -565,11 +565,11 @@ function CopyableRow({
     }
   };
   return (
-    <div className="flex items-center justify-between gap-2 text-sm">
+    <div className="flex items-center justify-between gap-2 text-xs md:text-sm">
       <span className="text-muted-foreground shrink-0">{label}</span>
       <div className="flex items-center gap-1.5 min-w-0">
         <span
-          className={`truncate font-mono ${highlight ? "font-bold text-primary" : "font-medium"}`}
+          className={`truncate font-mono text-[11px] md:text-sm ${highlight ? "font-bold text-primary" : "font-medium"}`}
         >
           {value}
         </span>

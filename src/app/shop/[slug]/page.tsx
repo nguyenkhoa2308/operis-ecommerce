@@ -147,32 +147,28 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex flex-col md:flex-row gap-10">
-          {/* Image skeleton */}
+      <div className="max-w-7xl mx-auto px-4 py-6 md:py-12">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
           <div className="flex-1">
             <div className="aspect-square skeleton-shimmer rounded-lg" />
           </div>
-          {/* Info skeleton */}
-          <div className="flex-1 space-y-4">
-            <div className="h-7 w-3/4 skeleton-shimmer rounded" />
+          <div className="flex-1 space-y-3 md:space-y-4">
+            <div className="h-6 md:h-7 w-3/4 skeleton-shimmer rounded" />
             <div className="h-4 w-20 skeleton-shimmer rounded" />
-            <div className="h-8 w-1/3 skeleton-shimmer rounded" />
+            <div className="h-7 md:h-8 w-1/3 skeleton-shimmer rounded" />
             <div className="space-y-2">
               <div className="h-3 w-full skeleton-shimmer rounded" />
               <div className="h-3 w-5/6 skeleton-shimmer rounded" />
-              <div className="h-3 w-4/6 skeleton-shimmer rounded" />
             </div>
-            <div className="grid grid-cols-3 gap-3 pt-2">
+            <div className="grid grid-cols-3 gap-2 md:gap-3 pt-2">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-20 skeleton-shimmer rounded-lg" />
+                <div key={i} className="h-16 md:h-20 skeleton-shimmer rounded-lg" />
               ))}
             </div>
             <div className="h-4 w-32 skeleton-shimmer rounded" />
-            <div className="flex gap-4 pt-2">
-              <div className="h-11 w-28 skeleton-shimmer rounded" />
-              <div className="h-11 w-32 skeleton-shimmer rounded" />
-              <div className="h-11 w-36 skeleton-shimmer rounded" />
+            <div className="space-y-2 pt-2">
+              <div className="h-11 w-full md:w-48 skeleton-shimmer rounded-lg" />
+              <div className="h-11 w-full md:w-40 skeleton-shimmer rounded-lg" />
             </div>
           </div>
         </div>
@@ -191,10 +187,10 @@ export default function ProductDetailPage() {
     );
   }
 
-  const tabs: { key: Tab; label: string }[] = [
-    { key: "description", label: "MÔ TẢ" },
-    { key: "specs", label: "THÔNG SỐ KỸ THUẬT" },
-    { key: "reviews", label: "ĐÁNH GIÁ & HỎI ĐÁP" },
+  const tabs: { key: Tab; label: string; shortLabel: string }[] = [
+    { key: "description", label: "MÔ TẢ", shortLabel: "MÔ TẢ" },
+    { key: "specs", label: "THÔNG SỐ KỸ THUẬT", shortLabel: "THÔNG SỐ" },
+    { key: "reviews", label: "ĐÁNH GIÁ & HỎI ĐÁP", shortLabel: "ĐÁNH GIÁ" },
   ];
 
   const handleAddToCart = () => {
@@ -209,16 +205,16 @@ export default function ProductDetailPage() {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex flex-col md:flex-row gap-10">
+      <div className="max-w-7xl mx-auto px-4 py-6 md:py-12">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
           {/* Ảnh */}
           <div className="flex-1">
-            <div className="relative aspect-square bg-muted overflow-hidden">
+            <div className="relative aspect-square bg-muted overflow-hidden rounded-lg">
               <Image
                 src={product.image}
                 alt={product.name}
                 fill
-                sizes="50vw"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
                 priority
               />
@@ -227,19 +223,19 @@ export default function ProductDetailPage() {
 
           {/* Thông tin */}
           <div className="flex-1">
-            <h1 className="text-2xl font-semibold tracking-tight mb-2 uppercase">
+            <h1 className="text-xl md:text-2xl font-semibold tracking-tight mb-2 uppercase">
               {product.name}
             </h1>
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-2 md:mb-3">
               <Star size={14} className="fill-yellow-400 text-yellow-400" />
               <span className="text-sm text-muted-foreground">
                 {product.rating}
               </span>
             </div>
-            <p className="text-2xl text-primary font-bold mb-4">
+            <p className="text-xl md:text-2xl text-primary font-bold mb-3 md:mb-4">
               {product.price === 0 ? "Liên hệ" : formatPrice(product.price)}
             </p>
-            <p className="text-md text-muted-foreground leading-relaxed line-clamp-3">
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed line-clamp-3">
               {product.description}
             </p>
             <button
@@ -252,76 +248,80 @@ export default function ProductDetailPage() {
                     ?.scrollIntoView({ behavior: "smooth" });
                 }, 50);
               }}
-              className="text-sm text-primary hover:underline underline-offset-2 mt-1 mb-6"
+              className="text-sm text-primary hover:underline underline-offset-2 mt-1 mb-4 md:mb-6"
             >
               Xem thêm
             </button>
 
             {/* Thông số nổi bật */}
-            <div className="mb-6">
-              <div className="grid grid-cols-3 gap-3">
+            <div className="mb-4 md:mb-6">
+              <div className="grid grid-cols-3 gap-2 md:gap-3">
                 {getHighlightSpecs(product.fullSpecs).map((spec) => (
                   <div
                     key={spec.id}
-                    className="bg-muted/60 border border-border/50 rounded-lg px-3 py-3 text-center"
+                    className="bg-muted/60 border border-border/50 rounded-lg px-2 md:px-3 py-2.5 md:py-3 text-center"
                   >
-                    <div className="text-primary mb-1.5 flex justify-center">
-                      {labelIcons[spec.label] ?? <Box size={18} />}
+                    <div className="text-primary mb-1 md:mb-1.5 flex justify-center">
+                      {labelIcons[spec.label] ?? <Box size={16} />}
                     </div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-0.5">
+                    <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider mb-0.5">
                       {spec.label}
                     </p>
-                    <p className="text-[13px] font-semibold">{spec.value}</p>
+                    <p className="text-xs md:text-[13px] font-semibold">{spec.value}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-sm text-muted-foreground mb-3 md:mb-4">
               <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1.5 align-middle" />
               Còn {product.stock} sản phẩm
             </p>
 
             {/* Số lượng + Nút */}
             {product.price === 0 ? (
-              <div className="mb-6">
+              <div className="mb-4 md:mb-6">
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 bg-primary text-white text-sm tracking-widest px-8 py-3 hover:bg-primary/90 transition-colors"
+                  className="inline-flex items-center gap-2 bg-primary text-white text-xs md:text-sm tracking-widest px-6 md:px-8 py-3 hover:bg-primary/90 transition-colors rounded-lg"
                 >
                   LIÊN HỆ TƯ VẤN
                 </Link>
               </div>
             ) : (
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex items-center border border-border">
+              <div className="mb-4 md:mb-6 space-y-3">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="flex items-center border border-border rounded-lg">
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="px-3 py-2.5 text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label="Giảm số lượng"
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className="px-3 md:px-4 py-2.5 text-sm min-w-[36px] text-center">
+                      {quantity}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((q) => q + 1)}
+                      className="px-3 py-2.5 text-muted-foreground hover:text-foreground transition-colors"
+                      aria-label="Tăng số lượng"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
                   <button
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
+                    onClick={handleBuyNow}
+                    className="flex-1 md:flex-none bg-primary text-white text-xs md:text-sm tracking-widest px-6 md:px-8 py-3 hover:bg-primary-dark transition-colors rounded-lg"
                   >
-                    {""}
-                    <Minus size={14} />
-                  </button>
-                  <span className="px-4 py-2 text-sm min-w-[40px] text-center">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => setQuantity((q) => q + 1)}
-                    className="px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {""}
-                    <Plus size={14} />
+                    MUA NGAY
                   </button>
                 </div>
                 <button
-                  onClick={handleBuyNow}
-                  className="bg-primary text-white text-sm tracking-widest px-8 py-3 hover:bg-primary-dark transition-colors"
-                >
-                  MUA NGAY
-                </button>
-                <button
                   onClick={handleAddToCart}
-                  className="bg-foreground text-white text-sm tracking-widest px-8 py-3 hover:bg-foreground/90 transition-colors"
+                  className="w-full md:w-auto bg-foreground text-white text-xs md:text-sm tracking-widest px-6 md:px-8 py-3 hover:bg-foreground/90 transition-colors rounded-lg"
                 >
                   THÊM GIỎ HÀNG
                 </button>
@@ -365,19 +365,21 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Tabs */}
-        <div id="product-tabs" className="mt-16 scroll-mt-20">
-          <div className="flex gap-8 border-b border-border mb-8">
+        <div id="product-tabs" className="mt-10 md:mt-16 scroll-mt-20">
+          <div className="flex gap-4 md:gap-8 border-b border-border mb-6 md:mb-8">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
+                type="button"
                 onClick={() => setActiveTab(tab.key)}
-                className={`text-sm tracking-widest pb-3 transition-colors border-b-2 ${
+                className={`text-xs md:text-sm tracking-widest pb-3 transition-colors border-b-2 whitespace-nowrap ${
                   activeTab === tab.key
                     ? "text-primary border-primary"
                     : "text-muted-foreground border-transparent hover:text-foreground"
                 }`}
               >
-                {tab.label}
+                <span className="md:hidden">{tab.shortLabel}</span>
+                <span className="hidden md:inline">{tab.label}</span>
               </button>
             ))}
           </div>
@@ -441,10 +443,10 @@ export default function ProductDetailPage() {
                                 key={spec.id}
                                 className={`${i % 2 === 0 ? "bg-white" : "bg-muted/30"} hover:bg-primary/5 transition-colors`}
                               >
-                                <td className="text-sm font-medium text-muted-foreground px-5 py-3 w-[200px] md:w-[240px] align-top whitespace-nowrap">
+                                <td className="text-xs md:text-sm font-medium text-muted-foreground px-3 md:px-5 py-2.5 md:py-3 w-[120px] md:w-[240px] align-top">
                                   {spec.label}
                                 </td>
-                                <td className="text-sm text-foreground px-5 py-3">
+                                <td className="text-xs md:text-sm text-foreground px-3 md:px-5 py-2.5 md:py-3">
                                   {spec.value}
                                 </td>
                               </tr>
@@ -465,9 +467,9 @@ export default function ProductDetailPage() {
 
         {/* Sản phẩm liên quan */}
         {related.length > 0 && (
-          <div className="mt-16">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-lg font-semibold tracking-widest">
+          <div className="mt-10 md:mt-16">
+            <div className="flex items-center justify-between mb-6 md:mb-8">
+              <h2 className="text-sm md:text-lg font-semibold tracking-widest">
                 SẢN PHẨM LIÊN QUAN
               </h2>
               <Link
@@ -477,7 +479,7 @@ export default function ProductDetailPage() {
                 XEM TẤT CẢ
               </Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               {related.map((p, i) => (
                 <ProductCard key={p.slug} product={p} index={i} />
               ))}

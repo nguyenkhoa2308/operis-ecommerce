@@ -460,18 +460,26 @@ export default function Header() {
             ))}
           </div>
 
-          <p className="text-[10px] tracking-widest text-muted-foreground mt-6 mb-2 font-semibold">
+          <Link
+            href="/shop"
+            className={`text-sm tracking-widest py-3 border-b border-border/50 ${
+              pathname.startsWith("/shop")
+                ? "text-primary font-medium"
+                : "text-foreground"
+            }`}
+            onClick={() => setMobileOpen(false)}
+          >
             SẢN PHẨM
-          </p>
-          <div className="flex flex-col gap-1">
+          </Link>
+          <div className="flex flex-col gap-1 pl-4 mt-1">
             {categories.map((cat) => (
               <Link
                 key={cat.label}
                 href={cat.href}
-                className="flex items-center gap-3 py-3 text-sm text-foreground hover:text-primary transition-colors border-b border-border/50"
+                className="flex items-center gap-3 py-2.5 text-sm text-muted-foreground hover:text-primary transition-colors border-b border-border/50"
                 onClick={() => setMobileOpen(false)}
               >
-                <cat.icon size={16} />
+                <cat.icon size={14} />
                 {cat.label}
               </Link>
             ))}
