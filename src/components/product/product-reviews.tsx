@@ -112,6 +112,7 @@ export function ProductReviews({ productSlug }: { productSlug: string }) {
       const [revRes, qaRes] = await Promise.all([
         reviewsApi.getReviews(productSlug),
         questionsApi.getQuestions(productSlug),
+        new Promise((r) => setTimeout(r, 600)),
       ]);
       setReviews(revRes.reviews);
       setAvgRating(revRes.avgRating);
@@ -197,8 +198,42 @@ export function ProductReviews({ productSlug }: { productSlug: string }) {
 
   if (loading) {
     return (
-      <div className="flex justify-center py-12">
-        <Loader2 className="animate-spin text-muted-foreground" size={24} />
+      <div className="space-y-6 animate-pulse">
+        {/* Sub-tab skeleton */}
+        <div className="flex gap-6 mb-2">
+          <div className="h-4 w-24 bg-muted rounded" />
+          <div className="h-4 w-20 bg-muted rounded" />
+        </div>
+        {/* Rating summary skeleton */}
+        <div className="flex items-center gap-6 p-5 bg-muted/50 rounded-lg">
+          <div className="text-center space-y-2">
+            <div className="h-10 w-14 bg-muted rounded mx-auto" />
+            <div className="h-3 w-20 bg-muted rounded" />
+          </div>
+          <div className="flex-1 space-y-2">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div className="h-2 flex-1 bg-muted rounded-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Review cards skeleton */}
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="border-b border-border pb-6">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-full bg-muted" />
+              <div className="space-y-1.5">
+                <div className="h-3 w-24 bg-muted rounded" />
+                <div className="h-3 w-16 bg-muted rounded" />
+              </div>
+            </div>
+            <div className="ml-11 space-y-2">
+              <div className="h-3 w-full bg-muted rounded" />
+              <div className="h-3 w-3/4 bg-muted rounded" />
+            </div>
+          </div>
+        ))}
       </div>
     );
   }

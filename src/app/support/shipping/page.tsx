@@ -1,4 +1,24 @@
+import type { Metadata } from "next";
 import { Truck, Clock, MapPin, Shield, CreditCard, Package } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Chính sách Vận chuyển",
+  description:
+    "Thông tin chi tiết về chính sách vận chuyển, thời gian giao hàng và phí ship tại Operis.",
+  alternates: { canonical: "/support/shipping" },
+  openGraph: {
+    title: "Chính sách Vận chuyển | Operis",
+    description:
+      "Thông tin chi tiết về chính sách vận chuyển, thời gian giao hàng và phí ship tại Operis.",
+    url: "https://operis.vn/support/shipping",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Chính sách Vận chuyển | Operis",
+    description:
+      "Thông tin chi tiết về chính sách vận chuyển, thời gian giao hàng và phí ship tại Operis.",
+  },
+};
 import Link from "next/link";
 import { PageBanner } from "@/components/ui/page-banner";
 import { SubscribeSection } from "@/components/home/subscribe-section";

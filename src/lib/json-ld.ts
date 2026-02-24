@@ -104,3 +104,41 @@ export function faqPageJsonLd(items: { question: string; answer: string }[]) {
     })),
   };
 }
+
+export function organizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Operis",
+    url: SITE_URL,
+    logo: `${SITE_URL}/images/logo.png`,
+    description:
+      "Operisbot — Thiết bị Mini PC tự động hóa AI chạy 24/7, phục vụ cá nhân và doanh nghiệp.",
+    founder: { "@type": "Person", name: "Lê Tiến Hùng" },
+    foundingDate: "2024",
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+84-779-886-666",
+      contactType: "customer service",
+      email: "hungle@hagency.vn",
+      availableLanguage: "Vietnamese",
+    },
+    sameAs: [],
+  };
+}
+
+export function localBusinessJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Operis",
+    url: SITE_URL,
+    telephone: "+84-779-886-666",
+    email: "hungle@hagency.vn",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "VN",
+    },
+    priceRange: "$$",
+  };
+}

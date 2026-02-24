@@ -54,7 +54,13 @@ export const metadata: Metadata = {
     "OpenClaw",
   ],
   alternates: {
-    canonical: "https://operis.vn/about",
+    canonical: "/about",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Giới thiệu Operisbot — Thiết bị tự động hóa AI | Operis",
+    description:
+      "Hệ thống tự động hóa AI: tuyển dụng, báo cáo thuế, marketing SEO, chăm sóc khách hàng — tất cả chạy trên Mini PC chuyên dụng 24/7.",
   },
 };
 

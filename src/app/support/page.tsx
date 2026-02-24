@@ -1,4 +1,24 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Trung tâm Hỗ trợ — Operis",
+  description:
+    "Tìm câu trả lời, theo dõi đơn hàng, chính sách đổi trả và vận chuyển tại trung tâm hỗ trợ Operis.",
+  alternates: { canonical: "/support" },
+  openGraph: {
+    title: "Trung tâm Hỗ trợ — Operis",
+    description:
+      "Tìm câu trả lời, theo dõi đơn hàng, chính sách đổi trả và vận chuyển tại trung tâm hỗ trợ Operis.",
+    url: "https://operis.vn/support",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Trung tâm Hỗ trợ — Operis",
+    description:
+      "Tìm câu trả lời, theo dõi đơn hàng, chính sách đổi trả và vận chuyển tại trung tâm hỗ trợ Operis.",
+  },
+};
 import { HelpCircle, Truck, RotateCcw, PackageSearch, MessageCircle } from "lucide-react";
 import { PageBanner } from "@/components/ui/page-banner";
 import { SubscribeSection } from "@/components/home/subscribe-section";

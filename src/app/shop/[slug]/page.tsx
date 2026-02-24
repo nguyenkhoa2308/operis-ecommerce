@@ -43,15 +43,22 @@ export async function generateMetadata({
   const { slug } = await params;
   try {
     const product = await getProductServer(slug);
+    const desc = product.description.slice(0, 160);
     return {
       title: `${product.name} | Operis`,
-      description: product.description.slice(0, 160),
+      description: desc,
+      alternates: { canonical: `/shop/${slug}` },
       openGraph: {
         title: product.name,
-        description: product.description.slice(0, 160),
+        description: desc,
         images: product.image ? [{ url: product.image }] : [],
         type: "website",
         url: `https://operis.vn/shop/${slug}`,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: product.name,
+        description: desc,
       },
     };
   } catch {

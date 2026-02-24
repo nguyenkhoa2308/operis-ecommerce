@@ -1,4 +1,24 @@
+import type { Metadata } from "next";
 import { RotateCcw, Clock, AlertTriangle, CheckCircle, XCircle, ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Chính sách Đổi trả",
+  description:
+    "Chính sách đổi trả sản phẩm, điều kiện hoàn tiền và quy trình xử lý tại Operis.",
+  alternates: { canonical: "/support/return-policy" },
+  openGraph: {
+    title: "Chính sách Đổi trả | Operis",
+    description:
+      "Chính sách đổi trả sản phẩm, điều kiện hoàn tiền và quy trình xử lý tại Operis.",
+    url: "https://operis.vn/support/return-policy",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Chính sách Đổi trả | Operis",
+    description:
+      "Chính sách đổi trả sản phẩm, điều kiện hoàn tiền và quy trình xử lý tại Operis.",
+  },
+};
 import Link from "next/link";
 import { PageBanner } from "@/components/ui/page-banner";
 import { SubscribeSection } from "@/components/home/subscribe-section";

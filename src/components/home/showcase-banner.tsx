@@ -1,9 +1,7 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ConcentricCircles } from "@/components/ui/decorative-pattern";
+import { FadeIn } from "@/components/ui/motion";
 import { Play, ArrowRight } from "lucide-react";
 
 export function ShowcaseBanner() {
@@ -30,13 +28,7 @@ export function ShowcaseBanner() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 h-full flex items-center">
-        <motion.div
-          className="max-w-xl"
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <FadeIn direction="left" className="max-w-xl">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-5">
             <Play size={12} className="text-emerald fill-emerald" />
             <span className="text-xs tracking-widest text-white/80 font-medium">
@@ -66,7 +58,7 @@ export function ShowcaseBanner() {
               TÌM HIỂU THÊM
             </Link>
           </div>
-        </motion.div>
+        </FadeIn>
       </div>
     </section>
   );

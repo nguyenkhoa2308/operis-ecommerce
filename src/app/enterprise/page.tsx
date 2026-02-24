@@ -37,6 +37,20 @@ export const metadata: Metadata = {
   title: "Enterprise — Giải pháp tự động hóa cho Doanh nghiệp | Operisbot",
   description:
     "Tùy biến phần cứng, Token, Workflow theo nhu cầu doanh nghiệp. Giảm 80% chi phí vận hành, tăng năng suất gấp 10 lần với Operisbot Enterprise.",
+  alternates: { canonical: "/enterprise" },
+  openGraph: {
+    title: "Enterprise — Giải pháp tự động hóa cho Doanh nghiệp | Operisbot",
+    description:
+      "Tùy biến phần cứng, Token, Workflow theo nhu cầu doanh nghiệp. Giảm 80% chi phí vận hành, tăng năng suất gấp 10 lần với Operisbot Enterprise.",
+    url: "https://operis.vn/enterprise",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Enterprise — Giải pháp tự động hóa cho Doanh nghiệp | Operisbot",
+    description:
+      "Tùy biến phần cứng, Token, Workflow theo nhu cầu doanh nghiệp. Giảm 80% chi phí vận hành, tăng năng suất gấp 10 lần với Operisbot Enterprise.",
+  },
 };
 
 /* ================================================================== */

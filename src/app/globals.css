@@ -88,14 +88,15 @@ a:focus-visible {
   animation: slide-down 0.3s ease-out;
 }
 
-/* Toast progress bar */
+/* Toast progress bar (uses scaleX for GPU compositing) */
 @keyframes toast-progress {
-  from { width: 100%; }
-  to { width: 0%; }
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
 }
 
 .animate-toast-progress {
   animation: toast-progress 3s linear forwards;
+  transform-origin: left;
 }
 
 /* Button bounce-in for check icon */
@@ -149,6 +150,47 @@ a:focus-visible {
 .animate-fade-in {
   animation: fade-in 0.35s ease-out;
 }
+
+/* ---- Scroll-reveal animations (replaces framer-motion) ---- */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal-down {
+  from { opacity: 0; transform: translateY(-40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal-left {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes reveal-right {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes reveal-scale {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+[data-reveal] {
+  opacity: 0;
+}
+
+[data-reveal].revealed {
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+[data-reveal="up"].revealed { animation-name: reveal-up; }
+[data-reveal="down"].revealed { animation-name: reveal-down; }
+[data-reveal="left"].revealed { animation-name: reveal-left; }
+[data-reveal="right"].revealed { animation-name: reveal-right; }
+[data-reveal="scale"].revealed { animation-name: reveal-scale; }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

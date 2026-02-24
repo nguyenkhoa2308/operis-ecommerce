@@ -1,9 +1,7 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { FadeIn } from "@/components/ui/motion";
 
 export function CtaSection() {
   return (
@@ -20,13 +18,7 @@ export function CtaSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/70 to-foreground/40" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 h-full flex items-center">
-        <motion.div
-          className="max-w-xl"
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+        <FadeIn direction="left" className="max-w-xl">
           <p className="text-sm tracking-[0.3em] text-sky/80 mb-2 flex items-center gap-2">
             <span className="w-6 h-px bg-sky/60" />
             THIẾT BỊ RIÊNG — DỮ LIỆU RIÊNG
@@ -53,7 +45,7 @@ export function CtaSection() {
               TÌM HIỂU THÊM
             </Link>
           </div>
-        </motion.div>
+        </FadeIn>
       </div>
     </section>
   );

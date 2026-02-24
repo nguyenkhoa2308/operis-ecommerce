@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ConcentricCircles } from "@/components/ui/decorative-pattern";
 import { TypeWriter } from "@/components/ui/motion";
 import { Bot, Cpu, Zap } from "lucide-react";
@@ -43,12 +43,7 @@ export default function HeroSection() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-12 md:pt-20 md:pb-24 flex flex-col-reverse md:flex-row items-center min-h-0 md:min-h-[540px]">
-        <motion.div
-          className="flex-1 z-10 text-center md:text-left"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
+        <div className="flex-1 z-10 text-center md:text-left animate-fade-in">
           <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/15 rounded-full px-3 md:px-4 py-1.5 mb-4 md:mb-6">
             <span className="w-2 h-2 rounded-full bg-emerald animate-pulse" />
             <span className="text-[10px] md:text-xs tracking-widest text-primary font-medium">
@@ -67,7 +62,6 @@ export default function HeroSection() {
                 { text: "CẮM LÀ CHẠY." },
               ]}
               charDelay={0.045}
-              lineDelay={0.35}
             />
           </h1>
           <p className="text-muted-foreground mt-4 text-lg md:text-xl max-w-lg leading-relaxed">
@@ -77,12 +71,7 @@ export default function HeroSection() {
             Giúp doanh nghiệp giảm 80% chi phí, tăng tốc phát triển và có cái
             nhìn toàn diện nhất để đưa ra quyết định chính xác.
           </p>
-          <motion.div
-            className="flex flex-wrap justify-center md:justify-start gap-3 mt-6 md:mt-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
+          <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-6 md:mt-8">
             <Link
               href="/shop"
               className="bg-primary text-white text-xs tracking-widest px-6 md:px-8 py-3 hover:bg-primary-dark transition-colors rounded-full shadow-lg shadow-primary/20"
@@ -95,50 +84,51 @@ export default function HeroSection() {
             >
               TÌM HIỂU THÊM
             </Link>
-          </motion.div>
+          </div>
 
           {/* Stats row */}
-          <motion.div
-            className="flex justify-center md:justify-start gap-6 md:gap-8 mt-8 md:mt-10 pt-6 md:pt-8 border-t border-border/50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            {stats.map((s, i) => (
-              <motion.div
-                key={s.label}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.6 + i * 0.1 }}
-              >
+          <div className="flex justify-center md:justify-start gap-6 md:gap-8 mt-8 md:mt-10 pt-6 md:pt-8 border-t border-border/50">
+            {stats.map((s) => (
+              <div key={s.label}>
                 <p className="text-2xl md:text-3xl font-extrabold text-foreground">
                   {s.value}
                 </p>
                 <p className="text-sm text-muted-foreground tracking-wide mt-0.5">
                   {s.label}
                 </p>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <motion.div
-          className="flex-1 relative mb-4 md:mb-0 flex justify-center"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-        >
+        <div className="flex-1 relative mb-4 md:mb-0 flex justify-center animate-fade-in">
           {/* Glowing ring behind 3D */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] md:w-[460px] md:h-[460px] rounded-full border border-primary/10 bg-primary/[0.03]" />
           </div>
-          {/* Three.js 3D Mini PC */}
-          <div className="relative z-10 w-full">
+
+          {/* Mobile: static image (no Three.js) */}
+          <div className="relative z-10 w-full md:hidden">
+            <div className="relative w-[240px] h-[240px] mx-auto">
+              <Image
+                src="/images/hero.png"
+                alt="Operisbot Mini PC"
+                fill
+                sizes="240px"
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+
+          {/* Desktop: Three.js 3D Mini PC */}
+          <div className="relative z-10 w-full hidden md:block">
             <HeroProduct3D />
           </div>
+
           {/* Reflection glow */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-8 md:h-12 bg-primary/10 rounded-full blur-2xl" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

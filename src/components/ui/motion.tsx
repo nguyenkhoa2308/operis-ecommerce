@@ -1,20 +1,46 @@
 "use client";
 
-import { motion, type Variants, AnimatePresence } from "framer-motion";
-import { useEffect, useState, type ComponentProps, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 
 /* ------------------------------------------------------------------ */
-/*  Reusable scroll-reveal wrapper                                     */
+/*  Lightweight IntersectionObserver hook (replaces framer-motion)      */
+/* ------------------------------------------------------------------ */
+
+function useReveal<T extends HTMLElement>(once = true) {
+  const ref = useRef<T>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          if (once) observer.disconnect();
+        }
+      },
+      { rootMargin: "-60px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [once]);
+
+  return { ref, visible };
+}
+
+/* ------------------------------------------------------------------ */
+/*  FadeIn — scroll-reveal wrapper (CSS-only animation)                */
 /* ------------------------------------------------------------------ */
 
 type Direction = "up" | "down" | "left" | "right";
-
-const offsets: Record<Direction, { x: number; y: number }> = {
-  up: { x: 0, y: 40 },
-  down: { x: 0, y: -40 },
-  left: { x: 40, y: 0 },
-  right: { x: -40, y: 0 },
-};
 
 interface FadeInProps {
   children: ReactNode;
@@ -33,17 +59,21 @@ export function FadeIn({
   className = "",
   once = true,
 }: FadeInProps) {
-  const { x, y } = offsets[direction];
+  const { ref, visible } = useReveal<HTMLDivElement>(once);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, x, y }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once, margin: "-60px" }}
-      transition={{ duration, delay, ease: "easeOut" }}
-      className={className}
+    <div
+      ref={ref}
+      data-reveal={direction}
+      className={`${visible ? "revealed" : ""} ${className}`}
+      style={
+        visible
+          ? { animationDuration: `${duration}s`, animationDelay: `${delay}s` }
+          : undefined
+      }
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -51,44 +81,26 @@ export function FadeIn({
 /*  Staggered children container                                       */
 /* ------------------------------------------------------------------ */
 
-const staggerContainer: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const staggerItem: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease: "easeOut" },
-  },
-};
-
 export function StaggerContainer({
   children,
   className = "",
   staggerDelay = 0.1,
-  ...props
-}: ComponentProps<typeof motion.div> & { staggerDelay?: number }) {
+}: {
+  children: ReactNode;
+  className?: string;
+  staggerDelay?: number;
+}) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+
   return (
-    <motion.div
-      variants={{
-        hidden: {},
-        visible: { transition: { staggerChildren: staggerDelay } },
-      }}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+    <div
+      ref={ref}
       className={className}
-      {...props}
+      data-stagger-visible={visible ? "true" : "false"}
+      style={{ "--stagger-delay": `${staggerDelay}s` } as React.CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -99,15 +111,54 @@ export function StaggerItem({
   children: ReactNode;
   className?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const parent = el.closest("[data-stagger-visible]");
+    if (!parent) return;
+
+    /* Calculate child index for stagger delay */
+    const siblings = parent.querySelectorAll(":scope > [data-stagger-item]");
+    siblings.forEach((s, i) => {
+      if (s === el) setIndex(i);
+    });
+
+    const check = () => {
+      if (parent.getAttribute("data-stagger-visible") === "true") {
+        setVisible(true);
+      }
+    };
+
+    check();
+    const mo = new MutationObserver(check);
+    mo.observe(parent, { attributes: true, attributeFilter: ["data-stagger-visible"] });
+    return () => mo.disconnect();
+  }, []);
+
   return (
-    <motion.div variants={staggerItem} className={className}>
+    <div
+      ref={ref}
+      data-stagger-item
+      data-reveal="up"
+      className={`${visible ? "revealed" : ""} ${className}`}
+      style={
+        visible
+          ? { animationDuration: "0.45s", animationDelay: `${index * 0.1}s` }
+          : undefined
+      }
+    >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Scale-in (for badges, icons, etc.)                                 */
+/*  ScaleIn                                                            */
 /* ------------------------------------------------------------------ */
 
 export function ScaleIn({
@@ -119,21 +170,26 @@ export function ScaleIn({
   delay?: number;
   className?: string;
 }) {
+  const { ref, visible } = useReveal<HTMLDivElement>();
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.4, delay, ease: "easeOut" }}
-      className={className}
+    <div
+      ref={ref}
+      data-reveal="scale"
+      className={`${visible ? "revealed" : ""} ${className}`}
+      style={
+        visible
+          ? { animationDuration: "0.4s", animationDelay: `${delay}s` }
+          : undefined
+      }
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Typewriter text effect                                              */
+/*  TypeWriter (pure React — no framer-motion)                         */
 /* ------------------------------------------------------------------ */
 
 interface TypeWriterLine {
@@ -145,7 +201,6 @@ interface TypeWriterProps {
   lines: TypeWriterLine[];
   className?: string;
   charDelay?: number;
-  lineDelay?: number;
   startDelay?: number;
 }
 
@@ -153,10 +208,11 @@ export function TypeWriter({
   lines,
   className = "",
   charDelay = 0.04,
-  lineDelay = 0.4,
   startDelay = 0,
 }: TypeWriterProps) {
   const [started, setStarted] = useState(startDelay <= 0);
+  const [visibleChars, setVisibleChars] = useState(0);
+  const totalChars = lines.reduce((sum, l) => sum + l.text.length, 0);
 
   useEffect(() => {
     if (startDelay <= 0) return;
@@ -164,11 +220,20 @@ export function TypeWriter({
     return () => clearTimeout(timer);
   }, [startDelay]);
 
+  useEffect(() => {
+    if (!started || visibleChars >= totalChars) return;
+    const timer = setTimeout(
+      () => setVisibleChars((v) => v + 1),
+      charDelay * 1000,
+    );
+    return () => clearTimeout(timer);
+  }, [started, visibleChars, totalChars, charDelay]);
+
   let charOffset = 0;
 
   return (
     <span className={`${className} relative inline-grid`}>
-      {/* Invisible placeholder to reserve full height — prevents layout shift */}
+      {/* Invisible placeholder — prevents CLS */}
       <span className="invisible col-start-1 row-start-1" aria-hidden>
         {lines.map((line, lineIdx) => (
           <span key={lineIdx} className={line.className}>
@@ -178,70 +243,42 @@ export function TypeWriter({
         ))}
       </span>
 
-      {/* Actual animated text overlaid via grid overlap */}
+      {/* Animated text */}
       <span className="col-start-1 row-start-1">
         {!started ? (
-          <motion.span
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ duration: 0.8, repeat: Infinity }}
-            className="inline-block w-[3px] h-[0.8em] bg-current align-middle"
-          />
+          <span className="inline-block w-[3px] h-[0.8em] bg-current align-middle animate-pulse" />
         ) : (
           <>
             {lines.map((line, lineIdx) => {
-              const lineStart = charOffset * charDelay + lineIdx * lineDelay;
-              const chars = line.text.split("");
-
-              const rendered = chars.map((char, ci) => {
-                const d = lineStart + ci * charDelay;
-                return (
-                  <motion.span
-                    key={`${lineIdx}-${ci}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.01, delay: d }}
-                    style={{ display: char === " " ? "inline" : "inline-block" }}
-                  >
-                    {char}
-                  </motion.span>
-                );
-              });
-
-              charOffset += chars.length;
+              const lineStart = charOffset;
+              charOffset += line.text.length;
 
               return (
                 <span key={lineIdx} className={line.className}>
-                  {rendered}
+                  {line.text.split("").map((char, ci) => {
+                    const globalIdx = lineStart + ci;
+                    return (
+                      <span
+                        key={ci}
+                        style={{
+                          opacity: globalIdx < visibleChars ? 1 : 0,
+                          display: char === " " ? "inline" : "inline-block",
+                        }}
+                      >
+                        {char}
+                      </span>
+                    );
+                  })}
                   {lineIdx < lines.length - 1 && <br />}
                 </span>
               );
             })}
-            <CursorBlink
-              showAfter={charOffset * charDelay + (lines.length - 1) * lineDelay}
-            />
+            {visibleChars < totalChars && (
+              <span className="inline-block w-[3px] h-[0.75em] bg-primary align-middle ml-0.5 animate-pulse" />
+            )}
           </>
         )}
       </span>
     </span>
-  );
-}
-
-function CursorBlink({ showAfter }: { showAfter: number }) {
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setVisible(false), (showAfter + 2.5) * 1000);
-    return () => clearTimeout(timer);
-  }, [showAfter]);
-
-  if (!visible) return null;
-
-  return (
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [0, 1, 0] }}
-      transition={{ duration: 0.8, repeat: Infinity, delay: showAfter }}
-      className="inline-block w-[3px] h-[0.75em] bg-primary align-middle ml-0.5"
-    />
   );
 }

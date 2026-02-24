@@ -10,11 +10,18 @@ export const metadata: Metadata = {
   title: "Câu hỏi thường gặp | Operis",
   description:
     "Trả lời những câu hỏi thường gặp về sản phẩm, thanh toán, vận chuyển và bảo hành tại Operis.",
+  alternates: { canonical: "/support/faq" },
   openGraph: {
     title: "FAQ | Operis",
     description:
       "Trả lời những câu hỏi thường gặp về sản phẩm, thanh toán, vận chuyển và bảo hành tại Operis.",
     url: "https://operis.vn/support/faq",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Câu hỏi thường gặp | Operis",
+    description:
+      "Trả lời những câu hỏi thường gặp về sản phẩm, thanh toán, vận chuyển và bảo hành tại Operis.",
   },
 };
 

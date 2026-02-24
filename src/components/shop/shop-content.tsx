@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { ProductCard, ProductCardSkeleton } from "@/components/ui/product-card";
@@ -47,6 +47,7 @@ export function ShopContent({
 
   /* Track if user has interacted — skip first fetch since server provided initial data */
   const [hasInteracted, setHasInteracted] = useState(false);
+  const isFirstMount = useRef(true);
 
   useEffect(() => {
     document.body.style.overflow = filterOpen ? "hidden" : "";
@@ -56,6 +57,11 @@ export function ShopContent({
   }, [filterOpen]);
 
   useEffect(() => {
+    /* Skip debounce on initial mount — server already provided data */
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
     const t = setTimeout(() => {
       setDebouncedSearch(search);
       setDebouncedMinPrice(minPrice);

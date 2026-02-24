@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PageBanner } from "@/components/ui/page-banner";
 import { SubscribeSection } from "@/components/home/subscribe-section";
@@ -32,7 +33,9 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: { canonical: "/shop" },
     openGraph: { title, description, url: "https://operis.vn/shop" },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
@@ -71,14 +74,16 @@ export default async function ShopPage({
         title="CỬA HÀNG"
         breadcrumb={[{ label: "Trang chủ", href: "/" }, { label: "Cửa hàng" }]}
       />
-      <ShopContent
-        initialProducts={initialData.products}
-        initialTotal={initialData.total}
-        initialTotalPages={initialData.totalPages}
-        categories={["Tất cả", ...categories]}
-        initialCategory={initialCategory}
-        initialQuery={initialQuery}
-      />
+      <Suspense>
+        <ShopContent
+          initialProducts={initialData.products}
+          initialTotal={initialData.total}
+          initialTotalPages={initialData.totalPages}
+          categories={["Tất cả", ...categories]}
+          initialCategory={initialCategory}
+          initialQuery={initialQuery}
+        />
+      </Suspense>
       <SubscribeSection />
     </>
   );
