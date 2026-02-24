@@ -41,20 +41,20 @@ const benefits = [
 export default function BenefitsSection() {
   return (
     <section className="bg-white border-b border-border/50">
-      <StaggerContainer className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <StaggerContainer className="max-w-7xl mx-auto py-8 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {benefits.map((b) => (
           <StaggerItem key={b.title}>
             <div
               className={`flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-3 rounded-xl p-3 sm:p-4 text-center sm:text-left h-full ${b.bg} border ${b.border} transition-shadow hover:shadow-sm`}
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-white flex items-center justify-center shrink-0 shadow-sm">
-                <b.icon size={18} className={b.color} strokeWidth={1.5} />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white flex items-center justify-center shrink-0 shadow-sm">
+                <b.icon size={28} className={b.color} strokeWidth={1.5} />
               </div>
               <div className="min-w-0">
-                <h3 className="text-[10px] sm:text-xs font-semibold tracking-widest mb-0.5 sm:mb-1">
+                <h3 className="text-xs sm:text-sm font-semibold tracking-widest mb-0.5 sm:mb-1">
                   {b.title}
                 </h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed hidden sm:block">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed hidden sm:block">
                   {b.desc}
                 </p>
               </div>

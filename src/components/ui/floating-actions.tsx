@@ -90,9 +90,44 @@ export function FloatingActions() {
 
   return (
     <>
-      {/* === Edge tab + action buttons === */}
+      {/* === Desktop/Tablet: always-visible buttons === */}
       <div
-        className={`fixed bottom-18 md:bottom-8 right-0 z-40 flex flex-col items-end transition-all duration-300 ${chatOpen ? "opacity-0 pointer-events-none" : ""}`}
+        className={`hidden md:flex fixed bottom-8 right-6 z-40 flex-col items-center gap-3 transition-all duration-300 ${chatOpen ? "opacity-0 pointer-events-none" : ""}`}
+      >
+        {/* Scroll to top */}
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          aria-label="Lên đầu trang"
+          className={`w-14 h-14 rounded-full bg-foreground text-white shadow-lg flex items-center justify-center hover:bg-primary transition-all duration-300 ${
+            showScrollTop
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-4 pointer-events-none"
+          }`}
+        >
+          <ArrowUp size={22} />
+        </button>
+
+        {/* Chat trigger */}
+        <button
+          type="button"
+          onClick={() => setChatOpen(true)}
+          aria-label="Mở trợ lý chat"
+          className="w-14 h-14 rounded-full bg-white shadow-lg border border-border flex items-center justify-center hover:scale-105 transition-all duration-200"
+        >
+          <Image
+            src="/images/assistance.png"
+            alt="Trợ lý"
+            width={36}
+            height={36}
+            className="w-9 h-9"
+          />
+        </button>
+      </div>
+
+      {/* === Mobile: edge-tab drawer === */}
+      <div
+        className={`md:hidden fixed bottom-18 right-0 z-40 flex flex-col items-end transition-all duration-300 ${chatOpen ? "opacity-0 pointer-events-none" : ""}`}
       >
         {/* Action buttons — stacked above toggle tab */}
         <div

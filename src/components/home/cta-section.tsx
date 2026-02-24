@@ -1,46 +1,59 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { ConcentricCircles } from "@/components/ui/decorative-pattern";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 export function CtaSection() {
   return (
-    <section className="relative bg-gradient-cta text-white overflow-hidden">
-      {/* Decorative accent glow */}
-      <div className="absolute top-1/2 right-[-100px] w-[400px] h-[400px] rounded-full bg-primary/10 blur-3xl" />
-      <div className="absolute bottom-[-50px] left-[-50px] w-[200px] h-[200px] rounded-full bg-violet/10 blur-3xl" />
-      <ConcentricCircles className="left-[-150px] bottom-[-200px]" size={600} color="#ffffff" opacity={0.04} />
+    <section className="relative h-[420px] md:h-[480px] overflow-hidden">
+      {/* Background image */}
+      <Image
+        src="/images/home-cta.webp"
+        alt="Operisbot thiết bị AI"
+        fill
+        sizes="100vw"
+        className="object-cover"
+      />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/70 to-foreground/40" />
 
-      <div className="max-w-7xl mx-auto px-4 py-20 md:py-28 flex flex-col md:flex-row items-center">
-        <div className="flex-1 z-10">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 h-full flex items-center">
+        <motion.div
+          className="max-w-xl"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <p className="text-sm tracking-[0.3em] text-sky/80 mb-2 flex items-center gap-2">
             <span className="w-6 h-px bg-sky/60" />
-            TIẾT KIỆM 70% CHI PHÍ
+            THIẾT BỊ RIÊNG — DỮ LIỆU RIÊNG
           </p>
-          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
-            TẮT MÁY TÍNH.<br />BOT VẪN LÀM.
+          <h2 className="text-3xl md:text-4xl font-semibold text-white tracking-tight leading-tight">
+            BẠN NGỦ.<br />
+            <span className="text-sky">BOT VẪN LÀM VIỆC.</span>
           </h2>
-          <p className="text-white/60 mt-4 text-base max-w-md leading-relaxed">
-            Operisbot chạy 24/7 trên thiết bị riêng — bạn ngủ, bot vẫn hoàn thành công việc.
-            Không lo lộ dữ liệu, không tốn tài nguyên máy chính.
+          <p className="text-white/60 mt-4 text-lg max-w-md leading-relaxed">
+            Operisbot chạy 24/7 trên thiết bị chuyên dụng — không chiếm tài nguyên máy chính,
+            không lo lộ dữ liệu. Sáng dậy đã có báo cáo sẵn.
           </p>
-          <Link
-            href="/shop"
-            className="mt-8 inline-block bg-accent text-white text-xs tracking-widest px-8 py-3 hover:bg-accent/90 transition-colors rounded-full"
-          >
-            MUA NGAY
-          </Link>
-        </div>
-        <div className="flex-1 relative mt-10 md:mt-0 flex justify-center">
-          <div className="relative w-[300px] h-[300px] md:w-[450px] md:h-[400px]">
-            <Image
-              src="/images/cta.png"
-              alt="Operisbot thiết bị AI"
-              fill
-              sizes="50vw"
-              className="object-contain"
-            />
+          <div className="flex flex-wrap gap-3 mt-6">
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 bg-accent text-white text-xs tracking-widest px-6 py-3 hover:bg-accent/90 transition-colors rounded-full"
+            >
+              MUA NGAY <ArrowRight size={14} />
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 border border-white/30 text-white text-xs tracking-widest px-6 py-3 hover:bg-white/10 transition-colors rounded-full"
+            >
+              TÌM HIỂU THÊM
+            </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

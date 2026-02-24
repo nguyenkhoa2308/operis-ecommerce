@@ -1,89 +1,89 @@
 import {
   Share2,
   Search,
-  Mail,
   BarChart3,
-  FileSpreadsheet,
   Blocks,
+  Users,
+  Calculator,
 } from "lucide-react";
 
 const capabilities = [
   {
-    icon: Share2,
-    title: "Quản lý MXH",
-    color: "text-violet",
-    bg: "bg-violet/10",
-    bullet: "text-violet",
-    desc: "Tự động đăng bài, trả lời comment, theo dõi lượt tương tác trên Facebook, Zalo, TikTok.",
+    icon: Users,
+    title: "Tuyển dụng & Nhân sự",
+    color: "text-amber",
+    bg: "bg-amber/10",
+    bullet: "text-amber",
+    desc: "Tự động lên TopCV đọc CV ứng viên, đánh giá phù hợp với JD, chấm điểm và gửi mail phỏng vấn.",
     details: [
-      "Lên lịch đăng bài đa nền tảng — 1 nội dung xuất hiện trên 5 kênh cùng lúc.",
-      "AI đọc comment & inbox, phân loại khách tiềm năng, tự trả lời theo kịch bản.",
-      "Báo cáo tương tác hàng ngày gửi thẳng Zalo/Telegram.",
+      "Lên TopCV, đọc danh sách ứng viên nộp CV, thu thập thông tin tự động.",
+      "AI đánh giá ứng viên với công việc trên thang điểm, xếp hạng phù hợp.",
+      "Check lịch trống, tự gửi email mời phỏng vấn — xây 1 lần, chạy mãi mãi.",
+    ],
+  },
+  {
+    icon: Calculator,
+    title: "Hóa đơn & Báo cáo thuế",
+    color: "text-emerald",
+    bg: "bg-emerald/10",
+    bullet: "text-emerald",
+    desc: "Đọc mail nhận hóa đơn, tổng hợp, tự đăng nhập thuedientu báo cáo thuế theo tháng/quý.",
+    details: [
+      "Đọc mail hoặc nhận yêu cầu để báo cáo thuế và xuất hóa đơn thuế.",
+      "Theo dõi ghi nhận hóa đơn đến, tự lên thuedientu đăng nhập và thực hiện.",
+      "Báo cáo thuế tự động theo tháng/quý, cảnh báo hạn nộp và sai lệch.",
     ],
   },
   {
     icon: Search,
-    title: "Scraping dữ liệu",
-    color: "text-sky",
-    bg: "bg-sky/10",
-    bullet: "text-sky",
-    desc: "Thu thập data từ website, marketplace, bảng giá đối thủ — chạy liên tục không cần giám sát.",
+    title: "Marketing & SEO",
+    color: "text-violet",
+    bg: "bg-violet/10",
+    bullet: "text-violet",
+    desc: "Lên Semrush, Google Trending, Ahrefs thu thập từ khóa, viết bài SEO và đăng lên web.",
     details: [
-      "Quét hàng nghìn trang sản phẩm trên Shopee, Lazada, Tiki mỗi giờ.",
-      "Tự động lưu vào Google Sheet / database, so sánh biến động giá.",
-      "Hỗ trợ anti-bot, proxy rotation, vượt captcha thông minh.",
-    ],
-  },
-  {
-    icon: Mail,
-    title: "Email tự động",
-    color: "text-amber",
-    bg: "bg-amber/10",
-    bullet: "text-amber",
-    desc: "Gửi email cá nhân hóa hàng loạt, follow-up tự động, nuôi lead không bỏ sót.",
-    details: [
-      "Cá nhân hóa nội dung theo tên, ngành nghề, hành vi mở mail.",
-      "Chuỗi follow-up 5-7 bước tự động dừng khi khách phản hồi.",
-      "Tracking open rate, click rate — AI tự tối ưu tiêu đề & nội dung.",
+      "Thu thập thông tin từ khóa từ Semrush, Ahrefs, Google Trending.",
+      "Tổng hợp báo cáo, viết nội dung SEO rồi tự đăng lên website của bạn.",
+      "Lên kế hoạch đăng bài, tạo profile MXH để xây backlink tự nhiên.",
     ],
   },
   {
     icon: BarChart3,
-    title: "Theo dõi đối thủ",
+    title: "Quảng cáo & Đối thủ",
     color: "text-rose",
     bg: "bg-rose/10",
     bullet: "text-rose",
-    desc: "Giám sát giá, khuyến mãi, sản phẩm mới của đối thủ 24/7 và báo cáo tức thì.",
+    desc: "Đọc báo cáo quảng cáo, lên kế hoạch chi tiết, theo dõi đối thủ 24/7 và đề xuất tối ưu.",
     details: [
-      "Cảnh báo Zalo/Telegram ngay khi đối thủ thay đổi giá hoặc ra sản phẩm mới.",
-      "So sánh bảng giá đa đối thủ, xuất báo cáo Excel tự động mỗi tuần.",
-      "Theo dõi quảng cáo Facebook/Google Ads đối thủ đang chạy.",
+      "Đọc báo cáo dữ liệu quảng cáo, lên kế hoạch quảng cáo chi tiết.",
+      "Theo dõi để đề xuất thay đổi hiệu quả, tối ưu ngân sách.",
+      "Giám sát giá, khuyến mãi đối thủ — cảnh báo qua Zalo/Telegram.",
     ],
   },
   {
-    icon: FileSpreadsheet,
-    title: "Xử lý báo cáo",
-    color: "text-emerald",
-    bg: "bg-emerald/10",
-    bullet: "text-emerald",
-    desc: "Tổng hợp dữ liệu từ nhiều nguồn, tạo báo cáo Excel/PDF tự động theo lịch.",
+    icon: Share2,
+    title: "Quản lý MXH & Chăm sóc KH",
+    color: "text-sky",
+    bg: "bg-sky/10",
+    bullet: "text-sky",
+    desc: "Tư vấn tự động, trả lời khách qua Zalo và các kênh truyền thông, đăng bài đa nền tảng.",
     details: [
-      "Kéo data từ CRM, kế toán, kho hàng — merge vào 1 báo cáo tổng.",
-      "Tự động gửi báo cáo doanh thu hàng ngày cho sếp qua email/Zalo.",
-      "Template báo cáo tùy chỉnh, pivot table, biểu đồ tự cập nhật.",
+      "Tự động trả lời khách hàng qua Zalo (cá nhân) và các kênh truyền thông.",
+      "Lên lịch đăng bài đa nền tảng — 1 nội dung xuất hiện trên 5 kênh cùng lúc.",
+      "AI đọc comment & inbox, phân loại khách tiềm năng, tự trả lời theo kịch bản.",
     ],
   },
   {
     icon: Blocks,
-    title: "Và hàng trăm tác vụ khác",
+    title: "Và bất kỳ tác vụ nào khác",
     color: "text-orange",
     bg: "bg-orange/10",
     bullet: "text-orange",
-    desc: "Tuyển dụng, chăm sóc khách hàng, quản lý đơn hàng — mọi thứ chạy theo Workflow.",
+    desc: "Hệ thống có thể làm bất kỳ việc gì miễn là bạn có workflow chi tiết để hệ thống hiểu và chạy.",
     details: [
-      "Tải CV hàng loạt, AI chấm điểm phù hợp, tự gửi email hẹn phỏng vấn.",
-      "Chatbot chăm sóc khách 24/7 trên Zalo, Messenger, website.",
+      "Suy luận, tổng hợp báo cáo, phân tích tài chính cho doanh nghiệp.",
       "Đồng bộ đơn hàng Shopee/Lazada/TikTok Shop về 1 bảng quản lý.",
+      "Chỉ cần xây workflow 1 lần — tự động chạy mãi mãi, 24/7.",
     ],
   },
 ];
@@ -99,7 +99,7 @@ export function CapabilitiesSection() {
           <h2 className="text-3xl font-semibold tracking-tight">
             TỰ ĐỘNG HÓA MỌI TÁC VỤ, 24/7
           </h2>
-          <p className="text-base text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
             Chọn Workflow có sẵn hoặc tùy chỉnh theo nhu cầu — Operisbot chạy
             liên tục trên thiết bị riêng, không tốn tài nguyên máy chính.
           </p>
@@ -120,14 +120,14 @@ export function CapabilitiesSection() {
                 </div>
                 <h4 className="text-base font-semibold">{cap.title}</h4>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+              <p className="text-base text-muted-foreground leading-relaxed mb-4">
                 {cap.desc}
               </p>
               <ul className="space-y-2 flex-1">
                 {cap.details.map((d, i) => (
                   <li
                     key={i}
-                    className="flex gap-2 text-sm leading-relaxed"
+                    className="flex gap-2 text-base leading-relaxed"
                   >
                     <span className={`${cap.bullet} font-bold shrink-0 mt-0.5`}>
                       &bull;

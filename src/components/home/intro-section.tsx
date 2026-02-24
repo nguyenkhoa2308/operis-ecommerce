@@ -11,65 +11,68 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 const useCaseGroups = [
   {
-    icon: ShoppingCart,
-    title: "Kinh doanh Online & E-Commerce",
-    color: "text-sky",
-    bg: "bg-sky/10",
-    border: "border-l-sky",
-    arrow: "text-sky",
-    scenarios: [
-      "Bot quét giá 10 đối thủ mỗi giờ trên Shopee, TikTok Shop — cảnh báo qua Zalo nếu đối thủ giảm giá quá 5%.",
-      "AI đọc đánh giá 1-2 sao, tự nhắn tin xin lỗi + tặng mã giảm giá nếu lỗi vận chuyển.",
-      "Nạp 1 ảnh + mô tả, Bot đăng lên Facebook, Instagram, TikTok, Shopee Feed tuần tự như người thật.",
-    ],
-  },
-  {
-    icon: Megaphone,
-    title: "Marketing & Xây dựng cộng đồng",
-    color: "text-violet",
-    bg: "bg-violet/10",
-    border: "border-l-violet",
-    arrow: "text-violet",
-    scenarios: [
-      'Bot vào hội nhóm, đọc bài đăng có từ khóa "Cần tư vấn", bình luận chia sẻ rồi khéo léo nhắc đến sản phẩm.',
-      'Chạy 50-100 tài khoản Social cùng lúc, mỗi tài khoản một "vân tay trình duyệt" riêng, tự Like/Share tạo hiệu ứng đám đông.',
-      "Quét Group đối thủ, lấy thông tin người hay tương tác — lưu danh sách tiềm năng cho Sale chăm sóc.",
-    ],
-  },
-  {
-    icon: TrendingUp,
-    title: "Đầu tư & Tài chính",
-    color: "text-emerald",
-    bg: "bg-emerald/10",
-    border: "border-l-emerald",
-    arrow: "text-emerald",
-    scenarios: [
-      "Bot quét Bloomberg, Reuters, hội nhóm kín — sáng 7h gửi bản tin tóm tắt qua Telegram.",
-      "Canh nhà đất giá tốt trên Batdongsan, Chotot — thông báo ngay giây thứ 10 khi xuất hiện.",
-    ],
-  },
-  {
     icon: Building2,
-    title: "Quản trị Doanh nghiệp & Nhân sự",
+    title: "Quản lý Nhân sự & Tuyển dụng",
     color: "text-amber",
     bg: "bg-amber/10",
     border: "border-l-amber",
     arrow: "text-amber",
     scenarios: [
-      'Bot tải CV hàng loạt, AI so sánh với JD — xuất "Ứng viên A - 90% phù hợp", tự gửi email hẹn phỏng vấn.',
-      "Mở PDF hóa đơn từ email, tự nhập liệu vào phần mềm kế toán hoặc Google Sheet — không sai sót.",
+      "Tự động lên TopCV đọc danh sách ứng viên, thu thập thông tin, đánh giá phù hợp với JD trên thang điểm.",
+      "Check lịch trống và tự gửi email mời phỏng vấn — chỉ cần xây 1 lần là tự động chạy mãi mãi.",
+      "Phân tích nhân sự, tổng hợp báo cáo hiệu suất làm việc tự động hàng tuần/tháng.",
+    ],
+  },
+  {
+    icon: ShoppingCart,
+    title: "Hóa đơn & Báo cáo thuế",
+    color: "text-emerald",
+    bg: "bg-emerald/10",
+    border: "border-l-emerald",
+    arrow: "text-emerald",
+    scenarios: [
+      "Đọc mail nhận hóa đơn, tổng hợp và theo dõi ghi nhận hóa đơn đến tự động.",
+      "Tự đăng nhập thuedientu, thực hiện báo cáo thuế theo tháng/quý — xuất hóa đơn điện tử.",
+      "Tính toán thuế TNCN/TNDN từ lịch sử giao dịch, cảnh báo hạn nộp và sai lệch số liệu.",
+    ],
+  },
+  {
+    icon: Megaphone,
+    title: "Marketing & SEO tự động",
+    color: "text-violet",
+    bg: "bg-violet/10",
+    border: "border-l-violet",
+    arrow: "text-violet",
+    scenarios: [
+      "Tự động lên Semrush, Google Trending, Ahrefs thu thập từ khóa, tổng hợp báo cáo rồi viết bài SEO.",
+      "Viết nội dung và tự động đăng lên website của bạn, lên kế hoạch đăng bài đa nền tảng.",
+      "Tạo profile MXH để xây backlink tự nhiên như người dùng thực sự thực hiện.",
+    ],
+  },
+  {
+    icon: TrendingUp,
+    title: "Quảng cáo & Phân tích dữ liệu",
+    color: "text-sky",
+    bg: "bg-sky/10",
+    border: "border-l-sky",
+    arrow: "text-sky",
+    scenarios: [
+      "Đọc báo cáo dữ liệu quảng cáo Facebook/Google Ads, lên kế hoạch quảng cáo chi tiết.",
+      "Theo dõi hiệu quả chiến dịch, đề xuất thay đổi để tối ưu ngân sách quảng cáo.",
+      "Bot quét giá 10 đối thủ mỗi giờ trên Shopee, TikTok Shop — cảnh báo qua Zalo nếu đối thủ giảm giá.",
     ],
   },
   {
     icon: Sparkles,
-    title: "Cá nhân & Power User",
+    title: "Tư vấn & Chăm sóc khách hàng",
     color: "text-rose",
     bg: "bg-rose/10",
     border: "border-l-rose",
     arrow: "text-rose",
     scenarios: [
-      "Săn vé máy bay giá rẻ, đặt chỗ nhà hàng hot, săn giày Limited — Bot canh giờ, tự điền và thanh toán.",
-      "Gửi Bot 1 video YouTube 2 tiếng hoặc PDF 100 trang — nhận bản ghi chú tóm tắt ý chính.",
+      "Tư vấn tự động, trả lời khách hàng qua Zalo (cá nhân) và các kênh truyền thông 24/7.",
+      "AI đọc đánh giá 1-2 sao, tự nhắn xin lỗi + tặng mã giảm giá nếu lỗi vận chuyển.",
+      "Suy luận, tổng hợp báo cáo tài chính — giúp doanh nghiệp có cái nhìn toàn diện nhất.",
     ],
   },
 ];
@@ -93,7 +96,7 @@ export function IntroSection() {
           <h2 className="text-3xl font-semibold tracking-tight">
             OPERISBOT LÀM GÌ CHO BẠN?
           </h2>
-          <p className="text-base text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
             Không chỉ &quot;tự động hóa&quot; — đây là những hành động cụ thể mà
             Operisbot thực hiện thay bạn, 24/7, trên thiết bị riêng.
           </p>
@@ -118,7 +121,7 @@ export function IntroSection() {
               </div>
               <ul className="space-y-3 flex-1">
                 {group.scenarios.map((s, i) => (
-                  <li key={i} className="flex gap-2 text-sm leading-relaxed">
+                  <li key={i} className="flex gap-2 text-base leading-relaxed">
                     <span className={`${group.arrow} font-bold shrink-0`}>
                       →
                     </span>

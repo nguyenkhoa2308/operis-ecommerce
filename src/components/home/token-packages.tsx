@@ -1,69 +1,44 @@
 "use client";
 
-import { Zap, Crown, Building2, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Zap, Crown, Building2, Infinity, ArrowRight } from "lucide-react";
 import { ConcentricCircles } from "@/components/ui/decorative-pattern";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import Link from "next/link";
+import { depositsApi } from "@/lib/api";
+import type { PricingTier } from "@/lib/api/deposits";
+import { formatPrice } from "@/data/products";
+import { formatTokenCount } from "@/data/token-plans";
 
-const packages = [
-  {
-    name: "Gói Thuê bao",
-    price: "200.000₫",
-    tokens: "1.000.000 Token",
-    per: "lần nạp",
-    desc: "Phù hợp dùng thử, bổ sung khi cần.",
-    features: ["Dùng mọi Workflow", "Hỗ trợ email"],
-    icon: Zap,
-    accent: "sky",
-  },
-  {
-    name: "Gói Tháng 1",
-    price: "2.500.000₫",
-    tokens: "200 triệu Token",
-    per: "tháng",
-    desc: "Sử dụng hàng ngày, tiết kiệm hơn 80%.",
-    features: ["Dùng mọi Workflow", "Hỗ trợ ưu tiên", "Tiết kiệm 80%"],
-    icon: Zap,
-    accent: "violet",
-  },
-  {
-    name: "Gói Tháng 2",
-    badge: "VIP",
-    price: "6.000.000₫",
-    tokens: "KHÔNG GIỚI HẠN",
-    per: "tháng",
-    desc: "Dùng thoải mái, không lo hết Token.",
-    features: [
-      "Dùng mọi Workflow",
-      "Hỗ trợ 24/7 ưu tiên",
-      "Không giới hạn Token",
-      "Cố vấn riêng",
-    ],
-    icon: Crown,
-    highlight: true,
-    accent: "amber",
-  },
-  {
-    name: "Gói Doanh nghiệp",
-    price: "Liên hệ",
-    tokens: "Theo quy mô",
-    per: "",
-    desc: "Tùy chỉnh theo quy mô doanh nghiệp.",
-    features: [
-      "Mọi tính năng VIP",
-      "SLA cam kết",
-      "Đào tạo & onboarding",
-      "Hóa đơn VAT",
-    ],
-    icon: Building2,
-    contact: true,
-    accent: "emerald",
-  },
+/* Map tier index to icon/accent for visual variety */
+const tierStyles = [
+  { icon: Zap, iconBg: "bg-sky-400/15", iconColor: "text-sky-400" },
+  { icon: Zap, iconBg: "bg-violet-400/15", iconColor: "text-violet-400" },
+  { icon: Crown, iconBg: "bg-amber-400/15", iconColor: "text-amber-400" },
+  { icon: Building2, iconBg: "bg-emerald-400/15", iconColor: "text-emerald-400" },
 ];
 
 export function TokenPackages() {
+  const [tiers, setTiers] = useState<PricingTier[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const list = await depositsApi.getPricing();
+        setTiers(list);
+      } catch {
+        /* API fail — section stays hidden */
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  if (!loading && tiers.length === 0) return null;
+
   return (
-    <section className="py-20 bg-gradient-cta text-white relative overflow-hidden">
+    <section className="py-24 bg-gradient-cta text-white relative overflow-hidden">
       <ConcentricCircles
         className="left-[-150px] top-[-80px]"
         size={400}
@@ -78,119 +53,149 @@ export function TokenPackages() {
       />
 
       {/* Glow effects */}
-      <div className="absolute top-1/3 left-0 w-72 h-72 rounded-full bg-primary/8 blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-60 h-60 rounded-full bg-violet/8 blur-3xl" />
+      <div className="absolute top-1/3 left-0 w-96 h-96 rounded-full bg-sky-500/6 blur-[100px]" />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full bg-violet-500/6 blur-[100px]" />
 
       <div className="max-w-6xl mx-auto px-4 relative z-10">
-        <FadeIn className="text-center mb-12">
-          <p className="text-sm tracking-widest text-sky/80 font-medium mb-3">
-            NẠP THÊM TOKEN
+        <FadeIn className="text-center mb-16">
+          <p className="text-xs tracking-[0.25em] text-sky-300/70 font-medium mb-4 uppercase">
+            Nạp thêm Token
           </p>
-          <h2 className="text-3xl font-semibold tracking-tight text-white">
-            GÓI TOKEN
+          <h2 className="text-4xl md:text-[2.75rem] font-bold tracking-tight text-white leading-tight">
+            Chọn gói phù hợp với bạn
           </h2>
-          <p className="text-base text-white/50 mt-3 max-w-md mx-auto">
-            Chọn gói Token phù hợp với nhu cầu sử dụng Workflow của bạn.
+          <p className="text-lg text-white/40 mt-4 max-w-lg mx-auto leading-relaxed">
+            Từ cá nhân đến doanh nghiệp — luôn có gói Token tối ưu cho nhu cầu của bạn.
           </p>
         </FadeIn>
 
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {packages.map((pkg) => (
-            <StaggerItem
-              key={pkg.name}
-              className={`relative flex flex-col rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 ${
-                pkg.highlight
-                  ? "bg-white text-foreground shadow-2xl shadow-white/10 scale-[1.03] ring-2 ring-white/20"
-                  : "bg-white/[0.07] backdrop-blur-sm border border-white/10 hover:bg-white/[0.12] hover:border-white/20"
-              }`}
-            >
-              {/* VIP badge */}
-              {pkg.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber to-orange text-white text-[10px] tracking-widest font-bold px-4 py-1 rounded-full shadow-lg">
-                  {pkg.badge}
-                </span>
-              )}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="rounded-2xl p-7 bg-white/[0.06] border border-white/8 space-y-5"
+              >
+                <div className="w-11 h-11 rounded-xl skeleton-shimmer" />
+                <div className="h-4 w-24 skeleton-shimmer rounded" />
+                <div className="h-8 w-32 skeleton-shimmer rounded" />
+                <div className="h-3 w-full skeleton-shimmer rounded" />
+                <div className="h-3 w-3/4 skeleton-shimmer rounded" />
+                <div className="h-11 w-full skeleton-shimmer rounded-xl mt-4" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <StaggerContainer
+            className={`grid grid-cols-1 sm:grid-cols-2 ${
+              tiers.length <= 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"
+            } gap-5 items-stretch`}
+          >
+            {tiers.map((tier, i) => {
+              const isContact = tier.price === 0 && tier.tokens === 0;
+              const isUnlimited = tier.tokens === -1;
+              const style = tierStyles[i % tierStyles.length];
+              const Icon = tier.popular ? Crown : isUnlimited ? Infinity : style.icon;
 
-              {/* Name + icon */}
-              <div className="flex items-center gap-2.5 mb-4">
-                <div
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                    pkg.highlight ? "bg-amber/10" : "bg-white/10"
+              return (
+                <StaggerItem
+                  key={tier.id}
+                  className={`group relative flex flex-col rounded-2xl transition-all duration-300 hover:-translate-y-1.5 ${
+                    tier.popular
+                      ? "bg-white text-foreground shadow-2xl shadow-white/10 scale-[1.02] lg:scale-[1.04]"
+                      : "bg-white/[0.06] backdrop-blur-sm border border-white/8 hover:bg-white/[0.1] hover:border-white/15"
                   }`}
                 >
-                  <pkg.icon
-                    size={17}
-                    className={pkg.highlight ? "text-amber" : "text-white/80"}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <h4
-                  className={`text-sm font-bold tracking-tight ${pkg.highlight ? "text-foreground" : "text-white"}`}
-                >
-                  {pkg.name}
-                </h4>
-              </div>
+                  {/* Popular badge */}
+                  {tier.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] tracking-[0.2em] font-bold px-5 py-1 rounded-full shadow-lg shadow-amber-500/25 whitespace-nowrap">
+                      PHỔ BIẾN NHẤT
+                    </span>
+                  )}
 
-              {/* Token amount — hero number */}
-              <p
-                className={`text-lg font-extrabold mb-1 ${pkg.highlight ? "text-primary" : "text-white"}`}
-              >
-                {pkg.tokens}
-              </p>
+                  <div className="flex flex-col flex-1 p-7">
+                    {/* Icon */}
+                    <div
+                      className={`w-11 h-11 rounded-xl flex items-center justify-center mb-5 ${
+                        tier.popular ? "bg-amber-50" : style.iconBg
+                      }`}
+                    >
+                      <Icon
+                        size={20}
+                        className={tier.popular ? "text-amber-500" : style.iconColor}
+                        strokeWidth={1.8}
+                      />
+                    </div>
 
-              {/* Description */}
-              <p
-                className={`text-sm mb-5 leading-relaxed ${pkg.highlight ? "text-muted-foreground" : "text-white/50"}`}
-              >
-                {pkg.desc}
-              </p>
+                    {/* Name */}
+                    <h4
+                      className={`text-base font-bold tracking-tight mb-1.5 ${
+                        tier.popular ? "text-foreground" : "text-white"
+                      }`}
+                    >
+                      {tier.name}
+                    </h4>
 
-              {/* Price */}
-              <div className="mb-5">
-                <span
-                  className={`text-3xl font-extrabold ${pkg.highlight ? "text-foreground" : "text-white"}`}
-                >
-                  {pkg.price}
-                </span>
-                {pkg.per && (
-                  <span
-                    className={`text-sm ml-1 ${pkg.highlight ? "text-muted-foreground" : "text-white/40"}`}
-                  >
-                    /{pkg.per}
-                  </span>
-                )}
-              </div>
+                    {/* Description */}
+                    {tier.description && (
+                      <p
+                        className={`text-base leading-relaxed mb-5 ${
+                          tier.popular ? "text-muted-foreground" : "text-white/40"
+                        }`}
+                      >
+                        {tier.description}
+                      </p>
+                    )}
 
-              {/* Features */}
-              <ul className="space-y-2 mt-auto">
-                {pkg.features.map((f) => (
-                  <li
-                    key={f}
-                    className={`flex items-center gap-2 text-xs ${pkg.highlight ? "text-muted-foreground" : "text-white/60"}`}
-                  >
-                    <Check
-                      size={13}
-                      className={`shrink-0 ${pkg.highlight ? "text-emerald" : "text-emerald/80"}`}
-                    />
-                    {f}
-                  </li>
-                ))}
+                    {/* Price */}
+                    <div className="mb-1 mt-auto">
+                      <span
+                        className={`text-3xl font-extrabold tracking-tight ${
+                          tier.popular ? "text-foreground" : "text-white"
+                        }`}
+                      >
+                        {isContact ? "Liên hệ" : formatPrice(tier.price)}
+                      </span>
+                    </div>
 
-                {/* CTA */}
-                <Link
-                  href={pkg.contact ? "/contact" : "/account/token"}
-                  className={`block text-center py-2.5 rounded-lg text-xs tracking-widest font-semibold transition-all mb-5 ${
-                    pkg.highlight
-                      ? "bg-foreground text-white hover:bg-foreground/90"
-                      : "bg-white/10 text-white border border-white/15 hover:bg-white/20"
-                  }`}
-                >
-                  {pkg.contact ? "LIÊN HỆ" : "NẠP NGAY"}
-                </Link>
-              </ul>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+                    {/* Token amount */}
+                    <p
+                      className={`text-base font-medium mb-6 ${
+                        tier.popular ? "text-primary" : "text-white/50"
+                      }`}
+                    >
+                      {isContact
+                        ? "Giá tùy theo quy mô"
+                        : isUnlimited
+                          ? "Không giới hạn Token"
+                          : `${formatTokenCount(tier.tokens)} Token`}
+                    </p>
+
+                    {/* Bonus */}
+                    {tier.bonus > 0 && (
+                      <p className="text-sm text-emerald-400 font-medium -mt-4 mb-6">
+                        + {formatTokenCount(tier.bonus)} Token bonus
+                      </p>
+                    )}
+
+                    {/* CTA */}
+                    <Link
+                      href={isContact ? "/contact" : `/account/token?tier=${tier.id}`}
+                      className={`flex items-center justify-center gap-2 py-3 rounded-xl text-xs tracking-widest font-semibold transition-all cursor-pointer ${
+                        tier.popular
+                          ? "bg-foreground text-white hover:bg-foreground/90 shadow-lg shadow-foreground/20"
+                          : "bg-white/8 text-white border border-white/10 hover:bg-white/15 hover:border-white/20"
+                      }`}
+                    >
+                      {isContact ? "LIÊN HỆ TƯ VẤN" : "NẠP NGAY"}
+                      <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  </div>
+                </StaggerItem>
+              );
+            })}
+          </StaggerContainer>
+        )}
       </div>
     </section>
   );

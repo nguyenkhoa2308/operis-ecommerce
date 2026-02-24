@@ -12,7 +12,7 @@ export function SubscribeSection() {
       <div className="max-w-7xl mx-auto px-4 py-10 md:py-14 flex flex-col md:flex-row items-center justify-between gap-5 md:gap-8">
         <div className="text-center md:text-left">
           <h2 className="text-base md:text-lg font-semibold tracking-widest mb-1">ĐĂNG KÝ NHẬN TIN</h2>
-          <p className="text-xs md:text-sm text-white/60">Nhận tin tức mới nhất, ưu đãi và khuyến mãi trực tiếp qua email.</p>
+          <p className="text-sm md:text-base text-white/60">Nhận tin tức mới nhất, ưu đãi và khuyến mãi trực tiếp qua email.</p>
         </div>
         <form className="flex flex-col sm:flex-row w-full md:w-auto gap-2 sm:gap-0" onSubmit={(e) => { e.preventDefault(); addToast("Đăng ký nhận tin thành công!"); setEmail(""); }}>
           <input

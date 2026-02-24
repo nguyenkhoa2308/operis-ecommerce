@@ -31,17 +31,15 @@ const categories = [
     href: "/shop?cat=personal",
     icon: Monitor,
     desc: "Operisbot dành cho cá nhân — Cắm điện là chạy, tặng sẵn Token.",
-    image:
-      "/images/hero.png",
+    image: "/images/hero.png",
     tags: ["Từ 3.000.000₫", "2 gói"],
   },
   {
     label: "Doanh Nghiệp",
-    href: "/shop?cat=enterprise",
+    href: "/enterprise",
     icon: Zap,
     desc: "Tùy biến cấu hình, Token, Workflow theo nhu cầu doanh nghiệp.",
-    image:
-      "/images/cta.png",
+    image: "/images/cta.png",
     tags: ["Tùy biến", "Liên hệ"],
   },
 ];
@@ -89,7 +87,10 @@ export default function Header() {
   useEffect(() => {
     if (!userMenuOpen) return;
     const handler = (e: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(e.target as Node)
+      ) {
         setUserMenuOpen(false);
       }
     };
@@ -101,7 +102,9 @@ export default function Header() {
   useEffect(() => {
     if (mobileOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   return (
@@ -238,7 +241,10 @@ export default function Header() {
         {/* Icons */}
         <div className="flex items-center gap-3 md:gap-5">
           {/* Desktop expanding search */}
-          <form onSubmit={handleSearch} className="relative hidden md:flex items-center">
+          <form
+            onSubmit={handleSearch}
+            className="relative hidden md:flex items-center"
+          >
             <div
               className={`flex items-center overflow-hidden border transition-all duration-300 ease-out ${
                 searchOpen
@@ -289,7 +295,10 @@ export default function Header() {
           <button
             type="button"
             className="md:hidden flex items-center justify-center w-6 h-6 text-foreground hover:text-primary transition-colors"
-            onClick={() => { setSearchOpen(!searchOpen); setMobileOpen(false); }}
+            onClick={() => {
+              setSearchOpen(!searchOpen);
+              setMobileOpen(false);
+            }}
             aria-label="Tìm kiếm"
           >
             <MagnifierIcon size={20} color="currentColor" />
@@ -306,10 +315,7 @@ export default function Header() {
             </span>
           </button>
           {isLoggedIn ? (
-            <div
-              ref={userMenuRef}
-              className="relative"
-            >
+            <div ref={userMenuRef} className="relative">
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((v) => !v)}
@@ -388,7 +394,11 @@ export default function Header() {
           )}
           <button
             className="md:hidden text-foreground"
-            onClick={() => { setMobileOpen(!mobileOpen); setSearchOpen(false); setSearchQuery(""); }}
+            onClick={() => {
+              setMobileOpen(!mobileOpen);
+              setSearchOpen(false);
+              setSearchQuery("");
+            }}
             aria-label="Menu"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -399,7 +409,10 @@ export default function Header() {
       {/* Mobile search bar — slide down */}
       {searchOpen && (
         <div className="md:hidden border-t border-border bg-white px-4 py-3 animate-slide-down">
-          <form onSubmit={handleSearch} className="flex items-center gap-2 bg-muted/50 border border-border rounded-full px-3 py-2">
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center gap-2 bg-muted/50 border border-border rounded-full px-3 py-2"
+          >
             <Search size={16} className="text-muted-foreground shrink-0" />
             <input
               ref={searchRef}
@@ -417,7 +430,10 @@ export default function Header() {
             />
             <button
               type="button"
-              onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+              onClick={() => {
+                setSearchOpen(false);
+                setSearchQuery("");
+              }}
               className="text-muted-foreground hover:text-foreground shrink-0"
               aria-label="Đóng tìm kiếm"
             >
@@ -430,7 +446,9 @@ export default function Header() {
       {/* Mobile Nav — full-screen slide-in overlay */}
       <div
         className={`md:hidden fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 ${
-          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          mobileOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setMobileOpen(false)}
       />
@@ -441,10 +459,18 @@ export default function Header() {
       >
         {/* Menu header */}
         <div className="flex items-center justify-between px-5 h-16 border-b border-border">
-          <Link href="/" onClick={() => setMobileOpen(false)} className="text-xl font-[900] tracking-tight">
+          <Link
+            href="/"
+            onClick={() => setMobileOpen(false)}
+            className="text-xl font-[900] tracking-tight"
+          >
             Operis<span className="text-primary">bot.</span>
           </Link>
-          <button onClick={() => setMobileOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Đóng menu">
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Đóng menu"
+          >
             <X size={20} />
           </button>
         </div>
@@ -504,7 +530,9 @@ export default function Header() {
                 </div>
                 <div className="min-w-0">
                   <p className="text-sm font-medium truncate">{user.name}</p>
-                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {user.email}
+                  </p>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -517,7 +545,10 @@ export default function Header() {
                 </Link>
                 <button
                   type="button"
-                  onClick={() => { logout(); setMobileOpen(false); }}
+                  onClick={() => {
+                    logout();
+                    setMobileOpen(false);
+                  }}
                   className="text-xs tracking-wider text-red-500 border border-red-200 px-4 py-2.5 rounded hover:bg-red-50 transition-colors"
                 >
                   ĐĂNG XUẤT
@@ -528,7 +559,7 @@ export default function Header() {
             <Link
               href="/login"
               onClick={() => setMobileOpen(false)}
-              className="block w-full text-center text-xs tracking-widest bg-primary text-white py-3 rounded hover:bg-primary/90 transition-colors"
+              className="block w-full text-center text-xs tracking-widest bg-foreground text-white py-3 rounded hover:bg-primary transition-colors"
             >
               ĐĂNG NHẬP
             </Link>

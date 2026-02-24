@@ -7,11 +7,13 @@ import { ConcentricCircles } from "@/components/ui/decorative-pattern";
 import { TypeWriter } from "@/components/ui/motion";
 import { Bot, Cpu, Zap } from "lucide-react";
 
-const HeroProduct3D = dynamic(() => import("./hero-product-3d"), { ssr: false });
+const HeroProduct3D = dynamic(() => import("./hero-product-3d"), {
+  ssr: false,
+});
 
 const stats = [
   { value: "24/7", label: "Hoạt động liên tục" },
-  { value: "70%", label: "Tiết kiệm chi phí" },
+  { value: "80%", label: "Tiết kiệm chi phí" },
   { value: "100+", label: "Workflow có sẵn" },
 ];
 
@@ -22,7 +24,12 @@ export default function HeroSection() {
       <div className="absolute top-[-100px] right-[-50px] w-[500px] h-[500px] rounded-full bg-primary/6 blur-3xl" />
       <div className="absolute bottom-[-80px] left-[-80px] w-[350px] h-[350px] rounded-full bg-violet/6 blur-3xl" />
       <div className="absolute top-1/2 left-1/3 w-[200px] h-[200px] rounded-full bg-sky/5 blur-3xl" />
-      <ConcentricCircles className="right-[-100px] bottom-[-150px]" size={600} color="#6b8fb5" opacity={0.06} />
+      <ConcentricCircles
+        className="right-[-100px] bottom-[-150px]"
+        size={600}
+        color="#6b8fb5"
+        opacity={0.06}
+      />
 
       {/* Floating icons (decorative) */}
       <div className="absolute top-20 right-[15%] w-10 h-10 rounded-xl bg-violet/10 flex items-center justify-center animate-pulse opacity-60">
@@ -35,7 +42,7 @@ export default function HeroSection() {
         <Zap size={14} className="text-amber" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-12 md:py-24 flex flex-col md:flex-row items-center min-h-0 md:min-h-[540px]">
+      <div className="max-w-7xl mx-auto px-4 py-12 md:pt-20 md:pb-24 flex flex-col-reverse md:flex-row items-center min-h-0 md:min-h-[540px]">
         <motion.div
           className="flex-1 z-10 text-center md:text-left"
           initial={{ opacity: 0, y: 30 }}
@@ -44,7 +51,9 @@ export default function HeroSection() {
         >
           <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/15 rounded-full px-3 md:px-4 py-1.5 mb-4 md:mb-6">
             <span className="w-2 h-2 rounded-full bg-emerald animate-pulse" />
-            <span className="text-[10px] md:text-xs tracking-widest text-primary font-medium">OPERISBOT — HỆ SINH THÁI AI TỰ ĐỘNG HÓA</span>
+            <span className="text-[10px] md:text-xs tracking-widest text-primary font-medium">
+              OPERISBOT — HỆ SINH THÁI AI TỰ ĐỘNG HÓA
+            </span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-semibold leading-tight tracking-tight">
             <TypeWriter
@@ -57,13 +66,16 @@ export default function HeroSection() {
                 },
                 { text: "CẮM LÀ CHẠY." },
               ]}
-              startDelay={0.3}
               charDelay={0.045}
               lineDelay={0.35}
             />
           </h1>
-          <p className="text-muted-foreground mt-4 text-base md:text-lg max-w-md leading-relaxed">
-            Bảo mật tuyệt đối — Hiệu suất vô hạn — Chi phí tối ưu. Operisbot tách rời bộ não AI ra khỏi máy tính cá nhân, chạy 24/7 trên Mini PC riêng biệt.
+          <p className="text-muted-foreground mt-4 text-lg md:text-xl max-w-lg leading-relaxed">
+            Thiết bị tự động hóa & tối ưu hóa quy trình xử lý công việc cho cá
+            nhân và doanh nghiệp — vận hành hoàn toàn bởi AI. Phát triển từ nền
+            tảng OpenClaw, nâng cấp toàn diện về bảo mật, tối thiểu chi phí.
+            Giúp doanh nghiệp giảm 80% chi phí, tăng tốc phát triển và có cái
+            nhìn toàn diện nhất để đưa ra quyết định chính xác.
           </p>
           <motion.div
             className="flex flex-wrap justify-center md:justify-start gap-3 mt-6 md:mt-8"
@@ -99,22 +111,26 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.6 + i * 0.1 }}
               >
-                <p className="text-2xl md:text-3xl font-extrabold text-foreground">{s.value}</p>
-                <p className="text-xs text-muted-foreground tracking-wide mt-0.5">{s.label}</p>
+                <p className="text-2xl md:text-3xl font-extrabold text-foreground">
+                  {s.value}
+                </p>
+                <p className="text-sm text-muted-foreground tracking-wide mt-0.5">
+                  {s.label}
+                </p>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
 
         <motion.div
-          className="flex-1 relative mt-6 md:mt-0 flex justify-center"
+          className="flex-1 relative mb-4 md:mb-0 flex justify-center"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
         >
           {/* Glowing ring behind 3D */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] md:w-[460px] md:h-[460px] rounded-full border border-primary/10 bg-primary/[0.03]" />
+            <div className="w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] md:w-[460px] md:h-[460px] rounded-full border border-primary/10 bg-primary/[0.03]" />
           </div>
           {/* Three.js 3D Mini PC */}
           <div className="relative z-10 w-full">

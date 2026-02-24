@@ -154,62 +154,74 @@ export function TypeWriter({
   className = "",
   charDelay = 0.04,
   lineDelay = 0.4,
-  startDelay = 0.5,
+  startDelay = 0,
 }: TypeWriterProps) {
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(startDelay <= 0);
 
   useEffect(() => {
+    if (startDelay <= 0) return;
     const timer = setTimeout(() => setStarted(true), startDelay * 1000);
     return () => clearTimeout(timer);
   }, [startDelay]);
 
-  if (!started) {
-    return (
-      <span className={className}>
-        <motion.span
-          animate={{ opacity: [0, 1, 0] }}
-          transition={{ duration: 0.8, repeat: Infinity }}
-          className="inline-block w-[3px] h-[0.8em] bg-current align-middle"
-        />
-      </span>
-    );
-  }
-
   let charOffset = 0;
 
   return (
-    <span className={className}>
-      {lines.map((line, lineIdx) => {
-        const lineStart = charOffset * charDelay + lineIdx * lineDelay;
-        const chars = line.text.split("");
-
-        const rendered = chars.map((char, ci) => {
-          const d = lineStart + ci * charDelay;
-          return (
-            <motion.span
-              key={`${lineIdx}-${ci}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.01, delay: d }}
-              style={{ display: char === " " ? "inline" : "inline-block" }}
-            >
-              {char}
-            </motion.span>
-          );
-        });
-
-        charOffset += chars.length;
-
-        return (
+    <span className={`${className} relative inline-grid`}>
+      {/* Invisible placeholder to reserve full height — prevents layout shift */}
+      <span className="invisible col-start-1 row-start-1" aria-hidden>
+        {lines.map((line, lineIdx) => (
           <span key={lineIdx} className={line.className}>
-            {rendered}
+            {line.text}
             {lineIdx < lines.length - 1 && <br />}
           </span>
-        );
-      })}
-      <CursorBlink
-        showAfter={charOffset * charDelay + (lines.length - 1) * lineDelay}
-      />
+        ))}
+      </span>
+
+      {/* Actual animated text overlaid via grid overlap */}
+      <span className="col-start-1 row-start-1">
+        {!started ? (
+          <motion.span
+            animate={{ opacity: [0, 1, 0] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
+            className="inline-block w-[3px] h-[0.8em] bg-current align-middle"
+          />
+        ) : (
+          <>
+            {lines.map((line, lineIdx) => {
+              const lineStart = charOffset * charDelay + lineIdx * lineDelay;
+              const chars = line.text.split("");
+
+              const rendered = chars.map((char, ci) => {
+                const d = lineStart + ci * charDelay;
+                return (
+                  <motion.span
+                    key={`${lineIdx}-${ci}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.01, delay: d }}
+                    style={{ display: char === " " ? "inline" : "inline-block" }}
+                  >
+                    {char}
+                  </motion.span>
+                );
+              });
+
+              charOffset += chars.length;
+
+              return (
+                <span key={lineIdx} className={line.className}>
+                  {rendered}
+                  {lineIdx < lines.length - 1 && <br />}
+                </span>
+              );
+            })}
+            <CursorBlink
+              showAfter={charOffset * charDelay + (lines.length - 1) * lineDelay}
+            />
+          </>
+        )}
+      </span>
     </span>
   );
 }

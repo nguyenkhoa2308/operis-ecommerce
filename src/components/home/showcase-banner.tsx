@@ -1,0 +1,73 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ConcentricCircles } from "@/components/ui/decorative-pattern";
+import { Play, ArrowRight } from "lucide-react";
+
+export function ShowcaseBanner() {
+  return (
+    <section className="relative h-[420px] md:h-[480px] overflow-hidden">
+      {/* Background image */}
+      <Image
+        src="/images/home-showcase.webp"
+        alt="Operisbot đang hoạt động"
+        fill
+        sizes="100vw"
+        className="object-cover"
+        priority={false}
+      />
+      {/* Dark gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/70 to-foreground/40" />
+
+      {/* Decorative */}
+      <ConcentricCircles
+        className="right-[-120px] bottom-[-100px]"
+        size={400}
+        color="#ffffff"
+        opacity={0.06}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 h-full flex items-center">
+        <motion.div
+          className="max-w-xl"
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-5">
+            <Play size={12} className="text-emerald fill-emerald" />
+            <span className="text-xs tracking-widest text-white/80 font-medium">
+              PLUG & PLAY — CẮM LÀ CHẠY
+            </span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-semibold text-white leading-tight tracking-tight">
+            TẮT MÁY TÍNH.
+            <br />
+            <span className="text-sky">BOT VẪN LÀM VIỆC.</span>
+          </h2>
+          <p className="text-white/60 mt-4 text-lg leading-relaxed max-w-md">
+            Operisbot chạy 24/7 trên thiết bị riêng — không tốn tài nguyên máy
+            chính, không lo lộ dữ liệu. Ngủ dậy đã có báo cáo sẵn.
+          </p>
+          <div className="flex flex-wrap gap-3 mt-6">
+            <Link
+              href="/shop"
+              className="inline-flex items-center gap-2 bg-accent text-white text-xs tracking-widest px-6 py-3 hover:bg-accent/90 transition-colors rounded-full"
+            >
+              MUA NGAY <ArrowRight size={14} />
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 border border-white/30 text-white text-xs tracking-widest px-6 py-3 hover:bg-white/10 transition-colors rounded-full"
+            >
+              TÌM HIỂU THÊM
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}

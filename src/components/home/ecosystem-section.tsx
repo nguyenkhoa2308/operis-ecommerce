@@ -3,9 +3,6 @@ import {
   MessageSquare,
   Palette,
   Calculator,
-  Home,
-  ShoppingBag,
-  Users,
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
@@ -40,33 +37,6 @@ const tools = [
     bg: "bg-emerald/10",
     status: "Sắp ra mắt",
   },
-  {
-    icon: Home,
-    name: "Operis-BĐS",
-    tagline: "Săn tin bất động sản 24/7",
-    desc: "Bot quét Batdongsan, Chotot, hội nhóm kín — lọc theo tiêu chí giá, diện tích, vị trí. Thông báo ngay khi có tin mới phù hợp.",
-    color: "text-sky",
-    bg: "bg-sky/10",
-    status: "Q2/2026",
-  },
-  {
-    icon: ShoppingBag,
-    name: "Operis-Shop",
-    tagline: "Quản lý đa sàn TMĐT",
-    desc: "Đồng bộ tồn kho, giá bán, đơn hàng trên Shopee, Lazada, TikTok Shop. Tự điều chỉnh giá theo biến động đối thủ.",
-    color: "text-amber",
-    bg: "bg-amber/10",
-    status: "Q2/2026",
-  },
-  {
-    icon: Users,
-    name: "Operis-HR",
-    tagline: "Tuyển dụng & sàng lọc CV",
-    desc: "Tải CV hàng loạt từ TopCV, LinkedIn — AI so sánh với JD, xếp hạng ứng viên và tự gửi email mời phỏng vấn.",
-    color: "text-teal",
-    bg: "bg-teal/10",
-    status: "Q3/2026",
-  },
 ];
 
 export function EcosystemSection() {
@@ -94,14 +64,13 @@ export function EcosystemSection() {
           <h2 className="text-3xl font-semibold tracking-tight">
             MINI-TOOLS CHUYÊN BIỆT TỪNG NGÀNH
           </h2>
-          <p className="text-base text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
             Không chỉ dừng lại ở Workflow tổng quát — Operisbot đang phát triển
-            kho công cụ chuyên sâu cho từng lĩnh vực, giúp bạn tự động hóa chính
-            xác hơn, tiết kiệm hơn.
+            kho công cụ chuyên sâu cho từng lĩnh vực.
           </p>
         </FadeIn>
 
-        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {tools.map((tool) => (
             <StaggerItem
               key={tool.name}
@@ -118,13 +87,13 @@ export function EcosystemSection() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold">{tool.name}</h4>
-                  <p className={`text-xs ${tool.color} font-medium`}>
+                  <h4 className="text-base font-semibold">{tool.name}</h4>
+                  <p className={`text-sm ${tool.color} font-medium`}>
                     {tool.tagline}
                   </p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+              <p className="text-base text-muted-foreground leading-relaxed flex-1">
                 {tool.desc}
               </p>
               <div className="mt-4 pt-3 border-t border-border">
@@ -137,15 +106,15 @@ export function EcosystemSection() {
         </StaggerContainer>
 
         <div className="text-center mt-10">
-          <p className="text-sm text-muted-foreground italic mb-4">
-            Mua thiết bị hôm nay — tất cả Mini-tools sẽ được cập nhật miễn phí
-            khi ra mắt.
+          <p className="text-base text-muted-foreground italic mb-4">
+            Và còn nhiều Mini-tools khác đang phát triển: BĐS, E-commerce,
+            Tuyển dụng...
           </p>
           <Link
-            href="/shop"
+            href="/about#he-sinh-thai"
             className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest px-8 py-3 rounded-full hover:bg-primary-dark transition-colors"
           >
-            XEM THIẾT BỊ <ArrowRight size={14} />
+            XEM TẤT CẢ MINI-TOOLS <ArrowRight size={14} />
           </Link>
         </div>
       </div>

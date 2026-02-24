@@ -13,6 +13,8 @@ export interface PricingTier {
   price: number;
   bonus: number;
   popular: boolean;
+  description: string;
+  unlimited: boolean;
 }
 
 export interface DepositInfo {
@@ -121,6 +123,8 @@ export async function getPricing(): Promise<PricingTier[]> {
     price: p.priceVnd ?? p.price ?? 0,
     bonus: p.bonus ?? 0,
     popular: p.popular ?? false,
+    description: p.description ?? "",
+    unlimited: p.unlimited ?? false,
   }));
 }
 

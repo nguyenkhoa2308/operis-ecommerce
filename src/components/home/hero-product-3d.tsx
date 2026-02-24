@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, Suspense, useRef, useMemo, type ReactNode } from "react";
+import { Component, Suspense, useRef, useMemo, useState, useEffect, type ReactNode } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Environment, OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
@@ -109,7 +109,11 @@ function MiniPC() {
             position={[w / 2 + 0.005, -h / 2 + 0.15 + i * 0.08, 0]}
           >
             <boxGeometry args={[0.02, 0.03, d * 0.5]} />
-            <meshStandardMaterial color="#222222" metalness={0.9} roughness={0.3} />
+            <meshStandardMaterial
+              color="#222222"
+              metalness={0.9}
+              roughness={0.3}
+            />
           </mesh>
         ))}
 
@@ -117,14 +121,25 @@ function MiniPC() {
         {[-0.6, -0.3].map((x, i) => (
           <mesh key={`usb-${i}`} position={[x, -h / 2 + 0.2, d / 2 + 0.005]}>
             <boxGeometry args={[0.18, 0.1, 0.02]} />
-            <meshStandardMaterial color="#111111" metalness={0.7} roughness={0.4} />
+            <meshStandardMaterial
+              color="#111111"
+              metalness={0.7}
+              roughness={0.4}
+            />
           </mesh>
         ))}
 
         {/* Power button */}
-        <mesh position={[w / 2 - 0.15, h / 2 - 0.12, d / 2 + 0.005]} rotation={[Math.PI / 2, 0, 0]}>
+        <mesh
+          position={[w / 2 - 0.15, h / 2 - 0.12, d / 2 + 0.005]}
+          rotation={[Math.PI / 2, 0, 0]}
+        >
           <cylinderGeometry args={[0.05, 0.05, 0.02, 16]} />
-          <meshStandardMaterial color="#333333" metalness={0.8} roughness={0.2} />
+          <meshStandardMaterial
+            color="#333333"
+            metalness={0.8}
+            roughness={0.2}
+          />
         </mesh>
 
         {/* Bottom rubber feet */}
@@ -141,7 +156,11 @@ function MiniPC() {
         ))}
 
         {/* Shadow catcher plane */}
-        <mesh position={[0, -h / 2 - 0.05, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <mesh
+          position={[0, -h / 2 - 0.05, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          receiveShadow
+        >
           <planeGeometry args={[4, 4]} />
           <shadowMaterial opacity={0.15} />
         </mesh>
@@ -175,10 +194,7 @@ function GlowParticles() {
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
         size={0.03}
@@ -196,43 +212,55 @@ function GlowParticles() {
 /* ------------------------------------------------------------------ */
 
 export default function HeroProduct3D() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Defer WebGL init so the rest of the page paints first
+    const id = setTimeout(() => setReady(true), 100);
+    return () => clearTimeout(id);
+  }, []);
+
   return (
     <CanvasErrorBoundary>
-    <div className="w-full h-[300px] sm:h-[380px] md:h-[480px]">
-      <Canvas
-        shadows
-        camera={{ position: [0, 1.5, 5.5], fov: 35 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: "transparent" }}
-      >
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.3} />
-          <directionalLight
-            position={[5, 8, 5]}
-            intensity={1.2}
-            castShadow
-            shadow-mapSize-width={1024}
-            shadow-mapSize-height={1024}
-          />
-          <pointLight position={[-3, 2, -2]} intensity={0.5} color="#8844ff" />
-          <pointLight position={[3, -1, 3]} intensity={0.3} color="#4466ff" />
+      <div className="w-full h-[240px] sm:h-[340px] md:h-[480px]">
+        {!ready ? null : <Canvas
+          shadows
+          camera={{ position: [0, 4.5, 4.5], fov: 42 }}
+          gl={{ antialias: true, alpha: true }}
+          style={{ background: "transparent" }}
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.3} />
+            <directionalLight
+              position={[5, 8, 5]}
+              intensity={1.2}
+              castShadow
+              shadow-mapSize-width={1024}
+              shadow-mapSize-height={1024}
+            />
+            <pointLight
+              position={[-3, 2, -2]}
+              intensity={0.5}
+              color="#8844ff"
+            />
+            <pointLight position={[3, -1, 3]} intensity={0.3} color="#4466ff" />
 
-          <OrbitControls
-            autoRotate
-            autoRotateSpeed={1.5}
-            enableZoom={false}
-            enablePan={false}
-            minPolarAngle={Math.PI / 4}
-            maxPolarAngle={Math.PI / 1.8}
-          />
+            <OrbitControls
+              autoRotate
+              autoRotateSpeed={1.5}
+              enableZoom={false}
+              enablePan={false}
+              minPolarAngle={Math.PI / 4}
+              maxPolarAngle={Math.PI / 1.8}
+            />
 
-          <MiniPC />
-          <GlowParticles />
+            <MiniPC />
+            <GlowParticles />
 
-          <Environment preset="city" />
-        </Suspense>
-      </Canvas>
-    </div>
+            <Environment preset="city" />
+          </Suspense>
+        </Canvas>}
+      </div>
     </CanvasErrorBoundary>
   );
 }

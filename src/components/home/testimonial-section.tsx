@@ -72,7 +72,7 @@ export function TestimonialSection() {
           <h2 className="text-3xl font-semibold tracking-tight">
             ĐƯỢC TIN DÙNG BỞI HÀNG TRĂM DOANH NGHIỆP
           </h2>
-          <p className="text-base text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
             Những người đã trải nghiệm và chia sẻ về hiệu quả thực tế khi sử
             dụng Operisbot trong công việc hàng ngày.
           </p>
@@ -135,7 +135,7 @@ export function TestimonialSection() {
                     ))}
                   </div>
 
-                  <p className="text-sm md:text-base text-foreground/80 leading-relaxed mb-6 flex-1">
+                  <p className="text-base md:text-lg text-foreground/80 leading-relaxed mb-6 flex-1">
                     &ldquo;{t.quote}&rdquo;
                   </p>
 
@@ -148,8 +148,8 @@ export function TestimonialSection() {
                       </span>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold">{t.author}</p>
-                      <p className="text-xs text-muted-foreground">{t.role}</p>
+                      <p className="text-base font-semibold">{t.author}</p>
+                      <p className="text-sm text-muted-foreground">{t.role}</p>
                     </div>
                   </div>
                 </div>
