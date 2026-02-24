@@ -1,0 +1,61 @@
+# Operis / Operisbot
+
+> Operisbot is a plug-and-play AI automation appliance — a Mini PC pre-installed with AI workflow software that runs 24/7 on dedicated hardware. Designed for individuals and businesses in Vietnam who want to automate repetitive tasks without cloud dependency or complex setup.
+
+## What is Operisbot?
+
+Operisbot is a physical AI appliance (not a SaaS subscription, not a chatbot). The device runs independently on its own hardware, keeping your data on-premise and your main computer unaffected. Operations are workflow-based: you select a workflow, plug in the device, connect to the internet, and the device handles execution autonomously.
+
+Key differentiators:
+- Runs on separate dedicated hardware — data stays on device, not in the cloud
+- Plug-and-play setup — no complex installation required
+- Workflow-based automation, not chat-based — deterministic, repeatable processes
+- 100% accuracy on structured tasks
+- Low power consumption — designed to run 24/7 (uses ~1/10 the power of a desktop PC)
+- Visual Automation (operates like a human user) — reduces risk of platform bans on Facebook, Shopee, etc.
+- Saves ~70% cost vs. renting individual AI accounts
+
+## Automation Use Cases
+
+- Recruitment automation
+- Tax reporting
+- Marketing and SEO
+- Customer service
+- Advertising analytics
+- Web scraping (up to unlimited pages/day on higher tiers)
+- Workflow-driven API integrations
+
+## Products
+
+Operisbot Mini PC devices are sold via the online shop. Each device ships pre-installed with automation software and includes a starter token balance. Hardware warranty: 24 months. Accessories: 3 months. Software support: lifetime.
+
+Payment methods: bank transfer (VietQR), cash on delivery (COD), token top-up via payment gateway.
+
+Delivery: 1–2 days (HCM City, Hanoi); 3–5 days (other provinces); 5–7 days (remote areas). Free shipping on orders over 2,000,000 VND.
+
+Return policy: 7 days from receipt, original packaging required.
+
+## Token System
+
+Tokens are the energy unit powering Operisbot workflows. Users top up tokens on demand — no mandatory monthly subscription fee.
+
+Token pricing and tiers are managed dynamically — see https://operis.vn/account/token for current plans.
+
+## Pages
+
+- [Home](https://operis.vn/) — Product overview, key value propositions, how it works
+- [Shop](https://operis.vn/shop) — Product catalog with filters and search
+- [Product Detail](https://operis.vn/shop/[slug]) — Individual product specs, reviews, purchase
+- [About](https://operis.vn/about) — Company story, team, ecosystem, workflow showcase
+- [Enterprise](https://operis.vn/enterprise) — Custom configuration and enterprise solutions
+- [Contact](https://operis.vn/contact) — Contact form
+- [Support](https://operis.vn/support) — Help center
+- [FAQ](https://operis.vn/support/faq) — Frequently asked questions (device, ordering, payment, shipping, warranty, account)
+- [Token Purchase](https://operis.vn/account/token) — Buy and manage AI token balance
+
+## Contact
+
+- Website: https://operis.vn
+- Phone: +84 779 886 666
+- Email: hungle@hagency.vn
+- Target market: Vietnam (individuals and businesses)
