@@ -42,6 +42,7 @@ export function FloatingActions() {
   const [sending, setSending] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const msgIdRef = useRef(0);
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   /* Scroll-to-top visibility */
   useEffect(() => {
@@ -57,6 +58,22 @@ export function FloatingActions() {
       document.body.style.overflow = "";
     };
   }, [chatOpen]);
+
+  /* Close mobile drawer on outside tap */
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const handleTap = (e: MouseEvent | TouchEvent) => {
+      if (drawerRef.current && !drawerRef.current.contains(e.target as Node)) {
+        setDrawerOpen(false);
+      }
+    };
+    document.addEventListener("touchstart", handleTap);
+    document.addEventListener("mousedown", handleTap);
+    return () => {
+      document.removeEventListener("touchstart", handleTap);
+      document.removeEventListener("mousedown", handleTap);
+    };
+  }, [drawerOpen]);
 
   /* Auto-scroll chat */
   useEffect(() => {
@@ -145,6 +162,7 @@ export function FloatingActions() {
 
       {/* === Mobile: edge-tab drawer === */}
       <div
+        ref={drawerRef}
         className={`md:hidden fixed bottom-18 right-0 z-40 flex flex-col items-end transition-all duration-300 ${chatOpen ? "opacity-0 pointer-events-none" : ""}`}
       >
         {/* Action buttons — stacked above toggle tab */}
@@ -154,7 +172,7 @@ export function FloatingActions() {
           {/* Scroll to top */}
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); setDrawerOpen(false); }}
             aria-label="Lên đầu trang"
             className={`w-11 h-11 rounded-full bg-foreground text-white shadow-lg flex items-center justify-center hover:bg-primary transition-all duration-200 ${
               showScrollTop
@@ -171,6 +189,7 @@ export function FloatingActions() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat Zalo"
+            onClick={() => setDrawerOpen(false)}
             className="w-11 h-11 hover:scale-105 transition-all duration-200 block"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
