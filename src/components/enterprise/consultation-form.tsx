@@ -8,7 +8,7 @@ const contactInfo = [
   {
     icon: Phone,
     label: "Hotline",
-    value: "+84 779 886 666",
+    value: "+84 853 336 668",
     sub: "Hỗ trợ 24/7",
     color: "text-emerald",
     bg: "bg-emerald/10",

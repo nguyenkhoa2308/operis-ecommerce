@@ -81,7 +81,7 @@ export function FloatingActions() {
           id: `bot-${++msgIdRef.current}`,
           role: "bot",
           content:
-            "Cảm ơn bạn đã liên hệ! Hiện tại tính năng chatbot đang được phát triển. Vui lòng liên hệ hotline +84 779 886 666 hoặc gửi email đến hungle@hagency.vn để được hỗ trợ nhanh nhất.",
+            "Cảm ơn bạn đã liên hệ! Hiện tại tính năng chatbot đang được phát triển. Vui lòng liên hệ hotline +84 853 336 668 hoặc gửi email đến hungle@hagency.vn để được hỗ trợ nhanh nhất.",
         },
       ]);
       setSending(false);
@@ -107,6 +107,24 @@ export function FloatingActions() {
         >
           <ArrowUp size={22} />
         </button>
+
+        {/* Zalo */}
+        <a
+          href="https://zalo.me/0853336668"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat Zalo"
+          className="w-14 h-14 hover:scale-105 transition-all duration-200 block"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/icons/zalo_icon.svg"
+            alt="Zalo"
+            width={56}
+            height={56}
+            className="w-14 h-14 drop-shadow-lg"
+          />
+        </a>
 
         {/* Chat trigger */}
         <button
@@ -146,6 +164,24 @@ export function FloatingActions() {
           >
             <ArrowUp size={18} />
           </button>
+
+          {/* Zalo */}
+          <a
+            href="https://zalo.me/0853336668"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat Zalo"
+            className="w-11 h-11 hover:scale-105 transition-all duration-200 block"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/icons/zalo_icon.svg"
+              alt="Zalo"
+              width={44}
+              height={44}
+              className="w-11 h-11 drop-shadow-lg"
+            />
+          </a>
 
           {/* Chat trigger */}
           <button

@@ -77,7 +77,7 @@ export default function ContactPage() {
                   <div>
                     <h4 className="text-sm font-semibold mb-1">Hotline</h4>
                     <p className="text-sm text-muted-foreground">
-                      +84 779 886 666
+                      +84 853 336 668
                     </p>
                     <p className="text-sm text-muted-foreground">Hỗ trợ 24/7</p>
                   </div>
@@ -227,7 +227,7 @@ export default function ContactPage() {
                 <div className="text-sm text-muted-foreground space-y-1">
                   <p>CT1A, Chung cư VOV Mễ Trì</p>
                   <p>Quận Nam Từ Liêm, Hà Nội</p>
-                  <p>+84 779 886 666</p>
+                  <p>+84 853 336 668</p>
                   <p>hungle@hagency.vn</p>
                 </div>
               </div>

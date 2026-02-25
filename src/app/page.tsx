@@ -8,6 +8,9 @@ function SectionSkeleton({ h = "h-[400px]" }: { h?: string }) {
 }
 
 /* Lazy-load below-the-fold sections to reduce initial bundle & main-thread work */
+const ContextSection = dynamic(() => import("@/components/home/context-section").then((m) => ({ default: m.ContextSection })), {
+  loading: () => <SectionSkeleton />,
+});
 const IntroSection = dynamic(() => import("@/components/home/intro-section").then((m) => ({ default: m.IntroSection })), {
   loading: () => <SectionSkeleton />,
 });
@@ -44,6 +47,7 @@ export default function Home() {
     <main>
       <HeroSection />
       <BenefitsSection />
+      <ContextSection />
       <IntroSection />
       <ShowcaseBanner />
       <HowItWorksSection />

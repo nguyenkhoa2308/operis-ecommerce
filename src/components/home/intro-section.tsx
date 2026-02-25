@@ -5,9 +5,17 @@ import {
   TrendingUp,
   Building2,
   Sparkles,
+  Bot,
 } from "lucide-react";
 import { DotGrid } from "@/components/ui/decorative-pattern";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
+
+const stats = [
+  { value: "24/7", label: "Hoạt động liên tục" },
+  { value: "6+", label: "Lĩnh vực tự động" },
+  { value: "90%", label: "Giảm thời gian xử lý" },
+  { value: "0", label: "Ngày nghỉ" },
+];
 
 const useCaseGroups = [
   {
@@ -75,6 +83,19 @@ const useCaseGroups = [
       "Suy luận, tổng hợp báo cáo tài chính — giúp doanh nghiệp có cái nhìn toàn diện nhất.",
     ],
   },
+  {
+    icon: Bot,
+    title: "Tổng quan — Nhân viên AI 24/7",
+    color: "text-primary",
+    bg: "bg-primary/10",
+    border: "border-l-primary",
+    arrow: "text-primary",
+    scenarios: [
+      "Thực hiện bất kì công việc nào — chỉ cần workflow hoàn chỉnh và nguyên liệu đầu vào.",
+      "Hoạt động 24/7 không mệt mỏi, không kêu ca, không đòi tăng lương, không ngày nghỉ.",
+      "Báo cáo công việc chi tiết — gọi bất kì lúc nào để nhận báo cáo tiến độ.",
+    ],
+  },
 ];
 
 export function IntroSection() {
@@ -89,7 +110,8 @@ export function IntroSection() {
         gap={28}
       />
       <div className="max-w-7xl mx-auto px-4 py-16 relative z-10">
-        <FadeIn className="text-center mb-10">
+        {/* Header centered + stats */}
+        <FadeIn className="text-center mb-12">
           <p className="text-sm tracking-widest text-primary font-medium mb-3">
             KỊCH BẢN THỰC TẾ
           </p>
@@ -97,9 +119,21 @@ export function IntroSection() {
             OPERISBOT LÀM GÌ CHO BẠN?
           </h2>
           <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
-            Không chỉ &quot;tự động hóa&quot; — đây là những hành động cụ thể mà
-            Operisbot thực hiện thay bạn, 24/7, trên thiết bị riêng.
+            Không chỉ &quot;tự động hóa&quot; — đây là những hành động cụ thể
+            mà Operisbot thực hiện thay bạn, 24/7, trên thiết bị riêng.
           </p>
+          <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-8">
+            {stats.map((s) => (
+              <div key={s.label} className="text-center">
+                <p className="text-3xl md:text-4xl font-bold text-primary">
+                  {s.value}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1 tracking-wide">
+                  {s.label}
+                </p>
+              </div>
+            ))}
+          </div>
         </FadeIn>
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {useCaseGroups.map((group) => (

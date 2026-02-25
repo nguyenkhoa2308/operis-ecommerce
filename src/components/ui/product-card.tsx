@@ -55,7 +55,7 @@ export function ProductCard({
         className={`flex flex-col h-full rounded-2xl overflow-hidden bg-white transition-all duration-300 hover:-translate-y-1 ${
           highlight
             ? "ring-2 ring-primary/20 shadow-lg shadow-primary/10"
-            : "border border-border hover:shadow-xl hover:shadow-black/6 hover:border-transparent"
+            : "border border-black/20 hover:shadow-xl hover:shadow-black/6 hover:border-black/20"
         }`}
       >
         {/* ── Image ── */}
@@ -72,7 +72,14 @@ export function ProductCard({
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/20">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.8">
+              <svg
+                width="64"
+                height="64"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.8"
+              >
                 <rect x="2" y="3" width="20" height="14" rx="2" />
                 <path d="M8 21h8M12 17v4" />
               </svg>
@@ -100,11 +107,17 @@ export function ProductCard({
               }`}
             >
               {isFree ? (
-                <>LIÊN HỆ <Phone size={13} /></>
+                <>
+                  LIÊN HỆ <Phone size={13} />
+                </>
               ) : added ? (
-                <>ĐÃ THÊM <Check size={13} className="animate-bounce-in" /></>
+                <>
+                  ĐÃ THÊM <Check size={13} className="animate-bounce-in" />
+                </>
               ) : (
-                <>THÊM GIỎ HÀNG <ShoppingCart size={13} /></>
+                <>
+                  THÊM GIỎ HÀNG <ShoppingCart size={13} />
+                </>
               )}
             </button>
           </div>
@@ -116,7 +129,10 @@ export function ProductCard({
           {product.tags.length > 0 && (
             <div className="flex items-center gap-1.5 mb-1 md:mb-2">
               {product.tags.map((tag) => (
-                <span key={tag} className="text-[9px] md:text-[10px] tracking-wider font-medium text-primary/70">
+                <span
+                  key={tag}
+                  className="text-[9px] md:text-[10px] tracking-wider font-medium text-primary/70"
+                >
                   {tag}
                 </span>
               ))}
@@ -129,7 +145,9 @@ export function ProductCard({
           </h4>
 
           {/* Specs inline — hidden on mobile */}
-          <p className="hidden md:block text-xs text-muted-foreground mb-2 line-clamp-1">{specsText}</p>
+          <p className="hidden md:block text-xs text-muted-foreground mb-2 line-clamp-1">
+            {specsText}
+          </p>
 
           {/* Short description */}
           {product.description && (
@@ -141,7 +159,9 @@ export function ProductCard({
           {/* Price */}
           <div className="mt-auto pt-1 md:pt-2">
             {isFree ? (
-              <span className="text-sm md:text-lg font-bold text-primary">Liên hệ</span>
+              <span className="text-sm md:text-lg font-bold text-primary">
+                Liên hệ
+              </span>
             ) : (
               <span className="text-base md:text-xl font-extrabold text-foreground">
                 {formatPrice(product.price)}
@@ -162,11 +182,17 @@ export function ProductCard({
             }`}
           >
             {isFree ? (
-              <>LIÊN HỆ <Phone size={12} /></>
+              <>
+                LIÊN HỆ <Phone size={12} />
+              </>
             ) : added ? (
-              <>ĐÃ THÊM <Check size={12} className="animate-bounce-in" /></>
+              <>
+                ĐÃ THÊM <Check size={12} className="animate-bounce-in" />
+              </>
             ) : (
-              <>THÊM GIỎ HÀNG <ShoppingCart size={12} /></>
+              <>
+                THÊM GIỎ HÀNG <ShoppingCart size={12} />
+              </>
             )}
           </button>
         </div>

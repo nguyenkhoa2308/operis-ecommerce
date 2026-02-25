@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Linkedin, Youtube } from "lucide-react";
+import Image from "next/image";
+import { FooterNavLinks } from "./footer-nav-links";
 
 const quickLinks = [
-  { label: "TRANG CHỦ", href: "/", active: true },
+  { label: "TRANG CHỦ", href: "/" },
   { label: "GIỚI THIỆU", href: "/about" },
   { label: "CỬA HÀNG", href: "/shop" },
   { label: "LIÊN HỆ", href: "/contact" },
@@ -12,16 +13,19 @@ const helpLinks = [
   { label: "THEO DÕI ĐƠN HÀNG", href: "/support/order-tracking" },
   { label: "CHÍNH SÁCH ĐỔI TRẢ", href: "/support/return-policy" },
   { label: "VẬN CHUYỂN + GIAO HÀNG", href: "/support/shipping" },
-  { label: "LIÊN HỆ", href: "/contact" },
   { label: "CÂU HỎI THƯỜNG GẶP", href: "/support/faq" },
 ];
 
 const socials = [
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Youtube, href: "#", label: "YouTube" },
+  { icon: "/icons/facebook.svg", href: "#", label: "Facebook" },
+  // { icon: "/icons/instagram.svg", href: "#", label: "Instagram" },
+  // { icon: "/icons/tiktok.svg", href: "#", label: "TikTok" },
+  {
+    icon: "/icons/zalo_icon.svg",
+    href: "https://zalo.me/0853336668",
+    label: "Zalo",
+  },
+  // { icon: "/icons/messenger_icon.svg", href: "#", label: "Messenger" },
 ];
 
 export default function Footer() {
@@ -35,17 +39,27 @@ export default function Footer() {
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed mb-6">
             Operisbot — Thiết bị Trợ lý AI Vật lý. Cắm là Chạy. Bảo mật tuyệt
-            đối, hiệu suất 24/7, tiết kiệm 70% chi phí.
+            đối, hiệu suất 24/7, tiết kiệm 80% chi phí.
           </p>
           <div className="flex items-center gap-3">
             {socials.map((s) => (
               <Link
                 key={s.label}
                 href={s.href}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                target={s.href.startsWith("http") ? "_blank" : undefined}
+                rel={
+                  s.href.startsWith("http") ? "noopener noreferrer" : undefined
+                }
+                className="opacity-60 hover:opacity-100 transition-opacity"
                 aria-label={s.label}
               >
-                <s.icon size={16} />
+                <Image
+                  src={s.icon}
+                  alt={s.label}
+                  width={22}
+                  height={22}
+                  className="w-[22px] h-[22px]"
+                />
               </Link>
             ))}
           </div>
@@ -56,39 +70,13 @@ export default function Footer() {
           <h4 className="text-sm font-semibold tracking-widest mb-4">
             LIÊN KẾT NHANH
           </h4>
-          <ul className="space-y-2">
-            {quickLinks.map((link) => (
-              <li key={link.label}>
-                <Link
-                  href={link.href}
-                  className={`text-sm tracking-wide transition-colors ${
-                    link.active
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <FooterNavLinks links={quickLinks} />
         </div>
 
         {/* Hỗ trợ */}
         <div>
           <h4 className="text-sm font-semibold tracking-widest mb-4">HỖ TRỢ</h4>
-          <ul className="space-y-2">
-            {helpLinks.map((link) => (
-              <li key={link.label}>
-                <Link
-                  href={link.href}
-                  className="text-sm text-muted-foreground hover:text-foreground tracking-wide transition-colors"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <FooterNavLinks links={helpLinks} />
         </div>
 
         {/* Liên hệ */}
@@ -109,10 +97,10 @@ export default function Footer() {
             Cần hỗ trợ? Gọi ngay cho chúng tôi.
           </p>
           <a
-            href="tel:+84779886666"
+            href="tel:+84853336668"
             className="text-sm text-foreground underline hover:text-primary transition-colors"
           >
-            +84 779 886 666
+            +84 853 336 668
           </a>
         </div>
       </div>

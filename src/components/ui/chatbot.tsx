@@ -64,7 +64,7 @@ export function Chatbot() {
         id: `bot-${++msgIdRef.current}`,
         role: "bot",
         content:
-          "Cảm ơn bạn đã liên hệ! Hiện tại tính năng chatbot đang được phát triển. Vui lòng liên hệ hotline +84 779 886 666 hoặc gửi email đến hungle@hagency.vn để được hỗ trợ nhanh nhất.",
+          "Cảm ơn bạn đã liên hệ! Hiện tại tính năng chatbot đang được phát triển. Vui lòng liên hệ hotline +84 853 336 668 hoặc gửi email đến hungle@hagency.vn để được hỗ trợ nhanh nhất.",
       };
       setMessages((prev) => [...prev, botMsg]);
       setSending(false);

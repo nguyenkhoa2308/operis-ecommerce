@@ -118,7 +118,7 @@ export function organizationJsonLd() {
     foundingDate: "2024",
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+84-779-886-666",
+      telephone: "+84-853-336-668",
       contactType: "customer service",
       email: "hungle@hagency.vn",
       availableLanguage: "Vietnamese",
@@ -133,7 +133,7 @@ export function localBusinessJsonLd() {
     "@type": "LocalBusiness",
     name: "Operis",
     url: SITE_URL,
-    telephone: "+84-779-886-666",
+    telephone: "+84-853-336-668",
     email: "hungle@hagency.vn",
     address: {
       "@type": "PostalAddress",

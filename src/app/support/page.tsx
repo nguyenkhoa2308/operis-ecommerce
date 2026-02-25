@@ -130,10 +130,10 @@ export default function SupportPage() {
           <h3 className="text-2xl font-semibold tracking-tight mb-2">Cần hỗ trợ gấp?</h3>
           <p className="text-base text-white/60 mb-4">Gọi cho chúng tôi — phục vụ 24/7</p>
           <a
-            href="tel:+84779886666"
+            href="tel:+84853336668"
             className="inline-block bg-white text-foreground text-sm tracking-widest px-8 py-3 rounded-full hover:bg-white/90 transition-colors"
           >
-            +84 779 886 666
+            +84 853 336 668
           </a>
         </div>
       </section>
