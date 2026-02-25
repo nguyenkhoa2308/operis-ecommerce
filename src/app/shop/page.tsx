@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PageBanner } from "@/components/ui/page-banner";
 import { SubscribeSection } from "@/components/home/subscribe-section";
@@ -74,16 +73,15 @@ export default async function ShopPage({
         title="CỬA HÀNG"
         breadcrumb={[{ label: "Trang chủ", href: "/" }, { label: "Cửa hàng" }]}
       />
-      <Suspense>
-        <ShopContent
-          initialProducts={initialData.products}
-          initialTotal={initialData.total}
-          initialTotalPages={initialData.totalPages}
-          categories={["Tất cả", ...categories]}
-          initialCategory={initialCategory}
-          initialQuery={initialQuery}
-        />
-      </Suspense>
+      <ShopContent
+        key={`${initialCategory}|${initialQuery}`}
+        initialProducts={initialData.products}
+        initialTotal={initialData.total}
+        initialTotalPages={initialData.totalPages}
+        categories={["Tất cả", ...categories]}
+        initialCategory={initialCategory}
+        initialQuery={initialQuery}
+      />
       <SubscribeSection />
     </>
   );

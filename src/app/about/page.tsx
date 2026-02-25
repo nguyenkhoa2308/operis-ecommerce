@@ -204,32 +204,6 @@ const timeline = [
   },
 ];
 
-const team = [
-  {
-    name: "Lê Tiến Hùng",
-    role: "CEO & Founder",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop",
-  },
-  {
-    name: "Trần Thị Lan",
-    role: "CTO",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop",
-  },
-  {
-    name: "Lê Văn Hùng",
-    role: "Trưởng phòng Kỹ thuật",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop",
-  },
-  {
-    name: "Phạm Ngọc Mai",
-    role: "Trưởng phòng CSKH",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop",
-  },
-];
 
 /* ── Page ─────────────────────────────────────────────────────────── */
 
@@ -927,49 +901,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 10. Đội ngũ ───────────────────────────────────────── */}
-      <section className="bg-muted/50 relative overflow-hidden">
-        <ConcentricCircles
-          className="right-[-180px] bottom-[-100px]"
-          size={400}
-          color="#6b8fb5"
-          opacity={0.04}
-        />
-        <div className="max-w-7xl mx-auto px-4 py-16 md:py-20 relative z-10">
-          <FadeIn className="text-center mb-12">
-            <p className="text-sm tracking-widest text-primary font-medium mb-3">
-              ĐỘI NGŨ
-            </p>
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
-              NHỮNG NGƯỜI ĐỨNG SAU OPERIS
-            </h2>
-          </FadeIn>
-
-          <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {team.map((m) => (
-              <StaggerItem key={m.name}>
-                <div className="text-center group">
-                  <div className="relative w-36 h-36 mx-auto mb-4 rounded-full overflow-hidden ring-4 ring-primary/10 group-hover:ring-primary/25 transition-all shadow-lg">
-                    <Image
-                      src={m.image}
-                      alt={m.name}
-                      fill
-                      sizes="144px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <h4 className="text-base font-semibold">{m.name}</h4>
-                  <p className="text-base text-muted-foreground mt-1">
-                    {m.role}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* ── 11. CTA with image ────────────────────────────────── */}
+      {/* ── 10. CTA with image ────────────────────────────────── */}
       <section className="relative bg-gradient-cta text-white overflow-hidden">
         <div className="absolute top-1/2 right-[-100px] w-[400px] h-[400px] rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute bottom-[-50px] left-[-50px] w-[200px] h-[200px] rounded-full bg-violet/10 blur-3xl" />

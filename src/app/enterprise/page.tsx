@@ -18,16 +18,14 @@ import {
   Wrench,
   Phone,
   FileSearch,
-  ClipboardList,
   Settings,
   PackageCheck,
   X as XIcon,
-  Minus,
 } from "lucide-react";
 import { JsonLdScript } from "@/components/json-ld-script";
 import { enterprisePageJsonLd } from "@/lib/json-ld";
 import { ConcentricCircles, DotGrid } from "@/components/ui/decorative-pattern";
-import { FadeIn, StaggerContainer, StaggerItem, ScaleIn } from "@/components/ui/motion";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import { EnterpriseWorkflowTabs } from "@/components/enterprise/enterprise-workflow-tabs";
 import { EnterpriseFaq } from "@/components/enterprise/enterprise-faq";
 import { ConsultationForm } from "@/components/enterprise/consultation-form";
@@ -115,34 +113,33 @@ const configSteps = [
   },
 ];
 
-const refConfigs = [
-  {
-    name: "Entry",
-    desc: "Doanh nghiệp nhỏ, 1-3 Workflow",
-    specs: ["Mini PC N100", "8GB RAM / 256GB SSD", "5.000 Token/tháng", "3 Workflow có sẵn", "Hỗ trợ email"],
-    highlight: false,
-  },
-  {
-    name: "Standard",
-    desc: "Doanh nghiệp vừa, 5-10 Workflow",
-    specs: ["Mini PC i5", "16GB RAM / 512GB SSD", "20.000 Token/tháng", "10 Workflow (có sẵn + tùy chỉnh)", "Hỗ trợ 24/7 + Training"],
-    highlight: true,
-  },
-  {
-    name: "Custom",
-    desc: "Doanh nghiệp lớn, không giới hạn",
-    specs: ["Cấu hình tùy chọn", "RAM & SSD theo yêu cầu", "Token không giới hạn", "Workflow xây riêng 100%", "SLA + Đội ngũ chuyên trách"],
-    highlight: false,
-  },
-];
-
 const comparisonRows = [
-  { label: "Chi phí khởi tạo", hire: "Thấp", saas: "Thấp", operis: "Trung bình" },
-  { label: "Chi phí vận hành/tháng", hire: "Rất cao", saas: "Trung bình", operis: "Rất thấp" },
+  {
+    label: "Chi phí khởi tạo",
+    hire: "Thấp",
+    saas: "Thấp",
+    operis: "Trung bình",
+  },
+  {
+    label: "Chi phí vận hành/tháng",
+    hire: "Rất cao",
+    saas: "Trung bình",
+    operis: "Rất thấp",
+  },
   { label: "Tốc độ xử lý", hire: "Chậm", saas: "Nhanh", operis: "Rất nhanh" },
   { label: "Hoạt động 24/7", hire: false, saas: true, operis: true },
-  { label: "Bảo mật dữ liệu", hire: "Rủi ro", saas: "Phụ thuộc vendor", operis: "Tuyệt đối" },
-  { label: "Tùy biến quy trình", hire: "Cao", saas: "Hạn chế", operis: "Không giới hạn" },
+  {
+    label: "Bảo mật dữ liệu",
+    hire: "Rủi ro",
+    saas: "Phụ thuộc vendor",
+    operis: "Tuyệt đối",
+  },
+  {
+    label: "Tùy biến quy trình",
+    hire: "Cao",
+    saas: "Hạn chế",
+    operis: "Không giới hạn",
+  },
   { label: "Scale không tăng chi phí", hire: false, saas: false, operis: true },
   { label: "Không phụ thuộc internet", hire: true, saas: false, operis: true },
 ];
@@ -182,7 +179,7 @@ const trustCards = [
   {
     icon: ShieldCheck,
     title: "Hardware Sandbox",
-    desc: "AI chạy trên phần cứng riêng — hoàn toàn cách ly khỏi hệ thống nội bộ. Dữ liệu nhạy cảm trên máy chính \"vô hình\" trước AI.",
+    desc: 'AI chạy trên phần cứng riêng — hoàn toàn cách ly khỏi hệ thống nội bộ. Dữ liệu nhạy cảm trên máy chính "vô hình" trước AI.',
     color: "text-sky",
     bg: "bg-sky/10",
   },
@@ -229,65 +226,92 @@ export default function EnterprisePage() {
       {/* ============================================================ */}
       {/* S1 — HERO                                                     */}
       {/* ============================================================ */}
-      <section className="bg-gradient-cta relative overflow-hidden">
-        <ConcentricCircles
-          className="right-[-150px] top-[-100px]"
-          size={400}
-          color="#ffffff"
-          opacity={0.05}
+      <section className="enterprise-hero relative overflow-hidden min-h-[620px] md:min-h-[720px] flex items-center">
+        {/* Background image (blurred) */}
+        <Image
+          src="/images/enterprise-landing.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+          aria-hidden="true"
         />
-        <DotGrid
-          className="left-0 bottom-0"
-          color="#ffffff"
-          opacity={0.04}
-          cols={10}
-          rows={6}
-          gap={30}
-        />
-        <div className="max-w-7xl mx-auto px-4 py-20 md:py-28 relative z-10">
-          <FadeIn className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
-              <span className="text-xs tracking-widest text-white/80 font-medium">
+        {/* Dark overlay + color tint */}
+        <div className="absolute inset-0 bg-[#0a0f1a]/85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0f1a]/40 via-transparent to-[#0a0f1a]/60" />
+        {/* Colored glows */}
+        <div className="absolute top-[-15%] right-[-5%] w-[500px] h-[500px] rounded-full bg-primary/15 blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-violet/10 blur-[100px] animate-pulse [animation-delay:2s]" />
+        {/* Grid overlay */}
+        <div className="absolute inset-0 opacity-[0.03] enterprise-hero-grid" />
+
+        <div className="max-w-7xl mx-auto px-4 py-24 md:py-32 relative z-10 w-full">
+          <FadeIn className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2.5 bg-white/[0.06] border border-white/[0.12] backdrop-blur-sm rounded-full px-5 py-2 mb-8">
+              <span className="w-2 h-2 rounded-full bg-emerald animate-pulse" />
+              <span className="text-xs tracking-[0.2em] text-white/70 font-medium">
                 OPERISBOT ENTERPRISE
               </span>
             </div>
-            <h1 className="text-3xl md:text-5xl font-semibold text-white leading-tight tracking-tight mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-white leading-[1.1] tracking-tight mb-6">
               ĐỪNG THUÊ THÊM NGƯỜI.
               <br />
-              <span className="text-sky">HÃY ĐỂ BOT LÀM.</span>
+              <span className="bg-gradient-to-r from-sky via-primary to-violet bg-clip-text text-transparent">
+                HÃY ĐỂ BOT LÀM.
+              </span>
             </h1>
-            <p className="text-lg text-white/70 leading-relaxed max-w-2xl mb-8">
-              Operisbot Enterprise — thiết bị AI chạy 24/7 trên phần cứng riêng,
-              tự động hóa tuyển dụng, thuế, CSKH, marketing, thiết kế, quản lý kho.
-              Tùy biến hoàn toàn theo quy trình doanh nghiệp.
+            <p className="text-lg md:text-xl text-white/50 leading-relaxed max-w-2xl mx-auto mb-10">
+              Thiết bị AI chạy 24/7 trên phần cứng riêng — tự động hóa tuyển
+              dụng, thuế, CSKH, marketing, thiết kế, quản lý kho.
+              <span className="text-white/70 font-medium">
+                {" "}
+                Tùy biến hoàn toàn theo quy trình doanh nghiệp.
+              </span>
             </p>
-            <div className="flex flex-wrap gap-3 mb-12">
+            <div className="flex flex-wrap justify-center gap-3 mb-14">
               <Link
                 href="#lien-he"
-                className="inline-flex items-center gap-2 bg-accent text-white text-xs tracking-widest px-6 py-3 hover:bg-accent/90 transition-colors rounded-full"
+                className="group inline-flex items-center gap-2 bg-accent text-white text-xs tracking-widest px-7 py-3.5 hover:bg-accent/90 transition-all rounded-full shadow-lg shadow-accent/20"
               >
-                NHẬN TƯ VẤN MIỄN PHÍ <ArrowRight size={14} />
+                NHẬN TƯ VẤN MIỄN PHÍ
+                <ArrowRight
+                  size={14}
+                  className="group-hover:translate-x-0.5 transition-transform"
+                />
               </Link>
               <Link
                 href="#giai-phap"
-                className="inline-flex items-center gap-2 border border-white/30 text-white text-xs tracking-widest px-6 py-3 hover:bg-white/10 transition-colors rounded-full"
+                className="inline-flex items-center gap-2 border border-white/20 text-white/80 text-xs tracking-widest px-7 py-3.5 hover:bg-white/[0.06] hover:border-white/30 transition-all rounded-full backdrop-blur-sm"
               >
                 XEM GIẢI PHÁP <ArrowDown size={14} />
               </Link>
             </div>
             {/* Stats bar */}
-            <div className="flex flex-wrap gap-8 md:gap-12 border-t border-white/10 pt-8">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-14 border-t border-white/[0.08] pt-8">
               {[
-                { value: "80%", label: "Giảm chi phí vận hành" },
-                { value: "10x", label: "Tăng năng suất" },
-                { value: "24/7", label: "Hoạt động liên tục" },
-                { value: "100%", label: "Bảo mật dữ liệu" },
+                {
+                  value: "80%",
+                  label: "Giảm chi phí vận hành",
+                  color: "text-emerald",
+                },
+                { value: "10x", label: "Tăng năng suất", color: "text-sky" },
+                {
+                  value: "24/7",
+                  label: "Hoạt động liên tục",
+                  color: "text-violet",
+                },
+                {
+                  value: "100%",
+                  label: "Bảo mật dữ liệu",
+                  color: "text-amber",
+                },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p className="text-2xl md:text-3xl font-bold text-white">
+                  <p className={`text-2xl md:text-3xl font-bold ${stat.color}`}>
                     {stat.value}
                   </p>
-                  <p className="text-xs text-white/50 mt-1">{stat.label}</p>
+                  <p className="text-xs text-white/40 mt-1.5">{stat.label}</p>
                 </div>
               ))}
             </div>
@@ -371,12 +395,15 @@ export default function EnterprisePage() {
                 GIẢI PHÁP TOÀN DIỆN
               </p>
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-6">
-                MỘT THIẾT BỊ.<br />THAY THẾ CẢ TEAM.
+                MỘT THIẾT BỊ.
+                <br />
+                THAY THẾ CẢ TEAM.
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed mb-6">
                 Operisbot Enterprise là thiết bị Mini PC AI chạy 24/7 trên phần
                 cứng riêng — tự động hóa mọi tác vụ lặp lại trong doanh nghiệp.
-                Không cần thuê thêm người, không lo bảo mật, không phụ thuộc SaaS.
+                Không cần thuê thêm người, không lo bảo mật, không phụ thuộc
+                SaaS.
               </p>
               <div className="space-y-4 mb-8">
                 {[
@@ -434,7 +461,11 @@ export default function EnterprisePage() {
                   <div
                     className={`w-14 h-14 rounded-xl bg-gradient-to-br ${step.gradient} flex items-center justify-center mx-auto mb-4 shadow-lg`}
                   >
-                    <step.icon size={24} className="text-white" strokeWidth={1.5} />
+                    <step.icon
+                      size={24}
+                      className="text-white"
+                      strokeWidth={1.5}
+                    />
                   </div>
                   <p className="text-xs text-primary font-bold tracking-widest mb-2">
                     BƯỚC {i + 1}
@@ -451,85 +482,9 @@ export default function EnterprisePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* S5 — CẤU HÌNH THAM KHẢO (3 columns)                          */}
+      {/* S5 — ENTERPRISE WORKFLOWS (6 tabs)                            */}
       {/* ============================================================ */}
       <section className="bg-[#f8fafc] relative overflow-hidden">
-        <DotGrid
-          className="left-0 top-0"
-          color="#6b8fb5"
-          opacity={0.04}
-          cols={8}
-          rows={6}
-          gap={28}
-        />
-        <div className="max-w-7xl mx-auto px-4 py-16 md:py-20 relative z-10">
-          <FadeIn className="text-center mb-12">
-            <p className="text-sm tracking-widest text-primary font-medium mb-3">
-              CẤU HÌNH THAM KHẢO
-            </p>
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
-              CHỌN GÓI PHÙ HỢP QUY MÔ
-            </h2>
-            <p className="text-base text-muted-foreground mt-3 max-w-xl mx-auto">
-              Mọi gói đều tùy biến theo nhu cầu thực tế. Liên hệ để nhận báo giá chi tiết.
-            </p>
-          </FadeIn>
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {refConfigs.map((cfg) => (
-              <StaggerItem
-                key={cfg.name}
-                className={`rounded-2xl p-6 md:p-8 border transition-shadow hover:shadow-lg ${
-                  cfg.highlight
-                    ? "bg-foreground text-white border-foreground shadow-xl ring-2 ring-primary/30"
-                    : "bg-white border-border/50"
-                }`}
-              >
-                {cfg.highlight && (
-                  <span className="inline-block text-[10px] tracking-widest bg-accent text-white px-3 py-1 rounded-full mb-4 font-medium">
-                    PHỔ BIẾN NHẤT
-                  </span>
-                )}
-                <h3 className="text-xl font-semibold mb-1">{cfg.name}</h3>
-                <p
-                  className={`text-sm mb-6 ${cfg.highlight ? "text-white/60" : "text-muted-foreground"}`}
-                >
-                  {cfg.desc}
-                </p>
-                <ul className="space-y-3 mb-8">
-                  {cfg.specs.map((spec) => (
-                    <li key={spec} className="flex items-start gap-2">
-                      <CheckCircle2
-                        size={16}
-                        className={`shrink-0 mt-0.5 ${cfg.highlight ? "text-sky" : "text-emerald"}`}
-                      />
-                      <span
-                        className={`text-sm ${cfg.highlight ? "text-white/80" : "text-muted-foreground"}`}
-                      >
-                        {spec}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="#lien-he"
-                  className={`block text-center text-xs tracking-widest py-3 rounded-full transition-colors font-medium ${
-                    cfg.highlight
-                      ? "bg-accent text-white hover:bg-accent/90"
-                      : "bg-foreground text-white hover:bg-primary"
-                  }`}
-                >
-                  LIÊN HỆ BÁO GIÁ
-                </Link>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* S6 — ENTERPRISE WORKFLOWS (6 tabs)                            */}
-      {/* ============================================================ */}
-      <section className="bg-white relative overflow-hidden">
         <ConcentricCircles
           className="left-[-100px] bottom-[-80px]"
           size={300}
@@ -550,9 +505,9 @@ export default function EnterprisePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* S7 — SO SÁNH 3 CHIỀU                                         */}
+      {/* S6 — SO SÁNH 3 CHIỀU                                         */}
       {/* ============================================================ */}
-      <section className="bg-[#f8fafc] relative overflow-hidden">
+      <section className="bg-white relative overflow-hidden">
         <DotGrid
           className="right-0 bottom-0"
           color="#10b981"
@@ -573,21 +528,21 @@ export default function EnterprisePage() {
 
           {/* Desktop table */}
           <FadeIn className="hidden md:block">
-            <div className="bg-white rounded-2xl border border-border/50 overflow-hidden shadow-sm">
+            <div className="bg-white rounded-2xl border border-border/50 overflow-hidden shadow-lg">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-muted/50">
-                    <th className="text-left px-6 py-4 font-medium text-muted-foreground">
+                  <tr>
+                    <th className="text-left px-6 py-4 font-medium text-muted-foreground bg-muted/50">
                       Tiêu chí
                     </th>
-                    <th className="text-center px-6 py-4 font-medium text-muted-foreground">
+                    <th className="text-center px-6 py-4 font-medium text-muted-foreground bg-muted/50">
                       Thuê nhân sự
                     </th>
-                    <th className="text-center px-6 py-4 font-medium text-muted-foreground">
+                    <th className="text-center px-6 py-4 font-medium text-muted-foreground bg-muted/50">
                       SaaS tools
                     </th>
-                    <th className="text-center px-6 py-4 font-semibold text-primary">
-                      Operisbot ✦
+                    <th className="text-center px-6 py-4 font-semibold text-white bg-primary">
+                      Operisbot
                     </th>
                   </tr>
                 </thead>
@@ -597,14 +552,14 @@ export default function EnterprisePage() {
                       key={row.label}
                       className={i % 2 === 0 ? "bg-white" : "bg-muted/20"}
                     >
-                      <td className="px-6 py-3 font-medium">{row.label}</td>
-                      <td className="px-6 py-3 text-center">
+                      <td className="px-6 py-3.5 font-medium">{row.label}</td>
+                      <td className="px-6 py-3.5 text-center text-muted-foreground">
                         <CellValue value={row.hire} />
                       </td>
-                      <td className="px-6 py-3 text-center">
+                      <td className="px-6 py-3.5 text-center text-muted-foreground">
                         <CellValue value={row.saas} />
                       </td>
-                      <td className="px-6 py-3 text-center font-medium text-primary">
+                      <td className="px-6 py-3.5 text-center font-semibold text-primary bg-primary/[0.03]">
                         <CellValue value={row.operis} />
                       </td>
                     </tr>
@@ -649,9 +604,9 @@ export default function EnterprisePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* S8 — LỘ TRÌNH TRIỂN KHAI                                      */}
+      {/* S7 — LỘ TRÌNH TRIỂN KHAI                                      */}
       {/* ============================================================ */}
-      <section className="bg-white relative overflow-hidden">
+      <section className="bg-[#f8fafc] relative overflow-hidden">
         <ConcentricCircles
           className="right-[-100px] top-[-80px]"
           size={300}
@@ -668,17 +623,21 @@ export default function EnterprisePage() {
             </h2>
           </FadeIn>
           <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {deploySteps.map((step) => (
-              <StaggerItem key={step.number} className="relative flex gap-4">
-                <div
-                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg shrink-0`}
-                >
-                  <span className="text-sm font-semibold text-white">
-                    {step.number}
-                  </span>
-                </div>
-                <div>
-                  <h4 className="text-base font-semibold mb-1">{step.title}</h4>
+            {deploySteps.map((step, i) => (
+              <StaggerItem key={step.number} className="relative">
+                {/* Connector line on desktop */}
+                {i > 0 && (
+                  <div className="hidden lg:block absolute -left-3 top-6 w-6 border-t-2 border-dashed border-primary/20" />
+                )}
+                <div className="bg-white border border-border/50 rounded-2xl p-6 hover:shadow-lg transition-shadow h-full">
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg mb-4`}
+                  >
+                    <span className="text-sm font-bold text-white">
+                      {step.number}
+                    </span>
+                  </div>
+                  <h4 className="text-base font-semibold mb-2">{step.title}</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {step.desc}
                   </p>
@@ -690,9 +649,9 @@ export default function EnterprisePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* S9 — BẢO MẬT & UY TÍN                                        */}
+      {/* S8 — BẢO MẬT & UY TÍN                                        */}
       {/* ============================================================ */}
-      <section className="bg-[#f8fafc] relative overflow-hidden">
+      <section className="bg-white relative overflow-hidden">
         <DotGrid
           className="left-0 bottom-0"
           color="#8b5cf6"
@@ -719,7 +678,11 @@ export default function EnterprisePage() {
                 <div
                   className={`w-14 h-14 rounded-full ${card.bg} flex items-center justify-center mx-auto mb-5`}
                 >
-                  <card.icon size={28} className={card.color} strokeWidth={1.5} />
+                  <card.icon
+                    size={28}
+                    className={card.color}
+                    strokeWidth={1.5}
+                  />
                 </div>
                 <h4 className="text-base font-semibold mb-2">{card.title}</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
@@ -732,9 +695,9 @@ export default function EnterprisePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* S10 — FAQ                                                      */}
+      {/* S9 — FAQ                                                       */}
       {/* ============================================================ */}
-      <section className="bg-white relative overflow-hidden">
+      <section className="bg-[#f8fafc] relative overflow-hidden">
         <ConcentricCircles
           className="left-[-100px] top-[-80px]"
           size={300}
@@ -755,7 +718,7 @@ export default function EnterprisePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* S11 — CTA + FORM                                              */}
+      {/* S10 — CTA + FORM                                              */}
       {/* ============================================================ */}
       <section
         id="lien-he"
@@ -792,7 +755,7 @@ export default function EnterprisePage() {
       </section>
 
       {/* ============================================================ */}
-      {/* S12 — SUBSCRIBE                                               */}
+      {/* S11 — SUBSCRIBE                                               */}
       {/* ============================================================ */}
       <SubscribeSection />
     </main>

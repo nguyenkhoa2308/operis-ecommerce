@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useSearchParams } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { ProductCard, ProductCardSkeleton } from "@/components/ui/product-card";
 import { viCategory } from "@/data/products";
@@ -27,8 +26,6 @@ export function ShopContent({
   initialCategory,
   initialQuery,
 }: ShopContentProps) {
-  const searchParams = useSearchParams();
-
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [search, setSearch] = useState(initialQuery);
   const [sort, setSort] = useState("");
@@ -47,7 +44,6 @@ export function ShopContent({
 
   /* Track if user has interacted — skip first fetch since server provided initial data */
   const [hasInteracted, setHasInteracted] = useState(false);
-  const isFirstMount = useRef(true);
 
   useEffect(() => {
     document.body.style.overflow = filterOpen ? "hidden" : "";
@@ -56,33 +52,29 @@ export function ShopContent({
     };
   }, [filterOpen]);
 
+  /* Debounce search / price — only fires when values actually change */
+  const prevSearch = useRef(search);
+  const prevMinPrice = useRef(minPrice);
+  const prevMaxPrice = useRef(maxPrice);
+
   useEffect(() => {
-    /* Skip debounce on initial mount — server already provided data */
-    if (isFirstMount.current) {
-      isFirstMount.current = false;
+    /* Nothing changed — skip (also handles initial mount & strict-mode re-mount) */
+    if (search === prevSearch.current && minPrice === prevMinPrice.current && maxPrice === prevMaxPrice.current) {
       return;
     }
     const t = setTimeout(() => {
+      prevSearch.current = search;
+      prevMinPrice.current = minPrice;
+      prevMaxPrice.current = maxPrice;
       setDebouncedSearch(search);
       setDebouncedMinPrice(minPrice);
       setDebouncedMaxPrice(maxPrice);
       setPage(1);
       setHasInteracted(true);
+      setLoading(true);
     }, 500);
     return () => clearTimeout(t);
   }, [search, minPrice, maxPrice]);
-
-  useEffect(() => {
-    const q = searchParams.get("q") ?? "";
-    const cat = searchParams.get("cat") ?? "Tất cả";
-    if (q !== search || cat !== activeCategory) {
-      setSearch(q);
-      setActiveCategory(cat);
-      setPage(1);
-      setHasInteracted(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -152,10 +144,12 @@ export function ShopContent({
             <li key={cat}>
               <button
                 onClick={() => {
+                  if (cat === activeCategory) return;
                   setActiveCategory(cat);
                   setPage(1);
                   setFilterOpen(false);
                   setHasInteracted(true);
+                  setLoading(true);
                 }}
                 className={`text-sm transition-colors ${
                   activeCategory === cat
@@ -228,6 +222,7 @@ export function ShopContent({
                   setSort(e.target.value);
                   setPage(1);
                   setHasInteracted(true);
+                  setLoading(true);
                 }}
                 className="text-xs md:text-sm text-muted-foreground border border-border px-2.5 md:px-3 py-1.5 rounded-lg bg-white"
               >
@@ -258,6 +253,7 @@ export function ShopContent({
                 onClick={() => {
                   setPage((p) => Math.max(1, p - 1));
                   setHasInteracted(true);
+                  setLoading(true);
                 }}
                 disabled={page === 1}
                 className="text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"
@@ -270,6 +266,7 @@ export function ShopContent({
                   onClick={() => {
                     setPage(i + 1);
                     setHasInteracted(true);
+                    setLoading(true);
                   }}
                   className={`w-8 h-8 text-sm rounded ${
                     page === i + 1
@@ -284,6 +281,7 @@ export function ShopContent({
                 onClick={() => {
                   setPage((p) => Math.min(totalPages, p + 1));
                   setHasInteracted(true);
+                  setLoading(true);
                 }}
                 disabled={page === totalPages}
                 className="text-muted-foreground hover:text-foreground disabled:opacity-30 transition-colors"

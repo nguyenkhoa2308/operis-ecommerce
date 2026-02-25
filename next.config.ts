@@ -26,6 +26,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "admin.operis.vn",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.google.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
 };

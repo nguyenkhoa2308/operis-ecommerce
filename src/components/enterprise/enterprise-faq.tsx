@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MessageCircleQuestion } from "lucide-react";
 
 const faqItems = [
   {
@@ -43,38 +43,66 @@ export function EnterpriseFaq() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="border border-border rounded-lg divide-y divide-border overflow-hidden">
-        {faqItems.map((item, i) => {
-          const isOpen = openItems.has(i);
-          return (
-            <div key={i}>
-              <button
-                type="button"
-                onClick={() => toggle(i)}
-                className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-muted/50 transition-colors"
-              >
-                <span className="text-base font-medium pr-4">{item.q}</span>
-                <ChevronDown
-                  size={16}
-                  className={`shrink-0 text-muted-foreground transition-transform duration-200 ${
-                    isOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              <div
-                className={`overflow-hidden transition-all duration-300 ease-out ${
-                  isOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+    <div className="max-w-3xl mx-auto space-y-3">
+      {faqItems.map((item, i) => {
+        const isOpen = openItems.has(i);
+        return (
+          <div
+            key={i}
+            className={`rounded-xl border transition-all duration-300 ${
+              isOpen
+                ? "bg-white border-primary/20 shadow-md shadow-primary/5"
+                : "bg-white border-border/50 hover:border-primary/15 hover:shadow-sm"
+            }`}
+          >
+            <button
+              type="button"
+              onClick={() => toggle(i)}
+              className="w-full flex items-center gap-4 px-6 py-5 text-left"
+            >
+              <span
+                className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-300 ${
+                  isOpen ? "bg-primary/10" : "bg-muted/60"
                 }`}
               >
-                <p className="px-5 pb-4 text-base text-muted-foreground leading-relaxed">
+                <MessageCircleQuestion
+                  size={18}
+                  className={`transition-colors duration-300 ${
+                    isOpen ? "text-primary" : "text-muted-foreground"
+                  }`}
+                  strokeWidth={1.5}
+                />
+              </span>
+              <span
+                className={`text-base font-medium flex-1 transition-colors duration-300 ${
+                  isOpen ? "text-primary" : "text-foreground"
+                }`}
+              >
+                {item.q}
+              </span>
+              <ChevronDown
+                size={18}
+                className={`shrink-0 text-muted-foreground transition-transform duration-300 ${
+                  isOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {/* CSS grid trick for smooth height animation */}
+            <div
+              className="grid transition-[grid-template-rows] duration-300 ease-out"
+              style={{
+                gridTemplateRows: isOpen ? "1fr" : "0fr",
+              }}
+            >
+              <div className="overflow-hidden">
+                <p className="px-6 pb-5 pl-[4.25rem] text-base text-muted-foreground leading-relaxed">
                   {item.a}
                 </p>
               </div>
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -211,55 +211,97 @@ function GlowParticles() {
 /*  Exported Canvas wrapper                                           */
 /* ------------------------------------------------------------------ */
 
+/* Scene contents — triggers onReady once first frame renders */
+function SceneContent({ onReady }: { onReady: () => void }) {
+  const called = useRef(false);
+  useFrame(() => {
+    if (!called.current) {
+      called.current = true;
+      onReady();
+    }
+  });
+
+  return (
+    <>
+      <ambientLight intensity={0.3} />
+      <directionalLight
+        position={[5, 8, 5]}
+        intensity={1.2}
+        castShadow
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
+      />
+      <pointLight position={[-3, 2, -2]} intensity={0.5} color="#8844ff" />
+      <pointLight position={[3, -1, 3]} intensity={0.3} color="#4466ff" />
+
+      <OrbitControls
+        autoRotate
+        autoRotateSpeed={1.5}
+        enableZoom={false}
+        enablePan={false}
+        minPolarAngle={Math.PI / 4}
+        maxPolarAngle={Math.PI / 1.8}
+      />
+
+      <MiniPC />
+      <GlowParticles />
+
+      <Environment preset="city" />
+    </>
+  );
+}
+
 export default function HeroProduct3D() {
   const [ready, setReady] = useState(false);
+  const [sceneReady, setSceneReady] = useState(false);
 
   useEffect(() => {
-    // Defer WebGL init so the rest of the page paints first
     const id = setTimeout(() => setReady(true), 100);
     return () => clearTimeout(id);
   }, []);
 
   return (
     <CanvasErrorBoundary>
-      <div className="w-full h-[240px] sm:h-[340px] md:h-[480px]">
-        {!ready ? null : <Canvas
-          shadows
-          camera={{ position: [0, 4.5, 4.5], fov: 42 }}
-          gl={{ antialias: true, alpha: true }}
-          style={{ background: "transparent" }}
+      <div className="w-full h-[240px] sm:h-[340px] md:h-[480px] relative">
+        {/* Skeleton placeholder — Mini PC silhouette while 3D loads */}
+        {!sceneReady && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative animate-pulse">
+              {/* Main body */}
+              <div className="w-[180px] h-[60px] md:w-[260px] md:h-[80px] rounded-xl bg-muted-foreground/10" />
+              {/* LED strip */}
+              <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-[60%] h-1 rounded-full bg-primary/20" />
+              {/* Top label */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-2.5 rounded bg-muted-foreground/8" />
+              {/* Front ports */}
+              <div className="absolute bottom-2 left-4 md:left-6 flex gap-1.5">
+                <div className="w-4 h-2.5 md:w-5 md:h-3 rounded-sm bg-muted-foreground/8" />
+                <div className="w-4 h-2.5 md:w-5 md:h-3 rounded-sm bg-muted-foreground/8" />
+              </div>
+              {/* Shadow */}
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-[70%] h-3 rounded-full bg-foreground/5 blur-md" />
+            </div>
+          </div>
+        )}
+
+        {/* 3D Canvas — fades in once first frame renders */}
+        <div
+          className="absolute inset-0 transition-opacity duration-700"
+          style={{ opacity: sceneReady ? 1 : 0 }}
         >
-          <Suspense fallback={null}>
-            <ambientLight intensity={0.3} />
-            <directionalLight
-              position={[5, 8, 5]}
-              intensity={1.2}
-              castShadow
-              shadow-mapSize-width={1024}
-              shadow-mapSize-height={1024}
-            />
-            <pointLight
-              position={[-3, 2, -2]}
-              intensity={0.5}
-              color="#8844ff"
-            />
-            <pointLight position={[3, -1, 3]} intensity={0.3} color="#4466ff" />
-
-            <OrbitControls
-              autoRotate
-              autoRotateSpeed={1.5}
-              enableZoom={false}
-              enablePan={false}
-              minPolarAngle={Math.PI / 4}
-              maxPolarAngle={Math.PI / 1.8}
-            />
-
-            <MiniPC />
-            <GlowParticles />
-
-            <Environment preset="city" />
-          </Suspense>
-        </Canvas>}
+          {ready && (
+            <Canvas
+              shadows
+              camera={{ position: [0, 4.5, 4.5], fov: 42 }}
+              gl={{ antialias: true, alpha: true }}
+              style={{ background: "transparent" }}
+            >
+              <Suspense fallback={null}>
+                <SceneContent onReady={() => setSceneReady(true)} />
+              </Suspense>
+            </Canvas>
+          )}
+        </div>
       </div>
     </CanvasErrorBoundary>
   );

@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 import {
   Building2,
   Calculator,
@@ -125,7 +124,28 @@ const workflows: Workflow[] = [
 
 export function EnterpriseWorkflowTabs() {
   const [active, setActive] = useState(0);
+  const [animKey, setAnimKey] = useState(0);
+  const stepsRef = useRef<HTMLDivElement>(null);
   const current = workflows[active];
+
+  const handleTabChange = (i: number) => {
+    if (i === active) return;
+    setActive(i);
+    setAnimKey((k) => k + 1);
+  };
+
+  /* Reset step animations on tab change */
+  useEffect(() => {
+    if (!stepsRef.current) return;
+    const items = stepsRef.current.querySelectorAll("[data-step]");
+    items.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      htmlEl.style.animation = "none";
+      // Force reflow
+      void htmlEl.offsetHeight;
+      htmlEl.style.animation = "";
+    });
+  }, [animKey]);
 
   return (
     <div>
@@ -133,9 +153,10 @@ export function EnterpriseWorkflowTabs() {
       <div className="flex flex-wrap justify-center gap-2 mb-8">
         {workflows.map((w, i) => (
           <button
+            type="button"
             key={w.label}
-            onClick={() => setActive(i)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all ${
+            onClick={() => handleTabChange(i)}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
               i === active
                 ? `${w.bg} ${w.color} ${w.border} border shadow-sm`
                 : "bg-white text-muted-foreground border border-border hover:border-primary/20 hover:bg-muted/50"
@@ -147,72 +168,68 @@ export function EnterpriseWorkflowTabs() {
         ))}
       </div>
 
-      {/* Tab content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.3 }}
-          className="bg-white rounded-2xl shadow-sm border border-border/50 overflow-hidden"
-        >
-          <div className="flex flex-col md:flex-row">
-            {/* Left — description */}
-            <div className="flex-1 p-6 md:p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div
-                  className={`w-10 h-10 rounded-full ${current.bg} flex items-center justify-center`}
-                >
-                  <current.icon
-                    size={20}
-                    className={current.color}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <h3 className="text-lg font-semibold">{current.title}</h3>
+      {/* Tab content — CSS fade animation */}
+      <div
+        key={animKey}
+        className="bg-white rounded-2xl shadow-sm border border-border/50 overflow-hidden animate-fade-in-up"
+      >
+        <div className="flex flex-col md:flex-row">
+          {/* Left — description */}
+          <div className="flex-1 p-6 md:p-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className={`w-10 h-10 rounded-full ${current.bg} flex items-center justify-center`}
+              >
+                <current.icon
+                  size={20}
+                  className={current.color}
+                  strokeWidth={1.5}
+                />
               </div>
-              <p className="text-base text-muted-foreground leading-relaxed">
-                {current.desc}
-              </p>
-              {/* ROI line */}
-              <div className="mt-4 inline-flex items-center gap-2 bg-emerald/5 border border-emerald/20 rounded-full px-4 py-2">
-                <TrendingUp size={14} className="text-emerald" />
-                <span className="text-sm font-medium text-emerald">
-                  {current.roi}
-                </span>
-              </div>
+              <h3 className="text-lg font-semibold">{current.title}</h3>
             </div>
-
-            {/* Right — workflow steps */}
-            <div className="flex-1 bg-muted/40 p-6 md:p-8 border-t md:border-t-0 md:border-l border-border/50">
-              <p className="text-xs text-primary font-medium tracking-wider mb-4">
-                QUY TRÌNH TỰ ĐỘNG
-              </p>
-              <div className="space-y-3">
-                {current.steps.map((step, i) => (
-                  <motion.div
-                    key={step}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.08 }}
-                    className="flex items-start gap-3"
-                  >
-                    <span
-                      className={`w-7 h-7 rounded-full ${current.bg} flex items-center justify-center shrink-0 mt-0.5`}
-                    >
-                      <span className={`text-xs font-bold ${current.color}`}>
-                        {i + 1}
-                      </span>
-                    </span>
-                    <span className="text-sm leading-relaxed">{step}</span>
-                  </motion.div>
-                ))}
-              </div>
+            <p className="text-base text-muted-foreground leading-relaxed">
+              {current.desc}
+            </p>
+            {/* ROI line */}
+            <div className="mt-4 inline-flex items-center gap-2 bg-emerald/5 border border-emerald/20 rounded-full px-4 py-2">
+              <TrendingUp size={14} className="text-emerald" />
+              <span className="text-sm font-medium text-emerald">
+                {current.roi}
+              </span>
             </div>
           </div>
-        </motion.div>
-      </AnimatePresence>
+
+          {/* Right — workflow steps */}
+          <div
+            ref={stepsRef}
+            className="flex-1 bg-muted/40 p-6 md:p-8 border-t md:border-t-0 md:border-l border-border/50"
+          >
+            <p className="text-xs text-primary font-medium tracking-wider mb-4">
+              QUY TRÌNH TỰ ĐỘNG
+            </p>
+            <div className="space-y-3">
+              {current.steps.map((step, i) => (
+                <div
+                  key={`${animKey}-${i}`}
+                  data-step
+                  className="flex items-start gap-3 animate-fade-in-right"
+                  style={{ animationDelay: `${i * 80}ms` }}
+                >
+                  <span
+                    className={`w-7 h-7 rounded-full ${current.bg} flex items-center justify-center shrink-0 mt-0.5`}
+                  >
+                    <span className={`text-xs font-bold ${current.color}`}>
+                      {i + 1}
+                    </span>
+                  </span>
+                  <span className="text-sm leading-relaxed">{step}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
