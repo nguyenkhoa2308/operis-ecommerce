@@ -3,7 +3,6 @@ import { persist } from "zustand/middleware";
 import { authApi } from "@/lib/api";
 import { mapUser } from "@/lib/api/auth";
 import type { AuthUser } from "@/lib/api/auth";
-import { setTokens, clearTokens, getTokens } from "@/lib/auth-tokens";
 import { useCartStore } from "./cart-store";
 
 export type User = AuthUser;
@@ -42,13 +41,7 @@ export const useAuthStore = create<AuthState>()(
       login: async (email, password) => {
         try {
           const res = await authApi.login(email, password);
-          if (res.accessToken && res.refreshToken) {
-            setTokens(res.accessToken, res.refreshToken);
-          }
-          set({
-            user: res.user,
-            isLoggedIn: true,
-          });
+          set({ user: res.user, isLoggedIn: true });
           useCartStore.getState().syncToServer();
           return { success: true };
         } catch (err) {
@@ -60,13 +53,7 @@ export const useAuthStore = create<AuthState>()(
       register: async (payload) => {
         try {
           const res = await authApi.register(payload);
-          if (res.accessToken && res.refreshToken) {
-            setTokens(res.accessToken, res.refreshToken);
-          }
-          set({
-            user: res.user,
-            isLoggedIn: true,
-          });
+          set({ user: res.user, isLoggedIn: true });
           useCartStore.getState().syncToServer();
           return { success: true };
         } catch (err) {
@@ -76,27 +63,20 @@ export const useAuthStore = create<AuthState>()(
       },
 
       fetchMe: async () => {
-        const tokens = getTokens();
-        if (!tokens?.token) {
-          // No tokens at all → clear stale auth state
-          if (get().isLoggedIn) set({ user: null, isLoggedIn: false });
-          return;
-        }
+        if (!get().isLoggedIn) return;
         try {
           const current = get().user;
           const user = await authApi.fetchMe(current ?? undefined);
           set({ user, isLoggedIn: true });
         } catch {
-          // If interceptor cleared tokens (refresh failed), also clear zustand state
-          const remaining = getTokens();
-          if (!remaining?.token) {
-            set({ user: null, isLoggedIn: false });
-          }
+          // Cookie expired or invalid → clear zustand state
+          set({ user: null, isLoggedIn: false });
         }
       },
 
       logout: () => {
-        clearTokens();
+        // Call API to clear HttpOnly cookies server-side
+        authApi.logout().catch(() => {});
         set({ user: null, isLoggedIn: false });
       },
 

@@ -2,32 +2,17 @@ import axios, {
   type AxiosError,
   type InternalAxiosRequestConfig,
 } from "axios";
-import { getTokens, setTokens, clearTokens } from "@/lib/auth-tokens";
 
 /* ------------------------------------------------------------------ */
-/*  Axios instance — points to admin.operis.vn/api                     */
+/*  Axios instance — same-origin /api proxied to backend via rewrites  */
+/*  Auth via HttpOnly cookies (first-party, no localStorage)           */
 /* ------------------------------------------------------------------ */
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "https://admin.operis.vn/api",
+  baseURL: "/api",
   timeout: 15_000,
   headers: { "Content-Type": "application/json" },
 });
-
-/* ------------------------------------------------------------------ */
-/*  Request interceptor — attach Bearer token                          */
-/* ------------------------------------------------------------------ */
-
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const tokens = getTokens();
-    if (tokens?.token) {
-      config.headers.set("Authorization", `Bearer ${tokens.token}`);
-    }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
 
 /* ------------------------------------------------------------------ */
 /*  Response interceptor — Vietnamese error mapping + token refresh     */
@@ -78,43 +63,26 @@ function toVietnamese(msg: string): string {
 
 let isRefreshing = false;
 let refreshQueue: Array<{
-  resolve: (token: string) => void;
+  resolve: () => void;
   reject: (err: Error) => void;
 }> = [];
 
-function processQueue(error: Error | null, token: string | null) {
+function processQueue(error: Error | null) {
   refreshQueue.forEach((p) => {
-    if (error || !token) {
-      p.reject(error ?? new Error("Refresh failed"));
+    if (error) {
+      p.reject(error);
     } else {
-      p.resolve(token);
+      p.resolve();
     }
   });
   refreshQueue = [];
 }
 
-async function refreshAccessToken(): Promise<string> {
-  const tokens = getTokens();
-  const rt = tokens?.refreshToken;
-  if (!rt) {
-    console.warn("[api] No refresh token — skipping refresh");
-    throw new Error("No refresh token");
-  }
-
-  console.log("[api] Attempting token refresh...");
-  const { data } = await axios.post(
-    `${api.defaults.baseURL}/auth/refresh`,
-    { refreshToken: rt },
-    { headers: { "Content-Type": "application/json" } },
-  );
-
-  const newToken = data.accessToken ?? data.token;
-  const newRefresh = data.refreshToken ?? data.refresh_token ?? rt;
-  if (!newToken) throw new Error("No token in refresh response");
-
-  console.log("[api] Token refresh successful");
-  setTokens(newToken, newRefresh);
-  return newToken;
+/** Refresh via HttpOnly cookie — browser sends cookie automatically */
+async function refreshAccessToken(): Promise<void> {
+  await axios.post("/api/auth/refresh", {}, {
+    headers: { "Content-Type": "application/json" },
+  });
 }
 
 /* ------------------------------------------------------------------ */
@@ -146,28 +114,19 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       if (isRefreshing) {
-        // Another request is already refreshing — wait in queue
-        return new Promise<string>((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
           refreshQueue.push({ resolve, reject });
-        }).then((newToken) => {
-          originalRequest.headers.set("Authorization", `Bearer ${newToken}`);
-          return api(originalRequest);
-        });
+        }).then(() => api(originalRequest));
       }
 
       isRefreshing = true;
       try {
-        const newToken = await refreshAccessToken();
-        processQueue(null, newToken);
-        originalRequest.headers.set("Authorization", `Bearer ${newToken}`);
+        await refreshAccessToken();
+        processQueue(null);
         return api(originalRequest);
       } catch (refreshErr) {
-        processQueue(refreshErr as Error, null);
-        // Refresh failed — clear tokens and redirect to login
-        clearTokens();
-        if (typeof window !== "undefined" && !window.location.pathname.startsWith("/login")) {
-          window.location.href = "/login";
-        }
+        processQueue(refreshErr as Error);
+        // Don't redirect — let zustand auth-store handle session cleanup
         return Promise.reject(new Error("Phiên đăng nhập đã hết hạn"));
       } finally {
         isRefreshing = false;

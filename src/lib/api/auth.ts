@@ -19,8 +19,6 @@ export interface AuthUser {
 
 export interface LoginResponse {
   user: AuthUser;
-  accessToken: string | null;
-  refreshToken: string | null;
 }
 
 /* ------------------------------------------------------------------ */
@@ -50,11 +48,7 @@ export function mapUser(raw: any, fallback?: Partial<AuthUser>): AuthUser {
 export async function login(email: string, password: string): Promise<LoginResponse> {
   const { data } = await api.post("/auth/login", { email, password });
   const raw = data.user ?? data;
-  return {
-    user: mapUser(raw, { email }),
-    accessToken: data.accessToken ?? data.token ?? null,
-    refreshToken: data.refreshToken ?? data.refresh_token ?? null,
-  };
+  return { user: mapUser(raw, { email }) };
 }
 
 export async function register(payload: {
@@ -64,11 +58,11 @@ export async function register(payload: {
 }): Promise<LoginResponse> {
   const { data } = await api.post("/auth/register", payload);
   const raw = data.user ?? data;
-  return {
-    user: mapUser(raw, { name: payload.name, email: payload.email }),
-    accessToken: data.accessToken ?? data.token ?? null,
-    refreshToken: data.refreshToken ?? data.refresh_token ?? null,
-  };
+  return { user: mapUser(raw, { name: payload.name, email: payload.email }) };
+}
+
+export async function logout(): Promise<void> {
+  await api.post("/auth/logout");
 }
 
 export async function fetchMe(fallbackUser?: Partial<AuthUser>): Promise<AuthUser> {

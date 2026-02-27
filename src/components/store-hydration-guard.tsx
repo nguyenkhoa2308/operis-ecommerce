@@ -19,11 +19,10 @@ export default function StoreHydrationGuard({
   const fetchMe = useAuthStore((s) => s.fetchMe);
 
   useEffect(() => {
-    // 1. Wait one frame for zustand persist hydration to complete
-    // 2. Then call /auth/me to refresh user profile (non-blocking for UI)
+    // Clean up legacy localStorage tokens (migrated to HttpOnly cookies)
+    localStorage.removeItem("operis-tokens");
+
     const id = requestAnimationFrame(async () => {
-      // Fire fetchMe but don't block rendering on it —
-      // show the page with cached data, then update when API responds
       fetchMe();
       setReady(true);
     });
