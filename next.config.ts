@@ -1,7 +1,18 @@
 import type { NextConfig } from "next";
 
+const API_ORIGIN = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") || "https://admin.operis.vn";
+
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  // Proxy /api/* → backend API so cookies are first-party (same-origin)
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${API_ORIGIN}/api/:path*`,
+      },
+    ];
+  },
   experimental: {
     optimizePackageImports: [
       "framer-motion",
