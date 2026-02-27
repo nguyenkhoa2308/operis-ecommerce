@@ -68,10 +68,15 @@ export function ConsultationForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addToast(
-      "Gửi yêu cầu tư vấn thành công! Chúng tôi sẽ liên hệ trong 24h.",
-    );
-    setForm({ name: "", company: "", phone: "", email: "", size: "", needs: "" });
+    addToast("Gửi yêu cầu tư vấn thành công! Chúng tôi sẽ liên hệ trong 24h.");
+    setForm({
+      name: "",
+      company: "",
+      phone: "",
+      email: "",
+      size: "",
+      needs: "",
+    });
   };
 
   const inputClass =

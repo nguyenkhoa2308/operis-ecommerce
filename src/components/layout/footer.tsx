@@ -7,6 +7,7 @@ const quickLinks = [
   { label: "GIỚI THIỆU", href: "/about" },
   { label: "CỬA HÀNG", href: "/shop" },
   { label: "LIÊN HỆ", href: "/contact" },
+  { label: "TẢI ỨNG DỤNG", href: "/download" },
 ];
 
 const helpLinks = [

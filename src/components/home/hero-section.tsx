@@ -73,10 +73,10 @@ export default function HeroSection() {
           </p>
           <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-6 md:mt-8">
             <Link
-              href="/shop"
-              className="bg-primary text-white text-xs tracking-widest px-6 md:px-8 py-3 hover:bg-primary-dark transition-colors rounded-full shadow-lg shadow-primary/20"
+              href="tel:84853336668"
+              className="bg-primary text-white text-xs tracking-widest px-6 md:px-8 py-3 hover:bg-primary-dark transition-colors rounded-full shadow-lg shadow-primary/20 uppercase"
             >
-              XEM SẢN PHẨM
+              Tư vẫn ngay
             </Link>
             <Link
               href="/about"

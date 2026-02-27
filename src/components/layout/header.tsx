@@ -49,6 +49,7 @@ const simpleLinks = [
   { label: "GIỚI THIỆU", href: "/about" },
   { label: "HỖ TRỢ", href: "/support" },
   { label: "LIÊN HỆ", href: "/contact" },
+  { label: "TẢI APP", href: "/download" },
 ];
 
 export default function Header() {

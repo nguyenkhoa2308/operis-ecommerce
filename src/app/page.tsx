@@ -11,6 +11,9 @@ function SectionSkeleton({ h = "h-[400px]" }: { h?: string }) {
 const ContextSection = dynamic(() => import("@/components/home/context-section").then((m) => ({ default: m.ContextSection })), {
   loading: () => <SectionSkeleton />,
 });
+const FreeTokenSection = dynamic(() => import("@/components/home/free-token-section").then((m) => ({ default: m.FreeTokenSection })), {
+  loading: () => <SectionSkeleton h="h-[500px]" />,
+});
 const IntroSection = dynamic(() => import("@/components/home/intro-section").then((m) => ({ default: m.IntroSection })), {
   loading: () => <SectionSkeleton />,
 });
@@ -48,6 +51,7 @@ export default function Home() {
       <HeroSection />
       <BenefitsSection />
       <ContextSection />
+      <FreeTokenSection />
       <IntroSection />
       <ShowcaseBanner />
       <HowItWorksSection />
