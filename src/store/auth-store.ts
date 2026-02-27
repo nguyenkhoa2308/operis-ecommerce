@@ -68,6 +68,7 @@ export const useAuthStore = create<AuthState>()(
           const current = get().user;
           const user = await authApi.fetchMe(current ?? undefined);
           set({ user, isLoggedIn: true });
+          useCartStore.getState().syncToServer();
         } catch {
           // Cookie expired or invalid → clear zustand state
           set({ user: null, isLoggedIn: false });
