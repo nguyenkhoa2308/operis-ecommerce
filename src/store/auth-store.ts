@@ -42,7 +42,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           const res = await authApi.login(email, password);
           set({ user: res.user, isLoggedIn: true });
-          useCartStore.getState().syncToServer();
+          useCartStore.getState().syncToServer().catch(() => {});
           return { success: true };
         } catch (err) {
           const message = err instanceof Error ? err.message : "Đăng nhập thất bại";
@@ -54,7 +54,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           const res = await authApi.register(payload);
           set({ user: res.user, isLoggedIn: true });
-          useCartStore.getState().syncToServer();
+          useCartStore.getState().syncToServer().catch(() => {});
           return { success: true };
         } catch (err) {
           const message = err instanceof Error ? err.message : "Đăng ký thất bại";
@@ -68,7 +68,8 @@ export const useAuthStore = create<AuthState>()(
           const current = get().user;
           const user = await authApi.fetchMe(current ?? undefined);
           set({ user, isLoggedIn: true });
-          useCartStore.getState().syncToServer();
+          // Session restore → load server cart (not merge)
+          useCartStore.getState().loadFromServer().catch(() => {});
         } catch {
           // Cookie expired or invalid → clear zustand state
           set({ user: null, isLoggedIn: false });

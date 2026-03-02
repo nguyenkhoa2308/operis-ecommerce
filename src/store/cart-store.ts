@@ -1,9 +1,17 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import api from "@/lib/axios";
 import type { Product } from "@/data/products";
+import { useToastStore } from "./toast-store";
 
 export interface CartItem {
   product: Product;
+  quantity: number;
+}
+
+/** Slim payload sent to / received from backend */
+interface CartItemPayload {
+  product_slug: string;
   quantity: number;
 }
 
@@ -15,23 +23,20 @@ interface CartState {
   clearCart: () => void;
   totalItems: () => number;
   totalPrice: () => number;
-  /** Sync local cart to backend (call after login) */
+  /** Merge local cart with server cart (call after login/register) */
   syncToServer: () => Promise<void>;
-  /** Load cart from backend (call after login) */
+  /** Load cart from server, replacing local (call on session restore) */
   loadFromServer: () => Promise<void>;
 }
 
-/**
- * Push current cart state to backend.
- * Only runs when user is logged in (auth token exists).
- */
-async function pushToServer(items: CartItem[]) {
-  // TODO: Replace with actual API call
-  // Example: await fetch("/api/cart", { method: "PUT", body: JSON.stringify({ items }) })
-  console.log("[cart] sync to server:", items.length, "items");
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function toPayload(items: CartItem[]): CartItemPayload[] {
+  return items.map((i) => ({ product_slug: i.product.slug, quantity: i.quantity }));
 }
 
-/** Check if user is logged in by reading auth store from localStorage */
 function isLoggedIn(): boolean {
   try {
     const raw = localStorage.getItem("operis-auth");
@@ -42,6 +47,70 @@ function isLoggedIn(): boolean {
     return false;
   }
 }
+
+/** PUT /api/cart — sync full cart to server after each change */
+async function pushToServer(items: CartItem[]) {
+  try {
+    await api.put("/cart", { items: toPayload(items) });
+  } catch (err) {
+    console.error("[cart] push failed:", err);
+  }
+}
+
+/**
+ * Map server slugs → full Product objects.
+ * Uses local items as cache, lazy-fetches any missing products.
+ */
+function resolveItems(
+  serverItems: CartItemPayload[],
+  localItems: CartItem[],
+): CartItem[] {
+  const localMap = new Map(localItems.map((i) => [i.product.slug, i.product]));
+  const resolved: CartItem[] = [];
+  const missing: CartItemPayload[] = [];
+
+  for (const si of serverItems) {
+    const product = localMap.get(si.product_slug);
+    if (product) {
+      resolved.push({ product, quantity: si.quantity });
+    } else {
+      missing.push(si);
+    }
+  }
+
+  if (missing.length > 0) {
+    fetchMissingProducts(missing);
+  }
+
+  return resolved;
+}
+
+async function fetchMissingProducts(missing: CartItemPayload[]) {
+  try {
+    const { getProduct } = await import("@/lib/api/products");
+    const fetched = await Promise.all(
+      missing.map(async (si) => {
+        try {
+          const product = await getProduct(si.product_slug);
+          return { product, quantity: si.quantity } as CartItem;
+        } catch {
+          console.warn("[cart] product not found:", si.product_slug);
+          return null;
+        }
+      }),
+    );
+    const valid = fetched.filter((i): i is CartItem => i !== null);
+    if (valid.length > 0) {
+      useCartStore.setState((s) => ({ items: [...s.items, ...valid] }));
+    }
+  } catch (err) {
+    console.error("[cart] fetch missing products failed:", err);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Store                                                              */
+/* ------------------------------------------------------------------ */
 
 export const useCartStore = create<CartState>()(
   persist(
@@ -61,9 +130,7 @@ export const useCartStore = create<CartState>()(
               }
             : { items: [...state.items, { product, quantity: 1 }] };
 
-          // Sync to server if logged in
           if (isLoggedIn()) pushToServer(next.items);
-
           return next;
         }),
 
@@ -99,17 +166,26 @@ export const useCartStore = create<CartState>()(
         get().items.reduce((sum, i) => sum + i.product.price * i.quantity, 0),
 
       syncToServer: async () => {
-        // Push local cart items to backend (merges with server-side cart)
-        // TODO: Replace with actual API call
-        const { items } = get();
-        await pushToServer(items);
+        const toast = useToastStore.getState().addToast;
+        try {
+          const { data } = await api.post<{ items: CartItemPayload[] }>("/cart/merge", {
+            local_items: toPayload(get().items),
+          });
+          set({ items: resolveItems(data.items, get().items) });
+          toast("Đã đồng bộ giỏ hàng");
+        } catch (err) {
+          console.error("[cart] merge failed:", err);
+          toast("Không thể đồng bộ giỏ hàng", "error");
+        }
       },
 
       loadFromServer: async () => {
-        // TODO: Replace with actual API call
-        // Example: const res = await fetch("/api/cart"); const data = await res.json();
-        // For now, keep local items (server cart will override when API is ready)
-        console.log("[cart] load from server (TODO)");
+        try {
+          const { data } = await api.get<{ items: CartItemPayload[] }>("/cart");
+          set({ items: resolveItems(data.items, get().items) });
+        } catch (err) {
+          console.error("[cart] load failed:", err);
+        }
       },
     }),
     {
