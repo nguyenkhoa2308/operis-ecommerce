@@ -34,12 +34,14 @@ export function ContextSection() {
     <section className="relative min-h-[480px] md:min-h-[520px] overflow-hidden">
       {/* Background image */}
       <Image
-        src="/images/context-banner.png"
+        src="/images/context-banner.webp"
         alt="Operisbot - hệ thống tự động hóa thông minh"
         fill
         sizes="100vw"
         className="object-cover object-right"
-        priority={false}
+        quality={75}
+        placeholder="blur"
+        blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
       />
       {/* Dark gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/75 to-foreground/50" />

@@ -189,7 +189,7 @@ export function ScaleIn({
 }
 
 /* ------------------------------------------------------------------ */
-/*  TypeWriter (pure React — no framer-motion)                         */
+/*  TypeWriter (ref-based DOM updates — zero React re-renders)         */
 /* ------------------------------------------------------------------ */
 
 interface TypeWriterLine {
@@ -204,80 +204,96 @@ interface TypeWriterProps {
   startDelay?: number;
 }
 
+/* Split text into grapheme clusters (handles Vietnamese diacritics correctly) */
+const segmenter = new Intl.Segmenter("vi", { granularity: "grapheme" });
+function splitGraphemes(text: string): string[] {
+  return [...segmenter.segment(text)].map((s) => s.segment);
+}
+
 export function TypeWriter({
   lines,
   className = "",
   charDelay = 0.04,
   startDelay = 0,
 }: TypeWriterProps) {
-  const [started, setStarted] = useState(startDelay <= 0);
-  const [visibleChars, setVisibleChars] = useState(0);
-  const totalChars = lines.reduce((sum, l) => sum + l.text.length, 0);
+  const lineGraphemes = lines.map((l) => splitGraphemes(l.text));
+  const totalChars = lineGraphemes.reduce((sum, g) => sum + g.length, 0);
+  const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const cursorRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
-    if (startDelay <= 0) return;
-    const timer = setTimeout(() => setStarted(true), startDelay * 1000);
-    return () => clearTimeout(timer);
-  }, [startDelay]);
+    const delayMs = startDelay * 1000;
+    const charMs = charDelay * 1000;
+    let startTime = 0;
+    let prevChars = -1;
+    let rafId: number;
 
-  useEffect(() => {
-    if (!started || visibleChars >= totalChars) return;
-    const timer = setTimeout(
-      () => setVisibleChars((v) => v + 1),
-      charDelay * 1000,
-    );
-    return () => clearTimeout(timer);
-  }, [started, visibleChars, totalChars, charDelay]);
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime - delayMs;
+      if (elapsed < 0) {
+        rafId = requestAnimationFrame(animate);
+        return;
+      }
 
-  let charOffset = 0;
+      const chars = Math.min(Math.floor(elapsed / charMs) + 1, totalChars);
+      if (chars !== prevChars) {
+        prevChars = chars;
+        let remaining = chars;
+
+        for (let i = 0; i < lineGraphemes.length; i++) {
+          const g = lineGraphemes[i];
+          const show = Math.min(remaining, g.length);
+          remaining -= show;
+
+          /* Update text directly — no React re-render */
+          if (textRefs.current[i]) {
+            textRefs.current[i]!.textContent = g.slice(0, show).join("");
+          }
+
+          /* Show cursor only on the line currently being typed */
+          const isActive = show > 0 && (show < g.length || remaining === 0);
+          if (cursorRefs.current[i]) {
+            cursorRefs.current[i]!.style.display =
+              isActive && chars < totalChars ? "" : "none";
+          }
+        }
+      }
+
+      if (chars < totalChars) {
+        rafId = requestAnimationFrame(animate);
+      }
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [startDelay, charDelay, totalChars, lineGraphemes]);
 
   return (
     <span className={`${className} relative inline-grid`}>
       {/* Invisible placeholder — prevents CLS */}
       <span className="invisible col-start-1 row-start-1" aria-hidden>
-        {lines.map((line, lineIdx) => (
-          <span key={lineIdx} className={line.className}>
+        {lines.map((line, i) => (
+          <span key={i} className={line.className}>
             {line.text}
-            {lineIdx < lines.length - 1 && <br />}
+            {i < lines.length - 1 && <br />}
           </span>
         ))}
       </span>
 
-      {/* Animated text */}
+      {/* Animated text — DOM updated directly via refs, zero re-renders */}
       <span className="col-start-1 row-start-1">
-        {!started ? (
-          <span className="inline-block w-[3px] h-[0.8em] bg-current align-middle animate-pulse" />
-        ) : (
-          <>
-            {lines.map((line, lineIdx) => {
-              const lineStart = charOffset;
-              charOffset += line.text.length;
-
-              return (
-                <span key={lineIdx} className={line.className}>
-                  {line.text.split("").map((char, ci) => {
-                    const globalIdx = lineStart + ci;
-                    return (
-                      <span
-                        key={ci}
-                        style={{
-                          opacity: globalIdx < visibleChars ? 1 : 0,
-                          display: char === " " ? "inline" : "inline-block",
-                        }}
-                      >
-                        {char}
-                      </span>
-                    );
-                  })}
-                  {lineIdx < lines.length - 1 && <br />}
-                </span>
-              );
-            })}
-            {visibleChars < totalChars && (
-              <span className="inline-block w-[3px] h-[0.75em] bg-primary align-middle ml-0.5 animate-pulse" />
-            )}
-          </>
-        )}
+        {lines.map((line, i) => (
+          <span key={i} className={line.className}>
+            <span ref={(el) => { textRefs.current[i] = el; }} />
+            <span
+              ref={(el) => { cursorRefs.current[i] = el; }}
+              className="inline-block w-[3px] h-[0.75em] bg-primary align-middle ml-0.5 animate-pulse"
+              style={{ display: "none" }}
+            />
+            {i < lines.length - 1 && <br />}
+          </span>
+        ))}
       </span>
     </span>
   );

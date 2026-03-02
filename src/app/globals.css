@@ -210,6 +210,7 @@ a:focus-visible {
 [data-reveal="right"].revealed { animation-name: reveal-right; }
 [data-reveal="scale"].revealed { animation-name: reveal-scale; }
 
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

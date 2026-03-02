@@ -229,13 +229,16 @@ export default function EnterprisePage() {
       <section className="enterprise-hero relative overflow-hidden min-h-[620px] md:min-h-[720px] flex items-center">
         {/* Background image (blurred) */}
         <Image
-          src="/images/enterprise-landing.png"
+          src="/images/enterprise-landing.webp"
           alt=""
           fill
           sizes="100vw"
           className="object-cover"
           priority
           aria-hidden="true"
+          quality={75}
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
         />
         {/* Dark overlay + color tint */}
         <div className="absolute inset-0 bg-[#0a0f1a]/85" />
@@ -380,11 +383,14 @@ export default function EnterprisePage() {
             <FadeIn direction="left">
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/images/about-1.png"
+                  src="/images/about-1.webp"
                   alt="Operisbot Enterprise giải pháp"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
+                  quality={75}
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent" />
               </div>

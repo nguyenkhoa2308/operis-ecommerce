@@ -235,12 +235,15 @@ export default function AboutPage() {
             <FadeIn direction="left" className="flex-1 w-full">
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl ring-1 ring-black/5">
                 <Image
-                  src="/images/about-1.png"
+                  src="/images/about-1.webp"
                   alt="Về Operis"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                   priority
+                  quality={75}
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
               </div>
@@ -346,6 +349,9 @@ export default function AboutPage() {
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    quality={75}
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <DotGrid
@@ -387,11 +393,14 @@ export default function AboutPage() {
               <div className="group bg-white rounded-2xl shadow-sm border border-border/50 overflow-hidden h-full hover:shadow-lg transition-all">
                 <div className="h-52 relative overflow-hidden">
                   <Image
-                    src="/images/about-3.png"
+                    src="/images/about-3.webp"
                     alt="Operisbot Token hệ thống AI"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    quality={75}
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <ConcentricCircles
@@ -474,6 +483,9 @@ export default function AboutPage() {
           fill
           sizes="100vw"
           className="object-cover"
+          quality={75}
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
         />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent" />
         <div className="absolute inset-0 flex items-center">
@@ -554,6 +566,9 @@ export default function AboutPage() {
           fill
           sizes="100vw"
           className="object-cover"
+          quality={75}
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
         />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/60 to-foreground/30" />
         <ConcentricCircles
@@ -856,11 +871,14 @@ export default function AboutPage() {
             <FadeIn direction="left" className="flex-shrink-0">
               <div className="relative w-[280px] h-[320px] md:w-[320px] md:h-[360px] rounded-2xl overflow-hidden shadow-xl">
                 <Image
-                  src="/images/about-5.png"
+                  src="/images/about-5.webp"
                   alt="Hành trình phát triển Operis"
                   fill
                   sizes="320px"
                   className="object-cover"
+                  quality={75}
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
@@ -950,11 +968,14 @@ export default function AboutPage() {
             <div className="relative w-[300px] h-[300px] md:w-[420px] md:h-[340px]">
               <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
                 <Image
-                  src="/images/about-6.png"
+                  src="/images/about-6.webp"
                   alt="Operisbot thiết bị AI"
                   fill
                   sizes="(max-width: 768px) 300px, 420px"
                   className="object-cover"
+                  quality={75}
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMWEyZSIvPjwvc3ZnPg=="
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>

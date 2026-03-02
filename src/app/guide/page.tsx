@@ -138,6 +138,9 @@ function Bullet({ children }: { children: ReactNode }) {
   );
 }
 
+const BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTVlN2ViIi8+PC9zdmc+";
+
 function GuideImage({
   src,
   alt,
@@ -156,7 +159,10 @@ function GuideImage({
           width={800}
           height={500}
           className="w-full h-auto"
-          quality={90}
+          quality={75}
+          sizes="(min-width: 640px) 70vw, 100vw"
+          placeholder="blur"
+          blurDataURL={BLUR_DATA_URL}
         />
       </div>
       {caption && (
@@ -261,7 +267,7 @@ function sectionContent(idx: number): ReactNode {
             khác.
           </p>
           <GuideImage
-            src="/images/guide/2.png"
+            src="/images/guide/2.webp"
             alt="Trang chủ Operis"
             caption="Giao diện trang chủ operis.vn"
           />
@@ -274,7 +280,7 @@ function sectionContent(idx: number): ReactNode {
               tiết.
             </p>
             <GuideImage
-              src="/images/guide/2.1-1.png"
+              src="/images/guide/2.1-1.webp"
               alt="Trang cửa hàng"
               caption="Danh sách sản phẩm tại Cửa hàng"
             />
@@ -291,7 +297,7 @@ function sectionContent(idx: number): ReactNode {
               Operis, hoặc &quot;Liên hệ&quot; nếu cần hỗ trợ.
             </p>
             <GuideImage
-              src="/images/guide/2.2-1.png"
+              src="/images/guide/2.2-1.webp"
               alt="Trang giới thiệu"
               caption="Trang Giới thiệu Operis"
             />

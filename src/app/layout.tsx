@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
@@ -64,6 +65,18 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-16543237030"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-16543237030');
+          `}
+        </Script>
         <JsonLdScript data={organizationJsonLd()} />
         <JsonLdScript data={localBusinessJsonLd()} />
       </head>

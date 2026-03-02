@@ -124,7 +124,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-8">
           {simpleLinks.slice(0, 1).map((link) => (
             <Link
               key={link.label}
@@ -291,11 +291,11 @@ export default function Header() {
         </nav>
 
         {/* Icons */}
-        <div className="flex items-center gap-3 md:gap-5">
+        <div className="flex items-center gap-3 lg:gap-5">
           {/* Desktop expanding search */}
           <form
             onSubmit={handleSearch}
-            className="relative hidden md:flex items-center"
+            className="relative hidden lg:flex items-center"
           >
             <div
               className={`flex items-center overflow-hidden border transition-all duration-300 ease-out ${
@@ -346,7 +346,7 @@ export default function Header() {
           {/* Mobile search icon */}
           <button
             type="button"
-            className="md:hidden flex items-center justify-center w-6 h-6 text-foreground hover:text-primary transition-colors"
+            className="lg:hidden flex items-center justify-center w-6 h-6 text-foreground hover:text-primary transition-colors"
             onClick={() => {
               setSearchOpen(!searchOpen);
               setMobileOpen(false);
@@ -431,13 +431,13 @@ export default function Header() {
             <>
               <Link
                 href="/login"
-                className="hidden md:inline-flex text-xs tracking-widest bg-foreground text-white px-5 py-2 rounded-full hover:bg-primary transition-colors"
+                className="hidden lg:inline-flex text-xs tracking-widest bg-foreground text-white px-5 py-2 rounded-full hover:bg-primary transition-colors"
               >
                 ĐĂNG NHẬP
               </Link>
               <Link
                 href="/login"
-                className="md:hidden flex items-center justify-center w-6 h-6 text-foreground hover:text-primary transition-colors"
+                className="lg:hidden flex items-center justify-center w-6 h-6 text-foreground hover:text-primary transition-colors"
                 aria-label="Đăng nhập"
               >
                 <UserIcon size={20} color="currentColor" />
@@ -445,7 +445,7 @@ export default function Header() {
             </>
           )}
           <button
-            className="md:hidden text-foreground"
+            className="lg:hidden text-foreground"
             onClick={() => {
               setMobileOpen(!mobileOpen);
               setSearchOpen(false);
@@ -460,7 +460,7 @@ export default function Header() {
 
       {/* Mobile search bar — slide down */}
       {searchOpen && (
-        <div className="md:hidden border-t border-border bg-white px-4 py-3 animate-slide-down">
+        <div className="lg:hidden border-t border-border bg-white px-4 py-3 animate-slide-down">
           <form
             onSubmit={handleSearch}
             className="flex items-center gap-2 bg-muted/50 border border-border rounded-full px-3 py-2"
@@ -497,7 +497,7 @@ export default function Header() {
 
       {/* Mobile Nav — full-screen slide-in overlay */}
       <div
-        className={`md:hidden fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 ${
+        className={`lg:hidden fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 ${
           mobileOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -505,7 +505,7 @@ export default function Header() {
         onClick={() => setMobileOpen(false)}
       />
       <nav
-        className={`md:hidden fixed top-0 left-0 z-[70] h-full w-full max-w-[320px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out ${
+        className={`lg:hidden fixed top-0 left-0 z-[70] h-full w-full max-w-[320px] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
