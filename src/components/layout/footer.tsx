@@ -8,6 +8,7 @@ const quickLinks = [
   { label: "CỬA HÀNG", href: "/shop" },
   { label: "LIÊN HỆ", href: "/contact" },
   { label: "TẢI ỨNG DỤNG", href: "/download" },
+  { label: "HƯỚNG DẪN SỬ DỤNG", href: "/guide" },
 ];
 
 const helpLinks = [
@@ -31,7 +32,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-white">
+    <footer id="site-footer" className="border-t border-border bg-white">
       <div className="max-w-7xl mx-auto px-4 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Thương hiệu */}
         <div>

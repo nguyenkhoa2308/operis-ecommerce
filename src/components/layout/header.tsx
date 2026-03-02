@@ -16,6 +16,8 @@ import {
   User,
   Package,
   Coins,
+  Download,
+  BookOpen,
 } from "lucide-react";
 import MagnifierIcon from "@/components/icons/magnifier-icon";
 import UserIcon from "@/components/icons/user-icon";
@@ -49,12 +51,17 @@ const simpleLinks = [
   { label: "GIỚI THIỆU", href: "/about" },
   { label: "HỖ TRỢ", href: "/support" },
   { label: "LIÊN HỆ", href: "/contact" },
-  { label: "TẢI APP", href: "/download" },
+];
+
+const guideLinks = [
+  { label: "Tải ứng dụng", href: "/download", icon: Download },
+  { label: "Hướng dẫn sử dụng", href: "/guide", icon: BookOpen },
 ];
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -109,7 +116,7 @@ export default function Header() {
   }, [mobileOpen]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-border">
+    <header id="site-header" className="sticky top-0 z-50 bg-white border-b border-border">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         {/* Logo */}
         <Link href="/" className="text-2xl font-[900] tracking-tight">
@@ -237,6 +244,50 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+
+          {/* Hướng dẫn dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setGuideOpen(true)}
+            onMouseLeave={() => setGuideOpen(false)}
+          >
+            <button
+              type="button"
+              className={`flex items-center gap-1 text-sm tracking-widest transition-colors ${
+                pathname.startsWith("/download") || pathname.startsWith("/guide")
+                  ? "text-primary font-medium"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              TIỆN ÍCH
+              <ChevronDown
+                size={14}
+                className={`transition-transform duration-200 ${guideOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            {guideOpen && (
+              <div className="absolute top-full right-0 pt-2">
+                <div className="bg-white border border-border rounded-xl shadow-2xl w-52 overflow-hidden py-1.5">
+                  {guideLinks.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setGuideOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                        pathname === item.href
+                          ? "text-primary font-medium bg-primary/5"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      <item.icon size={16} />
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </nav>
 
         {/* Icons */}
@@ -491,6 +542,28 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Hướng dẫn section */}
+          <p className="text-[10px] tracking-widest text-muted-foreground mt-5 mb-1">
+            TIỆN ÍCH
+          </p>
+          <div className="flex flex-col gap-1">
+            {guideLinks.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`flex items-center gap-3 text-sm py-3 border-b border-border/50 ${
+                  pathname === item.href
+                    ? "text-primary font-medium"
+                    : "text-foreground"
+                }`}
+                onClick={() => setMobileOpen(false)}
+              >
+                <item.icon size={14} />
+                {item.label}
               </Link>
             ))}
           </div>

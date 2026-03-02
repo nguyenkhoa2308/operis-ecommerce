@@ -106,7 +106,7 @@ export function FloatingActions() {
   };
 
   return (
-    <>
+    <div id="floating-actions">
       {/* === Desktop/Tablet: always-visible buttons === */}
       <div
         className={`hidden md:flex fixed bottom-8 right-6 z-40 flex-col items-center gap-3 transition-all duration-300 ${chatOpen ? "opacity-0 pointer-events-none" : ""}`}
@@ -345,6 +345,6 @@ export function FloatingActions() {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }

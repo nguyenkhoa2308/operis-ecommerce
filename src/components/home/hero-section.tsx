@@ -79,6 +79,12 @@ export default function HeroSection() {
               Tư vẫn ngay
             </Link>
             <Link
+              href="/guide"
+              className="border border-foreground text-foreground text-xs tracking-widest px-6 md:px-8 py-3 hover:bg-foreground hover:text-white transition-colors rounded-full uppercase"
+            >
+              Xem hướng dẫn
+            </Link>
+            <Link
               href="/about"
               className="border border-foreground text-foreground text-xs tracking-widest px-6 md:px-8 py-3 hover:bg-foreground hover:text-white transition-colors rounded-full"
             >
