@@ -8,6 +8,7 @@ export interface ApiKey {
   id: string;
   name: string;
   prefix: string;
+  lastChars: string;
   isActive: boolean;
   expiresAt: string | null;
   lastUsedAt: string | null;
@@ -29,6 +30,7 @@ function mapKey(raw: any): ApiKey {
     id: raw.id,
     name: raw.name,
     prefix: raw.key_prefix ?? raw.prefix ?? "",
+    lastChars: raw.last_chars ?? raw.lastChars ?? "",
     isActive: raw.is_active ?? raw.isActive ?? true,
     expiresAt: raw.expires_at ?? raw.expiresAt ?? null,
     lastUsedAt: raw.last_used_at ?? raw.lastUsedAt ?? null,

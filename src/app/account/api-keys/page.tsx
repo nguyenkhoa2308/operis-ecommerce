@@ -281,7 +281,7 @@ export default function ApiKeysPage() {
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5 font-mono">
-                      {k.prefix}...{k.lastChars}
+                      {k.prefix}...{k.lastChars ? k.lastChars : ""}
                     </p>
                   </div>
 
@@ -400,7 +400,7 @@ export default function ApiKeysPage() {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground font-mono">
-                    {k.prefix}...{k.lastChars}
+                    {k.prefix}...{k.lastChars ? k.lastChars : ""}
                   </p>
                   <div className="flex gap-3 text-[11px] text-muted-foreground">
                     <span>Tạo: {new Date(k.createdAt).toLocaleDateString("vi-VN")}</span>
