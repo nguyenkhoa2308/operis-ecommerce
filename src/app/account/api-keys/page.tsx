@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useReducer, useEffect, useCallback } from "react";
 import {
   Plus,
   Copy,
@@ -16,30 +16,62 @@ import { apiKeysApi } from "@/lib/api";
 import type { ApiKey, ApiKeyCreateResponse } from "@/lib/api/api-keys";
 
 /* ------------------------------------------------------------------ */
+/*  State                                                              */
+/* ------------------------------------------------------------------ */
+
+interface State {
+  keys: ApiKey[];
+  loading: boolean;
+  showCreate: boolean;
+  newName: string;
+  newExpiry: string;
+  creating: boolean;
+  createError: string;
+  createdKey: ApiKeyCreateResponse | null;
+  copied: boolean;
+  confirmDeleteId: string | null;
+  busyId: string | null; // toggle or delete in progress
+}
+
+const initial: State = {
+  keys: [],
+  loading: true,
+  showCreate: false,
+  newName: "",
+  newExpiry: "",
+  creating: false,
+  createError: "",
+  createdKey: null,
+  copied: false,
+  confirmDeleteId: null,
+  busyId: null,
+};
+
+type Action =
+  | { type: "SET_KEYS"; keys: ApiKey[] }
+  | { type: "SET_LOADING"; loading: boolean }
+  | { type: "PATCH"; patch: Partial<State> };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "SET_KEYS":
+      return { ...state, keys: action.keys, loading: false };
+    case "SET_LOADING":
+      return { ...state, loading: action.loading };
+    case "PATCH":
+      return { ...state, ...action.patch };
+    default:
+      return state;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 export default function ApiKeysPage() {
-  const [keys, setKeys] = useState<ApiKey[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  /* Create form */
-  const [showCreate, setShowCreate] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [newExpiry, setNewExpiry] = useState("");
-  const [creating, setCreating] = useState(false);
-  const [createError, setCreateError] = useState("");
-
-  /* Newly created key (shown once) */
-  const [createdKey, setCreatedKey] = useState<ApiKeyCreateResponse | null>(null);
-  const [copied, setCopied] = useState(false);
-
-  /* Delete confirm */
-  const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
-
-  /* Toggle active */
-  const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [s, dispatch] = useReducer(reducer, initial);
+  const patch = (p: Partial<State>) => dispatch({ type: "PATCH", patch: p });
 
   /* ---------------------------------------------------------------- */
   /*  Fetch keys                                                       */
@@ -47,12 +79,10 @@ export default function ApiKeysPage() {
 
   const fetchKeys = useCallback(async () => {
     try {
-      const res = await apiKeysApi.listKeys();
-      setKeys(res.keys);
+      const keys = await apiKeysApi.listKeys();
+      dispatch({ type: "SET_KEYS", keys });
     } catch {
-      setKeys([]);
-    } finally {
-      setLoading(false);
+      dispatch({ type: "SET_KEYS", keys: [] });
     }
   }, []);
 
@@ -66,26 +96,20 @@ export default function ApiKeysPage() {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newName.trim()) {
-      setCreateError("Vui lòng nhập tên key");
+    if (!s.newName.trim()) {
+      patch({ createError: "Vui lòng nhập tên key" });
       return;
     }
-    setCreating(true);
-    setCreateError("");
+    patch({ creating: true, createError: "" });
     try {
       const res = await apiKeysApi.createKey({
-        name: newName.trim(),
-        ...(newExpiry ? { expiresAt: new Date(newExpiry).toISOString() } : {}),
+        name: s.newName.trim(),
+        ...(s.newExpiry ? { expiresAt: new Date(s.newExpiry).toISOString() } : {}),
       });
-      setCreatedKey(res);
-      setShowCreate(false);
-      setNewName("");
-      setNewExpiry("");
+      patch({ createdKey: res, showCreate: false, newName: "", newExpiry: "", creating: false });
       fetchKeys();
     } catch (err) {
-      setCreateError(err instanceof Error ? err.message : "Tạo key thất bại");
-    } finally {
-      setCreating(false);
+      patch({ createError: err instanceof Error ? err.message : "Tạo key thất bại", creating: false });
     }
   };
 
@@ -95,8 +119,8 @@ export default function ApiKeysPage() {
 
   const copyKey = async (key: string) => {
     await navigator.clipboard.writeText(key);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    patch({ copied: true });
+    setTimeout(() => patch({ copied: false }), 2000);
   };
 
   /* ---------------------------------------------------------------- */
@@ -104,14 +128,14 @@ export default function ApiKeysPage() {
   /* ---------------------------------------------------------------- */
 
   const toggleActive = async (key: ApiKey) => {
-    setTogglingId(key.id);
+    patch({ busyId: key.id });
     try {
       await apiKeysApi.updateKey(key.id, { isActive: !key.isActive });
       fetchKeys();
     } catch {
       // ignore
     } finally {
-      setTogglingId(null);
+      patch({ busyId: null });
     }
   };
 
@@ -120,15 +144,13 @@ export default function ApiKeysPage() {
   /* ---------------------------------------------------------------- */
 
   const handleDelete = async (id: string) => {
-    setDeletingId(id);
+    patch({ busyId: id });
     try {
       await apiKeysApi.deleteKey(id);
-      setConfirmDeleteId(null);
+      patch({ confirmDeleteId: null, busyId: null });
       fetchKeys();
     } catch {
-      // ignore
-    } finally {
-      setDeletingId(null);
+      patch({ busyId: null });
     }
   };
 
@@ -142,10 +164,7 @@ export default function ApiKeysPage() {
         <h2 className="text-sm font-semibold tracking-widest uppercase">API Keys</h2>
         <button
           type="button"
-          onClick={() => {
-            setShowCreate(true);
-            setCreatedKey(null);
-          }}
+          onClick={() => patch({ showCreate: true, createdKey: null })}
           className="flex items-center gap-1.5 px-4 py-2 text-xs tracking-widest bg-foreground text-white hover:bg-foreground/90 transition-colors"
         >
           <Plus size={14} />
@@ -154,7 +173,7 @@ export default function ApiKeysPage() {
       </div>
 
       {/* ---- Newly created key banner ---- */}
-      {createdKey && (
+      {s.createdKey && (
         <div className="mb-6 border border-amber-300 bg-amber-50 rounded-lg p-4">
           <div className="flex items-start gap-2 mb-3">
             <AlertTriangle size={16} className="text-amber-600 mt-0.5 flex-shrink-0" />
@@ -163,65 +182,61 @@ export default function ApiKeysPage() {
                 Lưu API key ngay! Key sẽ không hiển thị lại.
               </p>
               <p className="text-xs text-amber-700 mt-0.5">
-                Key: <strong>{createdKey.name}</strong>
+                Key: <strong>{s.createdKey.name}</strong>
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <code className="flex-1 text-xs bg-white border border-amber-200 rounded px-3 py-2 font-mono break-all select-all">
-              {createdKey.key}
+              {s.createdKey.key}
             </code>
             <button
               type="button"
-              onClick={() => copyKey(createdKey.key)}
+              onClick={() => copyKey(s.createdKey!.key)}
               className="flex-shrink-0 p-2 rounded border border-amber-200 bg-white hover:bg-amber-100 transition-colors"
               title="Copy"
             >
-              {copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} />}
+              {s.copied ? <Check size={14} className="text-green-600" /> : <Copy size={14} />}
             </button>
           </div>
         </div>
       )}
 
       {/* ---- Create form ---- */}
-      {showCreate && (
+      {s.showCreate && (
         <form onSubmit={handleCreate} className="mb-6 border border-border rounded-lg p-4 space-y-3">
           <p className="text-sm font-medium">Tạo API Key mới</p>
-          {createError && (
+          {s.createError && (
             <p className="text-xs text-destructive bg-destructive/10 px-3 py-1.5 rounded">
-              {createError}
+              {s.createError}
             </p>
           )}
           <input
             type="text"
             placeholder="Tên key (VD: Production, Development...)"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
+            value={s.newName}
+            onChange={(e) => patch({ newName: e.target.value })}
             className="w-full border border-border px-3 py-2 text-sm outline-none focus:border-primary transition-colors rounded"
             autoFocus
           />
           <input
             type="datetime-local"
-            placeholder="Thời hạn (tùy chọn)"
-            value={newExpiry}
-            onChange={(e) => setNewExpiry(e.target.value)}
+            value={s.newExpiry}
+            onChange={(e) => patch({ newExpiry: e.target.value })}
             className="w-full border border-border px-3 py-2 text-sm outline-none focus:border-primary transition-colors rounded text-muted-foreground"
           />
           <div className="flex items-center gap-2">
             <button
               type="submit"
-              disabled={creating}
+              disabled={s.creating}
               className="px-4 py-2 text-xs tracking-widest bg-foreground text-white hover:bg-foreground/90 transition-colors disabled:opacity-60 flex items-center gap-1.5"
             >
-              {creating && <Loader2 size={12} className="animate-spin" />}
+              {s.creating && <Loader2 size={12} className="animate-spin" />}
               TẠO
             </button>
             <button
               type="button"
-              onClick={() => {
-                setShowCreate(false);
-                setCreateError("");
-              }}
+              onClick={() => patch({ showCreate: false, createError: "" })}
               className="px-4 py-2 text-xs tracking-widest border border-border hover:bg-muted transition-colors"
             >
               HỦY
@@ -231,11 +246,11 @@ export default function ApiKeysPage() {
       )}
 
       {/* ---- Keys list ---- */}
-      {loading ? (
+      {s.loading ? (
         <div className="flex items-center justify-center py-16 text-sm text-muted-foreground gap-2">
           <Loader2 size={16} className="animate-spin" /> Đang tải...
         </div>
-      ) : keys.length === 0 ? (
+      ) : s.keys.length === 0 ? (
         <div className="text-center py-16">
           <Key size={32} className="mx-auto text-muted-foreground/40 mb-3" />
           <p className="text-sm text-muted-foreground">Chưa có API key nào</p>
@@ -245,7 +260,7 @@ export default function ApiKeysPage() {
         </div>
       ) : (
         <div className="border border-border rounded-lg overflow-hidden divide-y divide-border">
-          {keys.map((k) => {
+          {s.keys.map((k) => {
             const isExpired = k.expiresAt && new Date(k.expiresAt) < new Date();
             return (
               <div key={k.id} className="px-4 py-3">
@@ -285,7 +300,7 @@ export default function ApiKeysPage() {
                   <button
                     type="button"
                     onClick={() => toggleActive(k)}
-                    disabled={togglingId === k.id}
+                    disabled={s.busyId === k.id}
                     className="p-1.5 rounded hover:bg-muted transition-colors disabled:opacity-50"
                     title={k.isActive ? "Tắt key" : "Bật key"}
                   >
@@ -296,19 +311,19 @@ export default function ApiKeysPage() {
                     )}
                   </button>
 
-                  {confirmDeleteId === k.id ? (
+                  {s.confirmDeleteId === k.id ? (
                     <div className="flex items-center gap-1">
                       <button
                         type="button"
                         onClick={() => handleDelete(k.id)}
-                        disabled={deletingId === k.id}
+                        disabled={s.busyId === k.id}
                         className="px-2 py-1 text-[10px] tracking-wider bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
                       >
-                        {deletingId === k.id ? "..." : "XÓA"}
+                        {s.busyId === k.id ? "..." : "XÓA"}
                       </button>
                       <button
                         type="button"
-                        onClick={() => setConfirmDeleteId(null)}
+                        onClick={() => patch({ confirmDeleteId: null })}
                         className="px-2 py-1 text-[10px] tracking-wider border border-border rounded hover:bg-muted"
                       >
                         HỦY
@@ -317,7 +332,7 @@ export default function ApiKeysPage() {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => setConfirmDeleteId(k.id)}
+                      onClick={() => patch({ confirmDeleteId: k.id })}
                       className="p-1.5 rounded hover:bg-red-50 text-muted-foreground hover:text-red-500 transition-colors"
                       title="Xóa key"
                     >
@@ -346,7 +361,7 @@ export default function ApiKeysPage() {
                       <button
                         type="button"
                         onClick={() => toggleActive(k)}
-                        disabled={togglingId === k.id}
+                        disabled={s.busyId === k.id}
                         className="p-1"
                       >
                         {k.isActive ? (
@@ -355,19 +370,19 @@ export default function ApiKeysPage() {
                           <ToggleLeft size={18} className="text-muted-foreground" />
                         )}
                       </button>
-                      {confirmDeleteId === k.id ? (
+                      {s.confirmDeleteId === k.id ? (
                         <>
                           <button
                             type="button"
                             onClick={() => handleDelete(k.id)}
-                            disabled={deletingId === k.id}
+                            disabled={s.busyId === k.id}
                             className="px-2 py-0.5 text-[10px] bg-red-500 text-white rounded"
                           >
                             XÓA
                           </button>
                           <button
                             type="button"
-                            onClick={() => setConfirmDeleteId(null)}
+                            onClick={() => patch({ confirmDeleteId: null })}
                             className="px-2 py-0.5 text-[10px] border border-border rounded"
                           >
                             HỦY
@@ -376,7 +391,7 @@ export default function ApiKeysPage() {
                       ) : (
                         <button
                           type="button"
-                          onClick={() => setConfirmDeleteId(k.id)}
+                          onClick={() => patch({ confirmDeleteId: k.id })}
                           className="p-1 text-muted-foreground"
                         >
                           <Trash2 size={14} />
