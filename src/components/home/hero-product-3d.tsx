@@ -291,7 +291,7 @@ export default function HeroProduct3D() {
         >
           {ready && (
             <Canvas
-              shadows
+              shadows={{ type: THREE.PCFShadowMap }}
               camera={{ position: [0, 4.5, 4.5], fov: 42 }}
               gl={{ antialias: true, alpha: true }}
               style={{ background: "transparent" }}

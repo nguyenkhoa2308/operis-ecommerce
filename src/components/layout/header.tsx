@@ -16,7 +16,6 @@ import {
   User,
   Package,
   Coins,
-  Download,
   BookOpen,
 } from "lucide-react";
 import MagnifierIcon from "@/components/icons/magnifier-icon";
@@ -54,7 +53,6 @@ const simpleLinks = [
 ];
 
 const guideLinks = [
-  { label: "Tải ứng dụng", href: "/download", icon: Download },
   { label: "Hướng dẫn sử dụng", href: "/guide", icon: BookOpen },
 ];
 
