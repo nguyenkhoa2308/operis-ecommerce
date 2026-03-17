@@ -11,9 +11,6 @@ function SectionSkeleton({ h = "h-[400px]" }: { h?: string }) {
 const ContextSection = dynamic(() => import("@/components/home/context-section").then((m) => ({ default: m.ContextSection })), {
   loading: () => <SectionSkeleton />,
 });
-const FreeTokenSection = dynamic(() => import("@/components/home/free-token-section").then((m) => ({ default: m.FreeTokenSection })), {
-  loading: () => <SectionSkeleton h="h-[500px]" />,
-});
 const IntroSection = dynamic(() => import("@/components/home/intro-section").then((m) => ({ default: m.IntroSection })), {
   loading: () => <SectionSkeleton />,
 });
@@ -26,10 +23,13 @@ const HowItWorksSection = dynamic(() => import("@/components/home/how-it-works-s
 const PillarsSection = dynamic(() => import("@/components/home/pillars-section").then((m) => ({ default: m.PillarsSection })), {
   loading: () => <SectionSkeleton />,
 });
-const FeaturedProducts = dynamic(() => import("@/components/home/featured-products"), {
-  loading: () => <SectionSkeleton h="h-[500px]" />,
-});
 const TokenPackages = dynamic(() => import("@/components/home/token-packages").then((m) => ({ default: m.TokenPackages })), {
+  loading: () => <SectionSkeleton />,
+});
+const SubscriptionPlans = dynamic(() => import("@/components/home/subscription-plans").then((m) => ({ default: m.SubscriptionPlans })), {
+  loading: () => <SectionSkeleton h="h-[600px]" />,
+});
+const FreeTokenSection = dynamic(() => import("@/components/home/free-token-section").then((m) => ({ default: m.FreeTokenSection })), {
   loading: () => <SectionSkeleton />,
 });
 const EcosystemSection = dynamic(() => import("@/components/home/ecosystem-section").then((m) => ({ default: m.EcosystemSection })), {
@@ -41,6 +41,9 @@ const CtaSection = dynamic(() => import("@/components/home/cta-section").then((m
 const TestimonialSection = dynamic(() => import("@/components/home/testimonial-section").then((m) => ({ default: m.TestimonialSection })), {
   loading: () => <SectionSkeleton />,
 });
+const BlogSection = dynamic(() => import("@/components/home/blog-section").then((m) => ({ default: m.BlogSection })), {
+  loading: () => <SectionSkeleton h="h-[480px]" />,
+});
 const SubscribeSection = dynamic(() => import("@/components/home/subscribe-section").then((m) => ({ default: m.SubscribeSection })), {
   loading: () => <SectionSkeleton h="h-[300px]" />,
 });
@@ -51,16 +54,17 @@ export default function Home() {
       <HeroSection />
       <BenefitsSection />
       <ContextSection />
-      <FreeTokenSection />
       <IntroSection />
       <ShowcaseBanner />
       <HowItWorksSection />
       <PillarsSection />
-      <FeaturedProducts />
       <TokenPackages />
+      <SubscriptionPlans />
+      <FreeTokenSection />
       <EcosystemSection />
       <CtaSection />
       <TestimonialSection />
+      <BlogSection />
       <SubscribeSection />
     </main>
   );

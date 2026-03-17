@@ -2,53 +2,54 @@ import {
   Shield,
   Clock,
   Zap,
-  Settings,
+  Users,
   Coins,
-  RefreshCw,
+  HeadphonesIcon,
   Check,
   X,
   Gift,
-  Monitor,
-  Cpu,
+  Sparkles,
+  Crown,
 } from "lucide-react";
+import Link from "next/link";
 import { FadeIn } from "@/components/ui/motion";
 
 const rows = [
   {
-    label: "Bảo mật dữ liệu",
-    icon: Shield,
-    direct: { text: "Phụ thuộc máy cá nhân", good: false },
-    minipc: { text: "Cách ly hoàn toàn, chuyên dụng", good: true },
+    label: "Token sử dụng",
+    icon: Coins,
+    free: { text: "10M Token/tháng", good: true },
+    paid: { text: "50M – 200M Token/tháng", good: true },
+  },
+  {
+    label: "Số người dùng",
+    icon: Users,
+    free: { text: "1 tài khoản", good: true },
+    paid: { text: "Tối đa 5 – 20+ người", good: true },
   },
   {
     label: "Hoạt động 24/7",
     icon: Clock,
-    direct: { text: "Phải bật máy liên tục", good: false },
-    minipc: { text: "Luôn hoạt động, tiết kiệm điện", good: true },
+    free: { text: "Có", good: true },
+    paid: { text: "Có", good: true },
   },
   {
-    label: "Hiệu suất",
+    label: "API rate limit",
     icon: Zap,
-    direct: { text: "Chia sẻ tài nguyên với ứng dụng khác", good: false },
-    minipc: { text: "Tối ưu riêng cho AI", good: true },
+    free: { text: "Giới hạn cơ bản", good: false },
+    paid: { text: "Nâng cao / không giới hạn", good: true },
   },
   {
-    label: "Cài đặt",
-    icon: Settings,
-    direct: { text: "Tự cấu hình thủ công", good: false },
-    minipc: { text: "Cắm là chạy", good: true },
+    label: "Bảo mật dữ liệu",
+    icon: Shield,
+    free: { text: "Tiêu chuẩn", good: true },
+    paid: { text: "Nâng cao + SLA", good: true },
   },
   {
-    label: "Token miễn phí",
-    icon: Coins,
-    direct: { text: "Có", good: true },
-    minipc: { text: "Có (nhiều hơn)", good: true },
-  },
-  {
-    label: "Cập nhật",
-    icon: RefreshCw,
-    direct: { text: "Thủ công", good: false },
-    minipc: { text: "Tự động OTA", good: true },
+    label: "Hỗ trợ kỹ thuật",
+    icon: HeadphonesIcon,
+    free: { text: "Email", good: true },
+    paid: { text: "Ưu tiên 24/7 + Onboarding", good: true },
   },
 ];
 
@@ -69,20 +70,15 @@ export function FreeTokenSection() {
           <div className="inline-flex items-center gap-2 bg-amber/10 border border-amber/20 rounded-full px-4 py-1.5 mb-4">
             <Gift size={14} className="text-amber" />
             <span className="text-xs tracking-widest text-amber font-medium">
-              ƯU ĐÃI
+              DÙNG THỬ MIỄN PHÍ
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">
-            Chương trình miễn phí token sử dụng
+            Bắt đầu miễn phí — không cần thẻ tín dụng
           </h2>
-          <p className="text-sm text-muted-foreground mb-2">
-            Áp dụng cho tất cả khách hàng — mua Mini PC hoặc tải trực tiếp ứng
-            dụng
-          </p>
           <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Để giúp khách hàng có thể tiếp cận đơn giản nhất, tiết kiệm và hiệu
-            quả cao, chúng mình cung cấp ưu đãi miễn phí token để bạn có thể sử
-            dụng và phát triển các luồng công việc hiệu quả nhất có thể.
+            Đăng ký tài khoản và nhận Token dùng thử ngay lập tức. Khi cần mở
+            rộng quy mô, nâng cấp gói bất kỳ lúc nào — không ràng buộc.
           </p>
         </FadeIn>
 
@@ -92,18 +88,18 @@ export function FreeTokenSection() {
             {/* Table header */}
             <div className="grid grid-cols-[1fr_1fr_1fr] text-sm font-semibold">
               <div className="px-6 py-4 bg-muted/50 border-b border-border">
-                Tiêu chí
+                Tính năng
               </div>
               <div className="px-6 py-4 border-b border-border text-center">
                 <div className="inline-flex items-center gap-2">
-                  <Monitor size={16} className="text-muted-foreground" />
-                  Tải & chạy trực tiếp
+                  <Sparkles size={16} className="text-muted-foreground" />
+                  Tài khoản miễn phí
                 </div>
               </div>
               <div className="px-6 py-4 border-b-2 border-primary bg-primary/5 text-center">
                 <div className="inline-flex items-center gap-2">
-                  <Cpu size={16} className="text-primary" />
-                  <span className="text-primary">Mini PC Operisbot</span>
+                  <Crown size={16} className="text-primary" />
+                  <span className="text-primary">Gói trả phí</span>
                   <span className="text-[10px] tracking-wider bg-primary text-white rounded-full px-2 py-0.5 font-medium">
                     KHUYẾN NGHỊ
                   </span>
@@ -128,12 +124,12 @@ export function FreeTokenSection() {
                   {row.label}
                 </div>
                 <div className="px-6 py-4 flex items-center justify-center gap-2 text-muted-foreground">
-                  <StatusIcon good={row.direct.good} />
-                  {row.direct.text}
+                  <StatusIcon good={row.free.good} />
+                  {row.free.text}
                 </div>
                 <div className="px-6 py-4 flex items-center justify-center gap-2 bg-primary/[0.02]">
-                  <StatusIcon good={row.minipc.good} />
-                  <span className="font-medium">{row.minipc.text}</span>
+                  <StatusIcon good={row.paid.good} />
+                  <span className="font-medium">{row.paid.text}</span>
                 </div>
               </div>
             ))}
@@ -142,25 +138,22 @@ export function FreeTokenSection() {
 
         {/* Mobile: 2 cards */}
         <div className="md:hidden space-y-4">
-          {/* Card: Tải trực tiếp */}
           <FadeIn delay={0.2}>
             <div className="bg-white rounded-xl border border-border p-5">
               <div className="flex items-center gap-2 mb-4">
-                <Monitor size={18} className="text-muted-foreground" />
-                <h3 className="font-semibold text-sm">
-                  Tải & chạy trực tiếp
-                </h3>
+                <Sparkles size={18} className="text-muted-foreground" />
+                <h3 className="font-semibold text-sm">Tài khoản miễn phí</h3>
               </div>
               <ul className="space-y-3">
                 {rows.map((row) => (
                   <li key={row.label} className="flex items-start gap-2.5">
-                    <StatusIcon good={row.direct.good} />
+                    <StatusIcon good={row.free.good} />
                     <div>
                       <span className="text-xs font-medium text-foreground">
                         {row.label}
                       </span>
                       <p className="text-xs text-muted-foreground">
-                        {row.direct.text}
+                        {row.free.text}
                       </p>
                     </div>
                   </li>
@@ -169,28 +162,27 @@ export function FreeTokenSection() {
             </div>
           </FadeIn>
 
-          {/* Card: Mini PC — highlighted */}
           <FadeIn delay={0.35}>
             <div className="bg-white rounded-xl border-2 border-primary p-5 relative">
               <span className="absolute -top-3 left-4 text-[10px] tracking-wider bg-primary text-white rounded-full px-3 py-1 font-medium">
                 KHUYẾN NGHỊ
               </span>
               <div className="flex items-center gap-2 mb-4">
-                <Cpu size={18} className="text-primary" />
+                <Crown size={18} className="text-primary" />
                 <h3 className="font-semibold text-sm text-primary">
-                  Mini PC Operisbot
+                  Gói trả phí
                 </h3>
               </div>
               <ul className="space-y-3">
                 {rows.map((row) => (
                   <li key={row.label} className="flex items-start gap-2.5">
-                    <StatusIcon good={row.minipc.good} />
+                    <StatusIcon good={row.paid.good} />
                     <div>
                       <span className="text-xs font-medium text-foreground">
                         {row.label}
                       </span>
                       <p className="text-xs text-muted-foreground">
-                        {row.minipc.text}
+                        {row.paid.text}
                       </p>
                     </div>
                   </li>
@@ -199,6 +191,20 @@ export function FreeTokenSection() {
             </div>
           </FadeIn>
         </div>
+
+        {/* CTA */}
+        <FadeIn delay={0.4} className="text-center mt-10">
+          <Link
+            href="/register"
+            className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest px-8 py-3.5 rounded-full hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+          >
+            <Gift size={14} />
+            ĐĂNG KÝ NHẬN TOKEN MIỄN PHÍ
+          </Link>
+          <p className="text-xs text-muted-foreground mt-3">
+            Không cần thẻ tín dụng · Không cần phần cứng · Dùng ngay sau khi đăng ký
+          </p>
+        </FadeIn>
       </div>
     </section>
   );

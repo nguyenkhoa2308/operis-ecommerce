@@ -120,7 +120,7 @@ export function IntroSection() {
           </h2>
           <p className="text-lg text-muted-foreground mt-3 max-w-2xl mx-auto leading-relaxed">
             Không chỉ &quot;tự động hóa&quot; — đây là những hành động cụ thể
-            mà Operisbot thực hiện thay bạn, 24/7, trên thiết bị riêng.
+            mà Operisbot thực hiện thay bạn, 24/7, hoàn toàn tự động.
           </p>
           <div className="flex flex-wrap justify-center gap-6 md:gap-10 mt-8">
             {stats.map((s) => (

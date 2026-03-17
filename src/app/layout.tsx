@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://operis.vn"),
   title: {
     default: "Operisbot — Mini PC Tự Động Hóa AI Chạy 24/7 | Operis",
-    template: "%s | Operis",
+    template: "%s | Operisbot",
   },
   description:
     "Operisbot là thiết bị Mini PC chạy AI 24/7 trên phần cứng riêng — tự động hóa tuyển dụng, marketing, kế toán, CSKH. Cắm điện là chạy, không lo lộ dữ liệu.",

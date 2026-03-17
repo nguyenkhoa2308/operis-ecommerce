@@ -1,46 +1,4 @@
-import type { Product } from "@/lib/api/product-mappers";
-
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
-export function productJsonLd(product: Product) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: product.description,
-    image: product.image,
-    sku: product.sku,
-    brand: { "@type": "Brand", name: product.brand },
-    category: product.category,
-    offers: {
-      "@type": "Offer",
-      url: `${SITE_URL}/shop/${product.slug}`,
-      priceCurrency: "VND",
-      price: product.price,
-      availability:
-        product.stock > 0
-          ? "https://schema.org/InStock"
-          : "https://schema.org/OutOfStock",
-    },
-    ...(product.rating > 0 && {
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: product.rating,
-        bestRating: 5,
-      },
-    }),
-  };
-}
-
-export function collectionPageJsonLd(title: string, description: string) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: title,
-    description,
-    url: `${SITE_URL}/shop`,
-  };
-}
 
 export function aboutPageJsonLd() {
   return {
