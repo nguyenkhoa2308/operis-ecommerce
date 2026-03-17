@@ -53,42 +53,35 @@ export default function HeroSection() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-tight tracking-tight">
             <TypeWriter
               lines={[
-                { text: "THIẾT BỊ TRỢ LÝ" },
+                { text: "NỀN TẢNG AI" },
                 {
-                  text: "AI VẬT LÝ.",
+                  text: "TỰ ĐỘNG HÓA.",
                   className:
                     "bg-gradient-to-r from-primary via-violet to-sky bg-clip-text text-transparent",
                 },
-                { text: "CẮM LÀ CHẠY." },
+                { text: "ĐĂNG KÝ LÀ DÙNG." },
               ]}
               charDelay={0.045}
             />
           </h1>
           <p className="text-muted-foreground mt-4 text-lg lg:text-xl max-w-lg leading-relaxed">
-            Thiết bị tự động hóa & tối ưu hóa quy trình xử lý công việc cho cá
-            nhân và doanh nghiệp — vận hành hoàn toàn bởi AI. Phát triển từ nền
-            tảng OpenClaw, nâng cấp toàn diện về bảo mật, tối thiểu chi phí.
-            Giúp doanh nghiệp giảm 80% chi phí, tăng tốc phát triển và có cái
-            nhìn toàn diện nhất để đưa ra quyết định chính xác.
+            Tự động hóa tuyển dụng, kế toán, marketing, CSKH — không cần cài
+            đặt, không cần phần cứng. Đăng ký tài khoản, chọn gói Token, để AI
+            làm việc 24/7 thay bạn. Giúp doanh nghiệp giảm 80% chi phí vận
+            hành và tăng tốc phát triển.
           </p>
           <div className="flex flex-wrap justify-center lg:justify-start gap-3 mt-6 lg:mt-8">
             <Link
-              href="tel:84853336668"
+              href="/register"
               className="bg-primary text-white text-xs tracking-widest px-6 lg:px-8 py-3 hover:bg-primary-dark transition-colors rounded-full shadow-lg shadow-primary/20 uppercase"
             >
-              Tư vẫn ngay
+              Dùng thử miễn phí
             </Link>
             <Link
-              href="/guide"
+              href="/contact"
               className="border border-foreground text-foreground text-xs tracking-widest px-6 lg:px-8 py-3 hover:bg-foreground hover:text-white transition-colors rounded-full uppercase"
             >
-              Xem hướng dẫn
-            </Link>
-            <Link
-              href="/about"
-              className="border border-foreground text-foreground text-xs tracking-widest px-6 lg:px-8 py-3 hover:bg-foreground hover:text-white transition-colors rounded-full"
-            >
-              TÌM HIỂU THÊM
+              Tư vấn ngay
             </Link>
           </div>
 

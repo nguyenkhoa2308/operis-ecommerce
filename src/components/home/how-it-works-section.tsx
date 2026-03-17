@@ -7,14 +7,14 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 const steps = [
   {
     number: "01",
-    title: "Cắm điện & Kết nối mạng",
-    desc: "Mở hộp, cắm nguồn, kết nối WiFi hoặc cáp mạng. Thiết bị tự khởi động và sẵn sàng trong 30 giây.",
+    title: "Đăng ký tài khoản",
+    desc: "Tạo tài khoản Operisbot trong 30 giây — không cần thẻ tín dụng, không cần cài đặt phần mềm.",
     color: "from-sky to-primary",
   },
   {
     number: "02",
-    title: "Đăng nhập tài khoản",
-    desc: "Truy cập giao diện quản lý qua trình duyệt. Đăng nhập bằng tài khoản Operis được cấp kèm thiết bị.",
+    title: "Đăng nhập & Khám phá",
+    desc: "Truy cập giao diện quản lý qua trình duyệt. Dashboard trực quan, sẵn sàng sử dụng ngay sau khi đăng nhập.",
     color: "from-violet to-primary",
   },
   {
@@ -38,7 +38,7 @@ const steps = [
   {
     number: "06",
     title: "Để Bot làm việc 24/7",
-    desc: "Operisbot chạy liên tục trên thiết bị riêng. Tắt máy tính, đi ngủ — bot vẫn hoàn thành công việc cho bạn.",
+    desc: "Operisbot chạy liên tục trên nền tảng đám mây. Đóng trình duyệt, đi ngủ — bot vẫn hoàn thành công việc cho bạn.",
     color: "from-primary to-sky",
   },
 ];
@@ -78,7 +78,7 @@ export function HowItWorksSection() {
             className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8"
             staggerDelay={0.08}
           >
-            {steps.map((step, i) => (
+            {steps.map((step) => (
               <StaggerItem key={step.number} className="relative flex gap-4">
                 <div
                   className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg shrink-0`}
@@ -104,7 +104,7 @@ export function HowItWorksSection() {
             <div className="relative w-[360px] h-[420px] rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src="/images/home-how-it-works.webp"
-                alt="Operisbot Mini PC thiết bị"
+                alt="Operisbot nền tảng tự động hóa"
                 fill
                 sizes="360px"
                 className="object-cover"
@@ -116,10 +116,10 @@ export function HowItWorksSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/50 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <p className="text-white text-sm font-medium">
-                  Thiết bị nhỏ gọn, mạnh mẽ
+                  Nền tảng SaaS, mạnh mẽ
                 </p>
                 <p className="text-white/70 text-xs mt-1">
-                  Cắm điện → Kết nối → Chạy 24/7
+                  Đăng ký → Cấu hình → Chạy 24/7
                 </p>
               </div>
             </div>

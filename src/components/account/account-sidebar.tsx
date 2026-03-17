@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { User, Coins, BarChart3, Key, Package, History } from "lucide-react";
+import { User, Coins, BarChart3, Key, MessageSquare, History } from "lucide-react";
 import { useAuthStore } from "@/store/auth-store";
 
 const navItems = [
@@ -10,7 +10,7 @@ const navItems = [
   { label: "Token & Gói dịch vụ", shortLabel: "Token", href: "/account/token", icon: Coins },
   { label: "API Usage", shortLabel: "API", href: "/account/api-usage", icon: BarChart3 },
   { label: "API Keys", shortLabel: "Keys", href: "/account/api-keys", icon: Key },
-  { label: "Đơn hàng", shortLabel: "Đơn hàng", href: "/account/orders", icon: Package },
+  { label: "Chat AI", shortLabel: "Chat", href: "/account/chat", icon: MessageSquare },
   { label: "Lịch sử giao dịch", shortLabel: "Lịch sử", href: "/account/transactions", icon: History },
 ];
 

@@ -43,15 +43,15 @@ export function ShowcaseBanner() {
             <span className="text-sky">BOT VẪN LÀM VIỆC.</span>
           </h2>
           <p className="text-white/60 mt-4 text-lg leading-relaxed max-w-md">
-            Operisbot chạy 24/7 trên thiết bị riêng — không tốn tài nguyên máy
-            chính, không lo lộ dữ liệu. Ngủ dậy đã có báo cáo sẵn.
+            Operisbot chạy 24/7 trên nền tảng đám mây — không tốn tài nguyên
+            máy tính, không lo lộ dữ liệu. Ngủ dậy đã có báo cáo sẵn.
           </p>
           <div className="flex flex-wrap gap-3 mt-6">
             <Link
-              href="/shop"
+              href="/contact"
               className="inline-flex items-center gap-2 bg-accent text-white text-xs tracking-widest px-6 py-3 hover:bg-accent/90 transition-colors rounded-full"
             >
-              MUA NGAY <ArrowRight size={14} />
+              LIÊN HỆ NGAY <ArrowRight size={14} />
             </Link>
             <Link
               href="/about"

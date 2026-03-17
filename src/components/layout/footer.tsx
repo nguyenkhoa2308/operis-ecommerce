@@ -5,7 +5,6 @@ import { FooterNavLinks } from "./footer-nav-links";
 const quickLinks = [
   { label: "TRANG CHỦ", href: "/" },
   { label: "GIỚI THIỆU", href: "/about" },
-  { label: "CỬA HÀNG", href: "/shop" },
   { label: "LIÊN HỆ", href: "/contact" },
   { label: "TẢI ỨNG DỤNG", href: "/download" },
   { label: "HƯỚNG DẪN SỬ DỤNG", href: "/guide" },
@@ -19,7 +18,7 @@ const helpLinks = [
 ];
 
 const socials = [
-  { icon: "/icons/facebook.svg", href: "#", label: "Facebook" },
+  { icon: "/icons/facebook.svg", href: "https://www.facebook.com/profile.php?id=61584777277171", label: "Facebook" },
   // { icon: "/icons/instagram.svg", href: "#", label: "Instagram" },
   // { icon: "/icons/tiktok.svg", href: "#", label: "TikTok" },
   {

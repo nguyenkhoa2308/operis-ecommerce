@@ -284,7 +284,7 @@ export default function AboutPage() {
                 chính xác.
               </p>
               <Link
-                href="/shop"
+                href="/contact"
                 className="inline-block bg-primary text-white text-sm tracking-widest px-8 py-3 rounded-full hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20"
               >
                 XEM CỬA HÀNG
@@ -836,7 +836,7 @@ export default function AboutPage() {
                 phí khi ra mắt.
               </p>
               <Link
-                href="/shop"
+                href="/contact"
                 className="inline-flex items-center gap-2 bg-primary text-white text-xs tracking-widest px-8 py-3 rounded-full hover:bg-primary-dark transition-colors"
               >
                 XEM THIẾT BỊ <ArrowRight size={14} />
@@ -947,7 +947,7 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
-                href="/shop"
+                href="/contact"
                 className="bg-white text-foreground text-sm tracking-widest px-8 py-3 rounded-full hover:bg-white/90 transition-colors"
               >
                 XEM SẢN PHẨM

@@ -1,37 +1,37 @@
 "use client";
 
-import { Truck, Award, Tag, ShieldCheck } from "lucide-react";
+import { Zap, ShieldCheck, RefreshCw, HeadphonesIcon } from "lucide-react";
 import { StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 const benefits = [
   {
-    icon: Truck,
-    title: "MIỄN PHÍ VẬN CHUYỂN",
-    desc: "Miễn phí giao hàng toàn quốc cho đơn từ 2 triệu.",
+    icon: Zap,
+    title: "DÙNG NGAY SAU ĐĂNG KÝ",
+    desc: "Không cần cài đặt, không cần phần cứng — tạo tài khoản là bắt đầu được.",
     color: "text-sky",
     bg: "bg-sky/8",
     border: "border-sky/15",
   },
   {
-    icon: Award,
-    title: "BẢO HÀNH CHÍNH HÃNG",
-    desc: "Bảo hành 24 tháng, hỗ trợ kỹ thuật trọn đời.",
+    icon: RefreshCw,
+    title: "TOKEN KHÔNG HẾT HẠN",
+    desc: "Token mua thêm không bao giờ hết hạn, dùng thoải mái theo tiến độ.",
     color: "text-amber",
     bg: "bg-amber/8",
     border: "border-amber/15",
   },
   {
-    icon: Tag,
-    title: "ƯU ĐÃI MỖI NGÀY",
-    desc: "Khuyến mãi hấp dẫn, giá tốt nhất thị trường.",
-    color: "text-rose",
-    bg: "bg-rose/8",
-    border: "border-rose/15",
+    icon: ShieldCheck,
+    title: "NÂNG / HẠ GÓI TỰ DO",
+    desc: "Thay đổi gói bất kỳ lúc nào, không ràng buộc, không phí ẩn.",
+    color: "text-violet",
+    bg: "bg-violet/8",
+    border: "border-violet/15",
   },
   {
-    icon: ShieldCheck,
-    title: "THANH TOÁN AN TOÀN",
-    desc: "Hỗ trợ COD, chuyển khoản, ví điện tử.",
+    icon: HeadphonesIcon,
+    title: "HỖ TRỢ KỸ THUẬT 24/7",
+    desc: "Đội ngũ hỗ trợ sẵn sàng qua chat, email và hotline mọi lúc.",
     color: "text-emerald",
     bg: "bg-emerald/8",
     border: "border-emerald/15",

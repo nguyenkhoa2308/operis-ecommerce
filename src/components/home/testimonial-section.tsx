@@ -10,7 +10,7 @@ import "swiper/css";
 const testimonials = [
   {
     quote:
-      "Operisbot giúp tôi tự động hóa hoàn toàn quy trình mà không lo lộ dữ liệu. Bộ não AI chạy riêng trên Mini PC, máy chính tắt bot vẫn làm. Năng suất tăng gấp đôi mà không cần thuê thêm nhân sự.",
+      "Operisbot giúp tôi tự động hóa hoàn toàn quy trình mà không lo lộ dữ liệu. Đăng ký xong là chạy ngay, không cần cài đặt gì. Năng suất tăng gấp đôi mà không cần thuê thêm nhân sự.",
     author: "Nguyễn Văn Anh",
     role: "Founder, ShopTech",
     rating: 5,
@@ -19,7 +19,7 @@ const testimonials = [
   },
   {
     quote:
-      "Cắm điện là chạy, không cần cài đặt gì phức tạp. Tôi tiết kiệm được gần 70% chi phí so với thuê tài khoản AI lẻ. Thiết bị nhỏ gọn, chạy 24/7 cực kỳ bền bỉ.",
+      "Đăng ký xong là dùng được ngay, không cần cài đặt gì phức tạp. Tôi tiết kiệm được gần 70% chi phí so với thuê tài khoản AI lẻ. Token không hết hạn, dùng thoải mái theo tiến độ.",
     author: "Trần Thị Mai",
     role: "CEO, Mai Digital",
     rating: 5,

@@ -189,6 +189,76 @@ export function ScaleIn({
 }
 
 /* ------------------------------------------------------------------ */
+/*  CountUp — animates a number from 0 to target on scroll reveal      */
+/*  Ref-based DOM updates — zero React re-renders                      */
+/* ------------------------------------------------------------------ */
+
+interface CountUpProps {
+  /** Target value string, e.g. "96%", "↓ 35%", "70%". Extracts the number automatically. */
+  value: string;
+  duration?: number;
+  className?: string;
+}
+
+export function CountUp({ value, duration = 1.5, className = "" }: CountUpProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const { ref: wrapRef, visible } = useReveal<HTMLSpanElement>();
+
+  useEffect(() => {
+    if (!visible || !ref.current) return;
+
+    // Extract numeric part and preserve prefix/suffix
+    const match = value.match(/^([^\d]*?)([\d,.]+)(.*)$/);
+    if (!match) {
+      ref.current.textContent = value;
+      return;
+    }
+
+    const [, prefix, numStr, suffix] = match;
+    const target = parseFloat(numStr.replace(/,/g, ""));
+    const hasDecimal = numStr.includes(".");
+    const decimalPlaces = hasDecimal ? (numStr.split(".")[1]?.length ?? 0) : 0;
+    const hasComma = numStr.includes(",");
+    const durationMs = duration * 1000;
+    let startTime = 0;
+    let rafId: number;
+
+    const formatNum = (n: number) => {
+      let s = hasDecimal ? n.toFixed(decimalPlaces) : Math.round(n).toString();
+      if (hasComma) {
+        const parts = s.split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        s = parts.join(".");
+      }
+      return s;
+    };
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / durationMs, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * target;
+
+      ref.current!.textContent = `${prefix}${formatNum(current)}${suffix}`;
+
+      if (progress < 1) {
+        rafId = requestAnimationFrame(animate);
+      }
+    };
+
+    rafId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId);
+  }, [visible, value, duration]);
+
+  return (
+    <span ref={wrapRef} className={className}>
+      <span ref={ref}>{visible ? "" : value.replace(/[\d,.]+/, "0")}</span>
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  TypeWriter (ref-based DOM updates — zero React re-renders)         */
 /* ------------------------------------------------------------------ */
 

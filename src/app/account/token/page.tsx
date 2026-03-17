@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loader2, AlertCircle, MessageSquare } from "lucide-react";
+import { Loader2, AlertCircle, MessageSquare, Check, Users, Crown, Building2, Phone, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { useAuthStore } from "@/store/auth-store";
 import { useToastStore } from "@/store/toast-store";
 import { formatTokenCount } from "@/data/token-plans";
@@ -43,6 +44,9 @@ export default function TokenPage() {
   const [loadingPending, setLoadingPending] = useState(true);
   const [cancelling, setCancelling] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+
+  /* Tab */
+  const [activeTab, setActiveTab] = useState<"token" | "plans">("token");
 
   /* ---------------------------------------------------------------- */
   /*  Load pricing tiers + check pending deposit                       */
@@ -163,7 +167,7 @@ export default function TokenPage() {
   return (
     <div>
       <h2 className="text-sm font-semibold tracking-widest uppercase mb-6">
-        Token & Nạp tiền
+        Token & Gói dịch vụ
       </h2>
 
       {/* Balance card */}
@@ -188,6 +192,34 @@ export default function TokenPage() {
         <p className="text-sm opacity-90 mt-1">token còn lại</p>
       </div>
 
+      {/* Tab switcher */}
+      <div className="flex gap-1 bg-muted rounded-lg p-1 mb-8">
+        <button
+          type="button"
+          onClick={() => setActiveTab("token")}
+          className={`flex-1 text-sm font-medium py-2.5 rounded-md transition-all ${
+            activeTab === "token"
+              ? "bg-white text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          Nạp Token
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("plans")}
+          className={`flex-1 text-sm font-medium py-2.5 rounded-md transition-all ${
+            activeTab === "plans"
+              ? "bg-white text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          Gói dịch vụ
+        </button>
+      </div>
+
+      {/* ---- Tab: Nạp Token ---- */}
+      {activeTab === "token" && <>
       {/* Pending deposit banner */}
       {loadingPending ? (
         <div className="space-y-6">
@@ -378,6 +410,11 @@ export default function TokenPage() {
         </div>
       )}
 
+      </>}
+
+      {/* ---- Tab: Gói dịch vụ ---- */}
+      {activeTab === "plans" && <SubscriptionPlansTab />}
+
       {/* QR Payment Modal */}
       <DepositQrModal
         open={qrOpen}
@@ -400,6 +437,278 @@ export default function TokenPage() {
         }}
         onCancel={() => setShowCancelConfirm(false)}
       />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Subscription Plans Tab                                              */
+/* ------------------------------------------------------------------ */
+
+interface Plan {
+  id: string;
+  name: string;
+  tagline: string;
+  users: string;
+  price: number | null;
+  tokens: number | null;
+  popular: boolean;
+  features: string[];
+  cta: string;
+  ctaHref: string;
+}
+
+const plans: Plan[] = [
+  {
+    id: "starter",
+    name: "Starter",
+    tagline: "Nhóm nhỏ & startup",
+    users: "Tối đa 5 người",
+    price: 1_500_000,
+    tokens: 100_000_000,
+    popular: false,
+    features: [
+      "Tối đa 5 tài khoản",
+      "100M Token/tháng (dùng chung)",
+      "Quản lý thành viên nhóm",
+      "Dashboard theo dõi usage",
+      "Hỗ trợ ưu tiên",
+    ],
+    cta: "BẮT ĐẦU NGAY",
+    ctaHref: "/contact",
+  },
+  {
+    id: "team",
+    name: "Team",
+    tagline: "Doanh nghiệp vừa",
+    users: "5 – 10 người",
+    price: 5_500_000,
+    tokens: 100_000_000,
+    popular: true,
+    features: [
+      "5 – 10 tài khoản",
+      "100M Token/tháng (dùng chung)",
+      "Phân quyền thành viên",
+      "Dashboard & báo cáo chi tiết",
+      "Hỗ trợ 24/7",
+      "Onboarding có hỗ trợ",
+    ],
+    cta: "ĐĂNG KÝ NGAY",
+    ctaHref: "/contact",
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    tagline: "Doanh nghiệp lớn",
+    users: "10 – 20 người",
+    price: 15_000_000,
+    tokens: 200_000_000,
+    popular: false,
+    features: [
+      "10 – 20 tài khoản",
+      "200M Token/tháng (dùng chung)",
+      "Phân quyền nâng cao",
+      "API rate limit cao hơn",
+      "SLA 99.9% uptime",
+      "Dedicated support",
+      "Custom workflow theo yêu cầu",
+    ],
+    cta: "ĐĂNG KÝ NGAY",
+    ctaHref: "/contact",
+  },
+  {
+    id: "corporate",
+    name: "Corporate",
+    tagline: "Tập đoàn & quy mô lớn",
+    users: "Trên 20 người",
+    price: null,
+    tokens: null,
+    popular: false,
+    features: [
+      "Không giới hạn tài khoản",
+      "Token theo nhu cầu thực tế",
+      "Hạ tầng riêng (on-premise)",
+      "Tích hợp hệ thống nội bộ",
+      "SLA tùy chỉnh",
+      "Dedicated account manager",
+      "Training & triển khai tận nơi",
+    ],
+    cta: "LIÊN HỆ TƯ VẤN",
+    ctaHref: "/contact",
+  },
+];
+
+const planIcons = [Users, Crown, Building2, Phone];
+
+function formatVnd(amount: number): string {
+  if (amount >= 1_000_000) {
+    const m = amount / 1_000_000;
+    return `${m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)}tr`;
+  }
+  return `${(amount / 1_000).toFixed(0)}k`;
+}
+
+function formatTokens(tokens: number): string {
+  if (tokens >= 1_000_000_000) return `${(tokens / 1_000_000_000).toFixed(0)}B`;
+  if (tokens >= 1_000_000) return `${(tokens / 1_000_000).toFixed(0)}M`;
+  if (tokens >= 1_000) return `${(tokens / 1_000).toFixed(0)}K`;
+  return tokens.toString();
+}
+
+function SubscriptionPlansTab() {
+  return (
+    <div className="space-y-4 animate-fade-in">
+      <p className="text-sm text-muted-foreground">
+        Chọn gói phù hợp với quy mô đội nhóm của bạn. Trả theo tháng, không ràng buộc.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {plans.map((plan, i) => {
+          const Icon = planIcons[i];
+          const isContact = plan.price === null;
+
+          return (
+            <div
+              key={plan.id}
+              className={`relative flex flex-col rounded-xl transition-all ${
+                plan.popular
+                  ? "bg-foreground text-white shadow-lg border-2 border-foreground"
+                  : "bg-white border-2 border-border hover:border-primary/30 hover:shadow-md"
+              }`}
+            >
+              {plan.popular && (
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] tracking-[0.2em] font-bold px-4 py-0.5 rounded-full shadow-md whitespace-nowrap">
+                  PHỔ BIẾN NHẤT
+                </span>
+              )}
+
+              <div className="flex flex-col flex-1 p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div
+                    className={`w-9 h-9 rounded-lg flex items-center justify-center ${
+                      plan.popular ? "bg-white/15" : "bg-primary/10"
+                    }`}
+                  >
+                    <Icon
+                      size={16}
+                      className={plan.popular ? "text-white" : "text-primary"}
+                    />
+                  </div>
+                  <div>
+                    <h4
+                      className={`text-sm font-bold ${
+                        plan.popular ? "text-white" : "text-foreground"
+                      }`}
+                    >
+                      {plan.name}
+                    </h4>
+                    <p
+                      className={`text-[11px] ${
+                        plan.popular ? "text-white/60" : "text-muted-foreground"
+                      }`}
+                    >
+                      {plan.tagline}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-baseline gap-1 mb-1">
+                  {isContact ? (
+                    <span
+                      className={`text-xl font-extrabold ${
+                        plan.popular ? "text-white" : "text-foreground"
+                      }`}
+                    >
+                      Liên hệ
+                    </span>
+                  ) : (
+                    <>
+                      <span
+                        className={`text-xl font-extrabold ${
+                          plan.popular ? "text-white" : "text-foreground"
+                        }`}
+                      >
+                        {formatVnd(plan.price!)}đ
+                      </span>
+                      <span
+                        className={`text-xs ${
+                          plan.popular ? "text-white/50" : "text-muted-foreground"
+                        }`}
+                      >
+                        /tháng
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-3 mb-4">
+                  <span
+                    className={`text-[11px] font-medium ${
+                      plan.popular ? "text-amber-300" : "text-primary"
+                    }`}
+                  >
+                    {isContact ? "Token theo nhu cầu" : `${formatTokens(plan.tokens!)} Token/tháng`}
+                  </span>
+                  <span
+                    className={`text-[11px] px-2 py-0.5 rounded-full ${
+                      plan.popular ? "bg-white/15 text-white" : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    <Users size={10} className="inline -mt-0.5 mr-1" />
+                    {plan.users}
+                  </span>
+                </div>
+
+                <ul className="space-y-1.5 mb-5">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2">
+                      <Check
+                        size={12}
+                        className={`shrink-0 mt-0.5 ${
+                          plan.popular ? "text-amber-300" : "text-emerald-500"
+                        }`}
+                        strokeWidth={2.5}
+                      />
+                      <span
+                        className={`text-xs leading-relaxed ${
+                          plan.popular ? "text-white/70" : "text-muted-foreground"
+                        }`}
+                      >
+                        {f}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href={plan.ctaHref}
+                  className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-[11px] tracking-widest font-semibold transition-all mt-auto ${
+                    plan.popular
+                      ? "bg-white text-foreground hover:bg-white/90"
+                      : isContact
+                        ? "bg-foreground text-white hover:bg-primary"
+                        : "bg-primary/10 text-primary border border-primary/20 hover:bg-primary hover:text-white"
+                  }`}
+                >
+                  {plan.cta}
+                  <ArrowRight size={12} />
+                </Link>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <p className="text-xs text-muted-foreground text-center pt-2">
+        Cần thêm Token trong tháng?{" "}
+        <button
+          type="button"
+          className="text-primary font-semibold hover:underline"
+        >
+          Chuyển sang tab Nạp Token
+        </button>{" "}
+        để mua thêm bất kỳ lúc nào.
+      </p>
     </div>
   );
 }

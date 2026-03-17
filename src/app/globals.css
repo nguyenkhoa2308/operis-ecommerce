@@ -211,6 +211,13 @@ a:focus-visible {
 [data-reveal="scale"].revealed { animation-name: reveal-scale; }
 
 
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
